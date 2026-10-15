@@ -1,0 +1,98 @@
+# Fleet definition: the input to every Refresh.
+#
+# `rules` say which Machines are in the fleet. `machines` is the expanded list
+# the agent maintains during a Refresh (it adds new variants found on the spec
+# pages and assigns each one a Hardware tier using `tier_rules`).
+#
+# Edit `rules` by hand when the fleet changes. Let the Refresh maintain `machines`.
+
+rules:
+  - id: macbook-pro-apple-silicon
+    description: Every MacBook Pro with an Apple M-series chip (M1 onward, all Pro/Max variants), every memory option Apple sold.
+    source: https://support.apple.com/en-us/docs/mac
+    auto_add_new: true          # new MacBook Pro chips/memory options join the fleet automatically
+  - id: dell-latitude-7350
+    description: Dell Latitude 7350 (2024, Core Ultra), 16 GB RAM.
+    product_codes: [latitude-13-7350-2-in-1-laptop]
+    auto_add_new: false         # a new generation is listed as "new, confirm in fleet"
+  - id: dell-pro-14-premium
+    description: Dell Pro 14 Premium, 32 GB RAM, both generations.
+    product_codes: [dell-pro-pa14250-laptop, dell-pro-pa14260-laptop]
+    next_generation_probe: dell-pro-pa14270-laptop
+    auto_add_new: false
+  - id: dell-pro-max-16
+    description: Dell Pro Max 16, 32 GB RAM, every discrete GPU option.
+    product_codes: [dell-pro-max-mc16250-laptop, dell-pro-precision-pw516261-laptop]
+    # PW516261 (Dell Pro Precision 5 Series 16) added 2026-10-15 at the user's request. Dell is
+    # rebranding Pro Max to Pro Precision; third-party lists call it MC16260 (not confirmed by Dell).
+    next_generation_probe: dell-pro-max-mc16260-laptop
+    auto_add_new: false
+  - id: dell-pro-max-16-plus
+    description: Dell Pro Max 16 Plus (user wrote "Pro Max Plus 16"), 64 GB RAM, every discrete GPU option.
+    product_codes: [dell-pro-max-mb16250-laptop]
+    next_generation_probe: dell-pro-max-mb16260-laptop
+    auto_add_new: false
+
+# How a Machine is placed in a Hardware tier. Mirrors the Runbook.
+tier_rules:
+  mac: "Unified memory. Up to 36 GB: weights <= 60% of memory (leaves room for macOS, the GPU memory cap and 64k context). 48 GB and up: weights + KV cache at 64k <= memory - 16 GB (needs iogpu.wired_limit_mb raised when above the default GPU cap)."
+  windows_dgpu: "If a dense model fits the GPU: weights <= VRAM - 3 GB. Otherwise MoE models are split GPU/CPU and the tier is set by system RAM."
+  windows_igpu: "Shared memory, ~100-140 GB/s. Weights <= RAM - 10 GB; only MoE models reach 15 tok/s."
+  grouping: "Macs by memory, Windows by GPU/RAM class. A Machine with bandwidth far below the rest of its tier (base M1, ~67 GB/s vs 100+) gets its own tier."
+
+tiers:
+  "Mac M1 8 GB": {weights_max_gb: 4.8, bandwidth_gbs: [67, 67]}
+  "Mac 8 GB": {weights_max_gb: 4.8,  bandwidth_gbs: [100, 100]}
+  "Mac M1 16 GB": {weights_max_gb: 9.6, bandwidth_gbs: [67, 67]}
+  "Mac 16-24 GB": {weights_max_gb: 9.6,  bandwidth_gbs: [100, 307]}
+  "Mac 32-36 GB": {weights_max_gb: 19.2, bandwidth_gbs: [120, 460]}
+  "Mac 48-96 GB": {weights_plus_kv_max_gb: 32, bandwidth_gbs: [273, 614]}
+  "Mac 128 GB": {weights_plus_kv_max_gb: 112, bandwidth_gbs: [400, 614]}
+  "Latitude 7350": {weights_max_gb: 6,  bandwidth_gbs: [102, 102]}
+  "Windows 32 GB": {weights_max_gb: 22, bandwidth_gbs: [90, 137]}
+  "Pro Max 16 Plus, 8-16 GB GPU": {weights_max_gb: 54, bandwidth_gbs: [102, 115], gpu_bandwidth_gbs: [384, 896]}
+  "Pro Max 16 Plus, 24 GB GPU": {weights_max_gb: 54, bandwidth_gbs: [102, 115], gpu_bandwidth_gbs: [896, 896]}
+
+# Bandwidth figures: Apple tech-specs pages; NVIDIA laptop GPU compare page;
+# Dell RAM bandwidth = MT/s x 16 bytes (128-bit bus), an estimate.
+# M1 (base) bandwidth ~67 GB/s is derived from Apple's "M2 has 50% more", not stated by Apple.
+machines:
+  # --- MacBook Pro -----------------------------------------------------------
+  - {name: "MacBook Pro M1",      memory_gb: [8],            bandwidth_gbs: 67,  tiers: {8: "Mac M1 8 GB"}, source: "https://support.apple.com/en-us/111893"}
+  - {name: "MacBook Pro M1",      memory_gb: [16],           bandwidth_gbs: 67,  tiers: {16: "Mac M1 16 GB"}, source: "https://support.apple.com/en-us/111893"}
+  - {name: "MacBook Pro M1 Pro",  memory_gb: [16, 32],       bandwidth_gbs: 200, tiers: {16: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/111902 https://support.apple.com/en-us/111901"}
+  - {name: "MacBook Pro M1 Max",  memory_gb: [32, 64],       bandwidth_gbs: 400, tiers: {32: "Mac 32-36 GB", 64: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/111902 https://support.apple.com/en-us/111901"}
+  - {name: "MacBook Pro M2",      memory_gb: [8, 16, 24],    bandwidth_gbs: 100, tiers: {8: "Mac 8 GB", 16: "Mac 16-24 GB", 24: "Mac 16-24 GB"}, source: "https://support.apple.com/en-us/111869"}
+  - {name: "MacBook Pro M2 Pro",  memory_gb: [16, 32],       bandwidth_gbs: 200, tiers: {16: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/111340 https://support.apple.com/en-us/111838"}
+  - {name: "MacBook Pro M2 Max",  memory_gb: [32, 64, 96],   bandwidth_gbs: 400, tiers: {32: "Mac 32-36 GB", 64: "Mac 48-96 GB", 96: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/111340 https://support.apple.com/en-us/111838"}
+  - {name: "MacBook Pro M3",      memory_gb: [8, 16, 24],    bandwidth_gbs: 100, tiers: {8: "Mac 8 GB", 16: "Mac 16-24 GB", 24: "Mac 16-24 GB"}, source: "https://support.apple.com/en-us/117735"}
+  - {name: "MacBook Pro M3 Pro",  memory_gb: [18, 36],       bandwidth_gbs: 150, tiers: {18: "Mac 16-24 GB", 36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/117736 https://support.apple.com/en-us/117737"}
+  - {name: "MacBook Pro M3 Max (30-core GPU)", memory_gb: [36, 96],  bandwidth_gbs: 300, tiers: {36: "Mac 32-36 GB", 96: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/117736 https://support.apple.com/en-us/117737"}
+  - {name: "MacBook Pro M3 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 400, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/117736 https://support.apple.com/en-us/117737"}
+  - {name: "MacBook Pro M4",      memory_gb: [16, 24, 32],   bandwidth_gbs: 120, tiers: {16: "Mac 16-24 GB", 24: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/121552"}
+  - {name: "MacBook Pro M4 Pro",  memory_gb: [24, 48],       bandwidth_gbs: 273, tiers: {24: "Mac 16-24 GB", 48: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/121553 https://support.apple.com/en-us/121554"}
+  - {name: "MacBook Pro M4 Max (32-core GPU)", memory_gb: [36],          bandwidth_gbs: 410, tiers: {36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/121553 https://support.apple.com/en-us/121554"}
+  - {name: "MacBook Pro M4 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 546, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/121553 https://support.apple.com/en-us/121554"}
+  - {name: "MacBook Pro M5",      memory_gb: [16, 24, 32],   bandwidth_gbs: 153, tiers: {16: "Mac 16-24 GB", 24: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/125405"}
+  - {name: "MacBook Pro M5 Pro",  memory_gb: [24, 48, 64],   bandwidth_gbs: 307, tiers: {24: "Mac 16-24 GB", 48: "Mac 48-96 GB", 64: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
+  - {name: "MacBook Pro M5 Max (32-core GPU)", memory_gb: [36],          bandwidth_gbs: 460, tiers: {36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
+  - {name: "MacBook Pro M5 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 614, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
+
+  # --- Dell -------------------------------------------------------------------
+  - {name: "Dell Latitude 7350 (Core Ultra 5/7 U, Intel Graphics)", memory_gb: [16], bandwidth_gbs: 102, gpu: none, tiers: {16: "Latitude 7350"}, source: "https://dl.dell.com/content/manual34075453-latitude-7350-owner-s-manual.pdf?language=en-us"}
+  - {name: "Dell Pro 14 Premium PA14250 (Core Ultra 200V, Arc 130V/140V)", memory_gb: [32], bandwidth_gbs: 137, gpu: none, tiers: {32: "Windows 32 GB"}, source: "https://dl.dell.com/content/manual2592419-dell-pro-14-premium-pa14250-owner-s-manual.pdf?language=en-us"}
+  - {name: "Dell Pro 14 Premium PA14260 (Core Ultra 300-series)", memory_gb: [32], bandwidth_gbs: [119, 137], gpu: none, tiers: {32: "Windows 32 GB"}, source: "https://dl.dell.com/content/manual19413430-dell-pro-14-premium-pa14260-setup-and-specifications.pdf?language=en-us"}
+  - {name: "Dell Pro Max 16 MC16250 + RTX PRO 500 Blackwell 6 GB",  memory_gb: [32], bandwidth_gbs: [90, 102], gpu_vram_gb: 6, gpu_bandwidth_gbs: 288, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 MC16250 + RTX PRO 1000 Blackwell 8 GB", memory_gb: [32], bandwidth_gbs: [90, 102], gpu_vram_gb: 8, gpu_bandwidth_gbs: 384, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 MC16250 + RTX PRO 2000 Blackwell 8 GB", memory_gb: [32], bandwidth_gbs: [90, 102], gpu_vram_gb: 8, gpu_bandwidth_gbs: 384, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  # PW516261 RAM: one LPCAMM2 LPDDR5x module, 8533 MT/s, "dual-channel" (brochure). Bandwidth assumes a
+  # 128-bit bus (8533 x 16 bytes); a reseller copy of the Setup & Specifications says 64-bit, likely an error.
+  - {name: "Dell Pro Precision 5 16 PW516261 (Core Ultra Series 3 H, Intel Graphics)", memory_gb: [32], bandwidth_gbs: 137, gpu: none, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf"}
+  - {name: "Dell Pro Precision 5 16 PW516261 + RTX PRO 500 Blackwell 6 GB",  memory_gb: [32], bandwidth_gbs: 137, gpu_vram_gb: 6, gpu_bandwidth_gbs: 288, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Precision 5 16 PW516261 + RTX PRO 1000 Blackwell 8 GB", memory_gb: [32], bandwidth_gbs: 137, gpu_vram_gb: 8, gpu_bandwidth_gbs: 384, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Precision 5 16 PW516261 + RTX PRO 2000 Blackwell 8 GB", memory_gb: [32], bandwidth_gbs: 137, gpu_vram_gb: 8, gpu_bandwidth_gbs: 384, tiers: {32: "Windows 32 GB"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 Plus MB16250 + RTX PRO 1000 Blackwell 8 GB",  memory_gb: [64], bandwidth_gbs: [102, 115], gpu_vram_gb: 8,  gpu_bandwidth_gbs: 384, tiers: {64: "Pro Max 16 Plus, 8-16 GB GPU"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 Plus MB16250 + RTX PRO 2000 Blackwell 8 GB",  memory_gb: [64], bandwidth_gbs: [102, 115], gpu_vram_gb: 8,  gpu_bandwidth_gbs: 384, tiers: {64: "Pro Max 16 Plus, 8-16 GB GPU"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 Plus MB16250 + RTX PRO 3000 Blackwell 12 GB", memory_gb: [64], bandwidth_gbs: [102, 115], gpu_vram_gb: 12, gpu_bandwidth_gbs: 672, tiers: {64: "Pro Max 16 Plus, 8-16 GB GPU"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 Plus MB16250 + RTX PRO 4000 Blackwell 16 GB", memory_gb: [64], bandwidth_gbs: [102, 115], gpu_vram_gb: 16, gpu_bandwidth_gbs: 896, tiers: {64: "Pro Max 16 Plus, 8-16 GB GPU"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
+  - {name: "Dell Pro Max 16 Plus MB16250 + RTX PRO 5000 Blackwell 24 GB", memory_gb: [64], bandwidth_gbs: [102, 115], gpu_vram_gb: 24, gpu_bandwidth_gbs: 896, tiers: {64: "Pro Max 16 Plus, 24 GB GPU"}, source: "https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/"}
