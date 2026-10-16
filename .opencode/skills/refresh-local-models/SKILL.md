@@ -5,16 +5,16 @@ description: Runbook for a Refresh of local-models-report.html, the Top local mo
 
 # Refresh local models
 
-Vocabulary: read `GLOSSARY.md` first (Machine, Hardware tier, Use case, Top model, Equivalent paid model, Stack, Report, Refresh, Diff, Change check, Estimated speed). Files: `machines.yaml` (fleet), `local-models-report.html` (the Report), `scripts/report-style.html` (its CSS), `scripts/`.
+Vocabulary: read `GLOSSARY.md` first (Machine, Hardware tier, Use case, Top model, Equivalent paid model, Stack, Report, Refresh, Diff, Change check, Estimated speed). Files: `machines.yaml` (fleet), `candidates.json` (dated scoring and tag-size snapshot), `report.md` (editable Report), `local-models-report.html` (published Report), `scripts/report-style.html` (CSS), `scripts/`.
 
 Facts come from primary sources with a URL; anything else is marked "unsourced" or "estimate". Never run or pull models: there are no smoke tests.
 
 ## Steps
 
-1. **Change check.** Run `scripts/check-changes.sh`. If it prints `NO CHANGES` and the user did not ask to force a Refresh, tell the user and stop. Otherwise carry its list of reasons into the Diff.
+1. **Change check.** Run `scripts/check-changes.sh`. If it prints `NO CHANGES` and the user did not ask to force a Refresh, tell the user and stop. If it prints `CHECK INCOMPLETE`, investigate the failed check instead of declaring the sources unchanged. Otherwise carry its list of reasons into the Diff.
    Done when: you have the list of reasons, or have stopped.
 
-2. **Capture the previous state.** Read the hidden `<!-- STATE ... END STATE -->` block at the end of the current Report (refreshed date, source versions, picks) and keep it verbatim in context. It is the only record of the previous Refresh; the file is overwritten in step 10.
+2. **Capture the previous state.** Read the hidden `<!-- STATE ... END STATE -->` block at the end of the current Report (refreshed date, source versions, picks) and keep it verbatim in context before rebuilding it in step 10.
    Done when: the STATE block is in context.
 
 3. **Stack.** Never count betas or release candidates.
@@ -31,7 +31,8 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
    Done when: every rule checked and every row in `machines` has a tier and a `source` URL.
 
 5. **Candidates.** `scripts/ollama_library.py --tools` lists models with the `tools` badge. Keep: every model in the previous Picks, plus every model updated in the last 12 months. Drop cloud-only models (`scripts/ollama_library.py tags <model>` shows no local sizes). Record both formats: GGUF tags (`q4_K_M`, `-it-qat`, or 8-bit where no 4-bit exists) and MLX tags (`-nvfp4`, `-mlx`, `-int4`, or `-mxfp8`/`-int8` where no 4-bit exists; Apple silicon only). MLX tag size = sum of the manifest's layer sizes. Windows tiers use GGUF only; Mac tiers pick per model per **Mac tag choice**. Also check every model updated in the last 12 months that lacks the badge: Ollama still reports tool support when the registry config blob has no `renderer` and the GGUF `tokenizer.chat_template` handles tools (Ollama v0.40.1 `server/images.go`, `chatTemplateHasToolSupport`). Read the template with a ranged GET of the model blob's GGUF header. Such models are candidates; decision models (`decision` capability) never are. Note the rest under "Considered and left out". Record each candidate's tags, sizes, total/active params, license, origin (Ollama page, vendor model card on Hugging Face).
-   Done when: every kept candidate has sizes and params.
+   Update `candidates.json` with every kept model's AA row (`aa_name`), score, flag, per-tag rounded GGUF size or manifest-derived MLX size, format, active/total parameters and 64k KV size (GGUF header); include tag-specific vendor scores. The file is a dated source snapshot, not a live feed: add new models and remove stale ones deliberately, not by silently retaining old scores. Update the small `tests/fixtures/aa_models.json` fixture from the AA rows represented in the snapshot, so the offline score-change tests continue to check the new baseline. Do not pull or run models.
+   Done when: every kept candidate has sizes, params, an AA row or vendor score, and a dated record in `candidates.json`.
 
 6. **Scores.** `scripts/aa.py fetch`, then `scripts/aa.py show "<name>"`.
    - General: General score (GS), printed as `GS=` by `scripts/aa.py show` (`general_score` in `scripts/aa.py`). It's a weighted mean of the Intelligence Index's non-agentic, non-coding evals: HLE 10, CritPt 5, Omniscience penalty score 15, AA-LCR 5 (`GS_WEIGHTS`). The penalty score is +1 correct, 0 abstain, −0.5 wrong (`OMNI_PENALTY`; wrong share = `omniscienceAccuracy − omniscience/100`), rescaled to 0-1. Don't switch back to AA's accuracy + non-hallucination split: non-hallucination ignores correct answers, so heavy refusers top the small tiers. CritPt is halved because local models score near zero on it. A model missing any input has no GS and isn't ranked for General; there is no vendor fallback for GS. Note the Index version (`scripts/aa.py fingerprint`); if AA changes the Index's eval list, re-check `GS_WEIGHTS` against https://artificialanalysis.ai/methodology/intelligence-benchmarking and say so in the Diff. When a small-tier pick wins on few wrong answers rather than many right ones, say so in the tier notes.
@@ -43,15 +44,15 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
 7. **Bugs.** For each candidate, search open issues by model name and by its parser name (Ranking rule 3): `https://api.github.com/search/issues?q=repo:ollama/ollama+<name>+in:title+state:open`. Also re-check every issue in the Report's Watched issues table (`https://api.github.com/repos/ollama/ollama/issues/<n>`).
    Done when: every candidate and watched issue checked.
 
-8. **Fit, speed, rank.** Put every candidate (tag, size, active/total params, AA rows, family, vendor score) and every Machine from `machines.yaml` into a throwaway script in the temp directory, and compute fit, speed and rank there with **Fit rules**, **Mac tag choice**, **Speed estimate** and **Ranking rules**. Ranking by hand is how the first Refresh got 31 audit errors.
-   Done when: the script prints 1-5 picks per tier × use case (or none), with speed ranges.
+8. **Fit, speed, rank.** Run `python3 scripts/ranking.py` against the checked-in snapshot and fleet. It applies **Fit rules**, **Mac tag choice**, **Speed estimate** and **Ranking rules** on every Machine. Update the snapshot before ranking; never retype ranks or speed ranges by hand. Add a test in `tests/` when changing a rule.
+   Done when: the command prints 1-5 picks per tier × use case (or none), with speed ranges, and the snapshot reflects the research from steps 3-7.
 
 9. **Paid equivalents and config.** `scripts/aa.py nearest "<AA name>"` per pick. Re-verify each config claim against the pages in **Config sources**.
    Done when: every pick has an equivalent and every config row has a source.
 
-10. **Write the Report.** Overwrite `local-models-report.html` keeping its section structure. Draft it as GitHub-flavoured markdown in the temp directory, then build the page:
-    `pandoc -f gfm+attributes -t html5 -s --metadata pagetitle="Local Models Report" -H scripts/report-style.html <draft>.md -o local-models-report.html`
-    - Copy tags, scores and speeds from script output, and generate each tier heading's machine list from `machines.yaml` with code; never retype them from memory.
+10. **Write the Report.** Edit `report.md`, keeping its section structure. Build the page with `python3 scripts/report.py --build` (uses pandoc and generates the hidden STATE picks and content hashes). Then run `python3 -m unittest discover -s tests -v` and `python3 scripts/report.py --check`.
+     - Copy tags, scores and speeds from the ranking output. Generate each tier heading's machine list from `machines.yaml` with code; never retype them from memory.
+     - Give each tier a Confidence line distinguishing AA scores, vendor scores, unmeasured speed estimates and flagged tool-call reports.
     - Tiers have no codes: a tier heading is its descriptive name plus its machines on one line (Mac tiers list chip names only, e.g. `Mac 48-96 GB: M1 Max / M4 Pro`, since the name already gives the memory). Put a `---` rule between tiers.
     - Give every section and tier heading an explicit id (`### Mac 8 GB: M2 / M3 {#tier-mac-8}`) and keep the `<nav class="toc">` block at the top linking to each of them.
     - Citations are numbered links, `[\[3\]](#ref-3)`, numbered by first appearance; the Sources section is an `<ol class="refs">` whose `<li id="ref-N">` items hold the linked URLs. Ollama issue numbers link to their GitHub issue.
@@ -69,12 +70,12 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
       <tier name> | general|coding | <rank> | <tag> | <score>
       END STATE -->
       ```
-    Done when: the page is built, `scripts/check-changes.sh` parses it, and every STATE pick matches the tier tables.
+     Done when: the page is built, tests pass, `scripts/report.py --check` passes (ranks, table rows, citations, STATE and HTML), and `scripts/check-changes.sh` parses it. A live upstream change may already warrant another Refresh; do not mask it by updating the saved state without doing the research.
 
 11. **Verify.** Dispatch a fresh subagent (it must not see your reasoning, only the files) with the **Audit brief** below. Fix every error it reports, then re-dispatch until it returns zero errors.
     Done when: an audit pass returns zero errors.
 
-12. **Tell the user the Diff** in chat, plus the number of errors the audit caught and fixed: Stack versions, machines added, picks added/dropped/moved per tier and use case, score changes over 3 points, config changes, watched issues closed. Compare every old STATE pick with the new ones.
+12. **Tell the user the Diff** in chat, plus the number of errors the audit caught and fixed: Stack versions, machines added, picks added/dropped/moved per tier and use case, score changes over 3 points, config changes, watched issues closed. Compare every old STATE pick with the new ones. To publish after verification, push to `main`; the GitHub Pages workflow checks and deploys the report, and the site check verifies the live URL.
     Done when: every old and new STATE pick is accounted for.
 
 ## Audit brief

@@ -1,0 +1,71 @@
+name: Verify and publish report
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-report
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          cache: pip
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+      - name: Install pinned pandoc
+        run: |
+          curl -fLsS -o /tmp/pandoc.tar.gz https://github.com/jgm/pandoc/releases/download/3.10.1/pandoc-3.10.1-linux-amd64.tar.gz
+          echo '72948bf5784f560d5ad1876709daca27e0667f262da727bb33f77b58e52df2f5  /tmp/pandoc.tar.gz' | sha256sum -c -
+          tar -xzf /tmp/pandoc.tar.gz -C /tmp
+          echo /tmp/pandoc-3.10.1/bin >> "$GITHUB_PATH"
+      - name: Test the ranking, change detection and report
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 scripts/report.py --check
+      - name: Prepare the public site
+        if: github.event_name != 'pull_request'
+        run: |
+          mkdir site
+          cp index.html local-models-report.html .nojekyll site/
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Confirm the published report is reachable
+        run: |
+          base="${{ steps.deployment.outputs.page_url }}"
+          url="${base%/}/local-models-report.html"
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --location --silent --show-error "$url" | grep '<h1 id="local-models-report">' > /dev/null; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Could not verify $url" >&2
+          exit 1

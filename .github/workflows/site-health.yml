@@ -1,0 +1,19 @@
+name: Check live report
+
+on:
+  schedule:
+    - cron: '13 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm GitHub Pages serves the report
+        run: |
+          curl --fail --location --silent --show-error \
+            https://sbarber.github.io/local-models/local-models-report.html \
+            | grep '<h1 id="local-models-report">' > /dev/null

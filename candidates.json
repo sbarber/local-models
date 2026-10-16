@@ -1,0 +1,904 @@
+{
+  "source_date": "2026-10-15",
+  "models": [
+    {
+      "name": "qwen3.5:0.8b",
+      "total": 0.8,
+      "active": null,
+      "gs": 8.7,
+      "tb": 0.0,
+      "flag": true,
+      "tags": {
+        "qwen3.5:0.8b-q8_0": {
+          "size_gb": 1.0,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "qwen3.5:0.8b-nvfp4": {
+          "size_gb": 1.01,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 0.8B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:2b",
+      "total": 2,
+      "active": null,
+      "gs": 10.6,
+      "tb": 3.0,
+      "flag": true,
+      "tags": {
+        "qwen3.5:2b-q4_K_M": {
+          "size_gb": 1.9,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "qwen3.5:2b-nvfp4": {
+          "size_gb": 2.47,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 2B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:4b",
+      "total": 4,
+      "active": null,
+      "gs": 19.9,
+      "tb": 25.8,
+      "flag": true,
+      "tags": {
+        "qwen3.5:4b-q4_K_M": {
+          "size_gb": 3.3,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "qwen3.5:4b-nvfp4": {
+          "size_gb": 3.97,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 4B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:9b",
+      "total": 9,
+      "active": null,
+      "gs": 23.3,
+      "tb": 29.2,
+      "flag": true,
+      "tags": {
+        "qwen3.5:9b-q4_K_M": {
+          "size_gb": 6.6,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "qwen3.5:9b-nvfp4": {
+          "size_gb": 7.15,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 9B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:27b",
+      "total": 27,
+      "active": null,
+      "gs": 29.0,
+      "tb": null,
+      "flag": true,
+      "tags": {
+        "qwen3.5:27b-q4_K_M": {
+          "size_gb": 17.0,
+          "format": "gguf",
+          "kv64k_gb": 4.29
+        },
+        "qwen3.5:27b-nvfp4": {
+          "size_gb": 19.76,
+          "format": "mlx",
+          "kv64k_gb": 4.29
+        },
+        "qwen3.5:27b-int4": {
+          "size_gb": 16.07,
+          "format": "mlx",
+          "kv64k_gb": 4.29
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 27B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:35b-a3b",
+      "total": 35,
+      "active": 3,
+      "gs": 26.7,
+      "tb": null,
+      "flag": true,
+      "tags": {
+        "qwen3.5:35b-a3b-q4_K_M": {
+          "size_gb": 22.0,
+          "format": "gguf",
+          "kv64k_gb": 1.34
+        },
+        "qwen3.5:35b-a3b-nvfp4": {
+          "size_gb": 21.91,
+          "format": "mlx",
+          "kv64k_gb": 1.34
+        },
+        "qwen3.5:35b-a3b-int4": {
+          "size_gb": 20.41,
+          "format": "mlx",
+          "kv64k_gb": 1.34
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 35B A3B (Reasoning)"
+    },
+    {
+      "name": "qwen3.5:122b-a10b",
+      "total": 122,
+      "active": 10,
+      "gs": 30.0,
+      "tb": 47.6,
+      "flag": true,
+      "tags": {
+        "qwen3.5:122b-a10b-q4_K_M": {
+          "size_gb": 81.0,
+          "format": "gguf",
+          "kv64k_gb": 1.61
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.5 122B A10B (Reasoning)"
+    },
+    {
+      "name": "qwen3.6:27b",
+      "total": 27,
+      "active": null,
+      "gs": 32.0,
+      "tb": 60.7,
+      "flag": true,
+      "tags": {
+        "qwen3.6:27b-q4_K_M": {
+          "size_gb": 17.0,
+          "format": "gguf",
+          "kv64k_gb": 4.29
+        },
+        "qwen3.6:27b-nvfp4": {
+          "size_gb": 18.79,
+          "format": "mlx",
+          "kv64k_gb": 4.29
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.6 27B (Reasoning)"
+    },
+    {
+      "name": "qwen3.6:35b-a3b",
+      "total": 35,
+      "active": 3,
+      "gs": 30.4,
+      "tb": 44.9,
+      "flag": true,
+      "tags": {
+        "qwen3.6:35b-a3b-q4_K_M": {
+          "size_gb": 24.0,
+          "format": "gguf",
+          "kv64k_gb": 1.34
+        },
+        "qwen3.6:35b-a3b-nvfp4": {
+          "size_gb": 23.6,
+          "format": "mlx",
+          "kv64k_gb": 1.34
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.6 35B A3B (Reasoning)"
+    },
+    {
+      "name": "qwen3.8:27b",
+      "total": 27,
+      "active": null,
+      "gs": 27.1,
+      "tb": 65.2,
+      "flag": true,
+      "tags": {
+        "qwen3.8:27b-q4_K_M": {
+          "size_gb": 18.0,
+          "format": "gguf",
+          "kv64k_gb": 4.29
+        },
+        "qwen3.8:27b-nvfp4": {
+          "size_gb": 18.17,
+          "format": "mlx",
+          "kv64k_gb": 4.29
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.8 27B (Medium)"
+    },
+    {
+      "name": "qwen3.8-flash-next",
+      "total": 125,
+      "active": 6,
+      "gs": 40.2,
+      "tb": 86.1,
+      "flag": true,
+      "tags": {
+        "qwen3.8-flash-next:125b-a6b-q4_K_M": {
+          "size_gb": 120.0,
+          "format": "gguf",
+          "kv64k_gb": 1.61
+        },
+        "qwen3.8-flash-next:125b-a6b-nvfp4": {
+          "size_gb": 104.852,
+          "format": "mlx",
+          "kv64k_gb": 1.61
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3.8-Flash-Next"
+    },
+    {
+      "name": "gemma4:e2b",
+      "total": 5.1,
+      "active": null,
+      "gs": 15.6,
+      "tb": 0.4,
+      "flag": true,
+      "tags": {
+        "gemma4:e2b-it-qat": {
+          "size_gb": 4.3,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "gemma4:e2b-nvfp4": {
+          "size_gb": 7.48,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Gemma 4 E2B (Reasoning)"
+    },
+    {
+      "name": "gemma4:e4b",
+      "total": 8,
+      "active": null,
+      "gs": 18.4,
+      "tb": 1.9,
+      "flag": true,
+      "tags": {
+        "gemma4:e4b-it-qat": {
+          "size_gb": 6.1,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "gemma4:e4b-nvfp4": {
+          "size_gb": 9.46,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Gemma 4 E4B (Reasoning)"
+    },
+    {
+      "name": "gemma4:12b",
+      "total": 12,
+      "active": null,
+      "gs": 22.6,
+      "tb": 27.3,
+      "flag": true,
+      "tags": {
+        "gemma4:12b-it-qat": {
+          "size_gb": 7.2,
+          "format": "gguf",
+          "kv64k_gb": 0
+        },
+        "gemma4:12b-nvfp4": {
+          "size_gb": 7.71,
+          "format": "mlx",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Gemma 4 12B (Reasoning)"
+    },
+    {
+      "name": "gemma4:26b-a4b",
+      "total": 26,
+      "active": 4,
+      "gs": 24.7,
+      "tb": 39.0,
+      "flag": true,
+      "tags": {
+        "gemma4:26b-a4b-it-qat": {
+          "size_gb": 16.0,
+          "format": "gguf",
+          "kv64k_gb": 1.76
+        },
+        "gemma4:26b-nvfp4": {
+          "size_gb": 16.15,
+          "format": "mlx",
+          "kv64k_gb": 1.76
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Gemma 4 26B A4B (Reasoning)"
+    },
+    {
+      "name": "gemma4:31b",
+      "total": 31,
+      "active": null,
+      "gs": 27.2,
+      "tb": 43.4,
+      "flag": true,
+      "tags": {
+        "gemma4:31b-it-qat": {
+          "size_gb": 19.0,
+          "format": "gguf",
+          "kv64k_gb": 7.05
+        },
+        "gemma4:31b-nvfp4": {
+          "size_gb": 19.42,
+          "format": "mlx",
+          "kv64k_gb": 7.05
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Gemma 4 31B (Reasoning)"
+    },
+    {
+      "name": "muse-glimmer:30b",
+      "total": 30,
+      "active": null,
+      "gs": 32.0,
+      "tb": 51.7,
+      "flag": false,
+      "tags": {
+        "muse-glimmer:30b-q4_K_M": {
+          "size_gb": 18.0,
+          "format": "gguf",
+          "kv64k_gb": 0.95
+        },
+        "muse-glimmer:30b-nvfp4": {
+          "size_gb": 17.27,
+          "format": "mlx",
+          "kv64k_gb": 0.95
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Muse Glimmer (High)"
+    },
+    {
+      "name": "nemotron-3.5-super",
+      "total": 120,
+      "active": 12,
+      "gs": 37.2,
+      "tb": 66.7,
+      "flag": false,
+      "tags": {
+        "nemotron-3.5-super:120b-a12b-q4_K_M": {
+          "size_gb": 90.0,
+          "format": "gguf",
+          "kv64k_gb": 0.6
+        },
+        "nemotron-3.5-super:120b-a12b-nvfp4": {
+          "size_gb": 79.56,
+          "format": "mlx",
+          "kv64k_gb": 0.6
+        }
+      },
+      "tag_tb": {
+        "nemotron-3.5-super:120b-a12b-nvfp4": 60.8
+      },
+      "score_source": "vendor",
+      "aa_name": "Nemotron 3.5 Super VL"
+    },
+    {
+      "name": "nemotron-3.5-lightning",
+      "total": 30,
+      "active": 3,
+      "gs": 25.5,
+      "tb": 24.3,
+      "flag": false,
+      "tags": {
+        "nemotron-3.5-lightning:30b-a3b-q4_K_M": {
+          "size_gb": 25.0,
+          "format": "gguf",
+          "kv64k_gb": 0.47
+        },
+        "nemotron-3.5-lightning:30b-a3b-nvfp4": {
+          "size_gb": 22.67,
+          "format": "mlx",
+          "kv64k_gb": 0.47
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Nemotron 3.5 Lightning"
+    },
+    {
+      "name": "north-mini-code-1.0",
+      "total": 30,
+      "active": 3,
+      "gs": 18.6,
+      "tb": 35.6,
+      "flag": true,
+      "tags": {
+        "north-mini-code-1.0:q4_K_M": {
+          "size_gb": 19.0,
+          "format": "gguf",
+          "kv64k_gb": 2.05
+        },
+        "north-mini-code-1.0:mlx-nvfp4": {
+          "size_gb": 19.74,
+          "format": "mlx",
+          "kv64k_gb": 2.05
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "North Mini Code"
+    },
+    {
+      "name": "granite4.2:3b",
+      "total": 3,
+      "active": null,
+      "gs": 18.9,
+      "tb": 13.9,
+      "flag": false,
+      "tags": {
+        "granite4.2:3b-q4_K_M": {
+          "size_gb": 2.2,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.2 3B"
+    },
+    {
+      "name": "granite4.2:8b",
+      "total": 8,
+      "active": null,
+      "gs": 22.7,
+      "tb": 18.4,
+      "flag": false,
+      "tags": {
+        "granite4.2:8b-q4_K_M": {
+          "size_gb": 5.3,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.2 8B"
+    },
+    {
+      "name": "granite4.2:30b",
+      "total": 30,
+      "active": null,
+      "gs": 24.1,
+      "tb": 26.6,
+      "flag": false,
+      "tags": {
+        "granite4.2:30b": {
+          "size_gb": 18.0,
+          "format": "gguf",
+          "kv64k_gb": 17.18
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.2 30B"
+    },
+    {
+      "name": "granite4:350m-h",
+      "total": 0.35,
+      "active": null,
+      "gs": 5.1,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "granite4:350m-h": {
+          "size_gb": 0.366,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.0 H 350M"
+    },
+    {
+      "name": "granite4:1b-h",
+      "total": 1.5,
+      "active": null,
+      "gs": 7.1,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "granite4:1b-h-q8_0": {
+          "size_gb": 1.6,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.0 H 1B"
+    },
+    {
+      "name": "granite4:micro",
+      "total": 3,
+      "active": null,
+      "gs": 7.0,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "granite4:micro": {
+          "size_gb": 2.1,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Granite 4.0 Micro"
+    },
+    {
+      "name": "qwen3:4b-instruct-2507",
+      "total": 4,
+      "active": null,
+      "gs": 9.9,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "qwen3:4b-instruct-2507-q4_K_M": {
+          "size_gb": 2.5,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3 4B 2507 Instruct"
+    },
+    {
+      "name": "lfm2.5:8b",
+      "total": 8.3,
+      "active": 1.5,
+      "gs": 12.8,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "lfm2.5:8b-a1b-q4_K_M": {
+          "size_gb": 5.2,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "LFM2.5-8B-A1B"
+    },
+    {
+      "name": "qwen3:4b-thinking-2507",
+      "total": 4,
+      "active": null,
+      "gs": 14.6,
+      "tb": null,
+      "flag": false,
+      "tags": {
+        "qwen3:4b-thinking-2507-q4_K_M": {
+          "size_gb": 2.5,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3 4B 2507 (Reasoning)"
+    },
+    {
+      "name": "qwen3:30b-a3b-thinking-2507",
+      "total": 30,
+      "active": 3,
+      "gs": 20.3,
+      "tb": 1.5,
+      "flag": false,
+      "tags": {
+        "qwen3:30b-a3b-thinking-2507-q4_K_M": {
+          "size_gb": 19.0,
+          "format": "gguf",
+          "kv64k_gb": 6.44
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3 30B A3B 2507 (Reasoning)"
+    },
+    {
+      "name": "qwen3-next:80b-a3b-thinking",
+      "total": 80,
+      "active": 3,
+      "gs": 22.3,
+      "tb": 6.7,
+      "flag": false,
+      "tags": {
+        "qwen3-next:80b-a3b-thinking-q4_K_M": {
+          "size_gb": 50.0,
+          "format": "gguf",
+          "kv64k_gb": 1.6
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3 Next 80B A3B (Reasoning)"
+    },
+    {
+      "name": "ornith:9b",
+      "total": 9,
+      "active": null,
+      "gs": null,
+      "tb": 43.1,
+      "flag": true,
+      "tags": {
+        "ornith:9b-q4_K_M": {
+          "size_gb": 5.6,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "ornith:35b",
+      "total": 35,
+      "active": 3,
+      "gs": null,
+      "tb": 64.2,
+      "flag": true,
+      "tags": {
+        "ornith:35b-q4_K_M": {
+          "size_gb": 21.0,
+          "format": "gguf",
+          "kv64k_gb": 1.34
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "ornith-1.5:9b",
+      "total": 9,
+      "active": null,
+      "gs": null,
+      "tb": 46.2,
+      "flag": false,
+      "tags": {
+        "ornith-1.5:9b": {
+          "size_gb": 6.6,
+          "format": "gguf",
+          "kv64k_gb": 0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "ornith-1.5:35b",
+      "total": 35,
+      "active": 3,
+      "gs": null,
+      "tb": 67.8,
+      "flag": false,
+      "tags": {
+        "ornith-1.5:35b": {
+          "size_gb": 23.0,
+          "format": "gguf",
+          "kv64k_gb": 1.34
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "gpt-oss:120b",
+      "total": 117,
+      "active": 5.1,
+      "gs": 23.6,
+      "tb": 26.2,
+      "flag": true,
+      "tags": {
+        "gpt-oss:120b": {
+          "size_gb": 65.0,
+          "format": "gguf",
+          "kv64k_gb": 2.4
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "gpt-oss-120b (High)"
+    },
+    {
+      "name": "gpt-oss:20b",
+      "total": 21,
+      "active": 3.6,
+      "gs": 15.9,
+      "tb": 13.9,
+      "flag": true,
+      "tags": {
+        "gpt-oss:20b": {
+          "size_gb": 14.0,
+          "format": "gguf",
+          "kv64k_gb": 1.6
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "gpt-oss-20b (High)"
+    },
+    {
+      "name": "nemotron-3-super",
+      "total": 120,
+      "active": 12,
+      "gs": 27.6,
+      "tb": 38.6,
+      "flag": false,
+      "tags": {
+        "nemotron-3-super:120b-a12b-q4_K_M": {
+          "size_gb": 87.0,
+          "format": "gguf",
+          "kv64k_gb": 0.6
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Nemotron 3 Super 120B A12B (Reasoning)"
+    },
+    {
+      "name": "qwen3-coder-next",
+      "total": 80,
+      "active": 3,
+      "gs": 17.3,
+      "tb": 38.2,
+      "flag": true,
+      "tags": {
+        "qwen3-coder-next:q4_K_M": {
+          "size_gb": 52.0,
+          "format": "gguf",
+          "kv64k_gb": 1.6
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Qwen3 Coder Next"
+    },
+    {
+      "name": "devstral-small-2",
+      "total": 24,
+      "active": null,
+      "gs": 13.3,
+      "tb": 29.6,
+      "flag": false,
+      "tags": {
+        "devstral-small-2:24b-instruct-2512-q4_K_M": {
+          "size_gb": 15.0,
+          "format": "gguf",
+          "kv64k_gb": 10.7
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Devstral Small 2"
+    },
+    {
+      "name": "nemotron-cascade-2",
+      "total": 30,
+      "active": 3,
+      "gs": 18.7,
+      "tb": 20.6,
+      "flag": false,
+      "tags": {
+        "nemotron-cascade-2:30b-a3b-q4_K_M": {
+          "size_gb": 24.0,
+          "format": "gguf",
+          "kv64k_gb": 0.4
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Nemotron Cascade 2 30B A3B"
+    },
+    {
+      "name": "glm-4.7-flash",
+      "total": 30,
+      "active": 3,
+      "gs": 15.8,
+      "tb": null,
+      "flag": true,
+      "tags": {
+        "glm-4.7-flash:q4_K_M": {
+          "size_gb": 19.0,
+          "format": "gguf",
+          "kv64k_gb": 5.0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "GLM-4.7-Flash (Reasoning)"
+    },
+    {
+      "name": "mistral-medium-3.5",
+      "total": 128,
+      "active": null,
+      "gs": 26.4,
+      "tb": 50.6,
+      "flag": false,
+      "tags": {
+        "mistral-medium-3.5:128b-q4_K_M": {
+          "size_gb": 80.0,
+          "format": "gguf",
+          "kv64k_gb": 9.0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Mistral Medium 3.5"
+    },
+    {
+      "name": "devstral-2",
+      "total": 123,
+      "active": null,
+      "gs": 16.2,
+      "tb": 30.3,
+      "flag": false,
+      "tags": {
+        "devstral-2:123b-instruct-2512-q4_K_M": {
+          "size_gb": 75.0,
+          "format": "gguf",
+          "kv64k_gb": 9.0
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-15)",
+      "aa_name": "Devstral 2"
+    }
+  ]
+}

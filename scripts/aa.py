@@ -105,12 +105,15 @@ def row(m):
 
 
 def fmt(r):
+    def score(value):
+        return "" if value is None else value
+
     ii = "" if r["ii"] is None else f'{r["ii"]}{"E" if r["ii_est"] else ""}'
     p = r["price"]
     price = "" if p[0] is None else f"${p[0]:g}/{p[1]:g}"
     dep = " (deprecated)" if r["deprecated"] else ""
-    return (f'{r["name"][:52]:52} GS={r["gs"] or "":5} II={ii:6} TB2.1={r["tb21"] or "":5} '
-            f'TBH={r["tbh"] or "":5} GPQA={r["gpqa"] or "":5} {price}{dep}')
+    return (f'{r["name"][:52]:52} GS={score(r["gs"]):5} II={ii:6} TB2.1={score(r["tb21"]):5} '
+            f'TBH={score(r["tbh"]):5} GPQA={score(r["gpqa"]):5} {price}{dep}')
 
 
 def nearest(models, name, n=3):
