@@ -27,6 +27,8 @@ python3 scripts/ranking.py               # deterministic picks from the dated sn
 python3 scripts/report.py --build         # generate STATE and local-models-report.html
 python3 -m unittest discover -s tests -v
 python3 scripts/report.py --check
+scripts/verify_facts.py                  # live sources: tag sizes, KV cache, scores, paid equivalents, issues (~2 min)
+# Then one audit of the changes (git diff origin/main), per the runbook.
 ```
 
 `report.md` is the editable source; `local-models-report.html` is the generated

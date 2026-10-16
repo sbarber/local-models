@@ -110,6 +110,41 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(ranking.bandwidth(machine, 17, tag, "coding"), 100)
 
 
+class FactCheckTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import verify_facts
+        cls.vf = verify_facts
+        cls.source = (ROOT / "report.md").read_text()
+        cls.models = json.loads((ROOT / "tests/fixtures/aa_models.json").read_text())
+
+    def test_reads_every_table_row(self):
+        rows = self.vf.table_rows(self.source)
+        state = self.source.split("[picks]\n", 1)[1].split("\nEND STATE", 1)[0].splitlines()
+        self.assertEqual(len(rows), len(state))
+
+    def test_sizes_from_tags_page(self):
+        self.assertEqual(self.vf.size_gb("17GB"), 17)
+        self.assertAlmostEqual(self.vf.size_gb("366MB"), 0.366)
+
+    def test_wrong_equivalent_is_reported(self):
+        paid = [{"name": "Paid A", "isOpenWeights": False, "modelCreatorName": "OpenAI",
+                 "hle": .2, "critpt": .1, "omniscienceAccuracy": .2, "omniscience": 0, "lcr": .3},
+                {"name": "Paid B", "isOpenWeights": False, "modelCreatorName": "OpenAI",
+                 "hle": .9, "critpt": .9, "omniscienceAccuracy": .9, "omniscience": 80, "lcr": .9}]
+        score = aa.row(paid[0])["gs"]
+        self.assertEqual(self.vf.check_equivalents([("x:y", "GS", score, "Paid A, low confidence")], paid), [])
+        self.assertTrue(self.vf.check_equivalents([("x:y", "GS", score, "Paid B")], paid))
+
+    def test_closed_issue_must_be_described_as_closed(self):
+        line = "- watch [\\#1](https://github.com/ollama/ollama/issues/1) on Macs\n"
+        self.assertTrue(self.vf.issue_line_problems(line, {"1": "closed"}))
+        fixed = "- [\\#1](https://github.com/ollama/ollama/issues/1) was fixed in 0.40.4\n"
+        self.assertEqual(self.vf.issue_line_problems(fixed, {"1": "closed"}), [])
+        watched = "<!-- STATE\nopen_watched_issues: 2\nEND STATE -->"
+        self.assertTrue(self.vf.issue_line_problems(watched, {"2": "closed"}))
+
+
 class ReportTests(unittest.TestCase):
     def test_existing_source_matches_html_and_state_picks(self):
         source = (ROOT / "report.md").read_text()

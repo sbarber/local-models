@@ -72,31 +72,31 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
       ```
      Done when: the page is built, tests pass, `scripts/report.py --check` passes (ranks, table rows, citations, STATE and HTML), and `scripts/check-changes.sh` parses it. A live upstream change may already warrant another Refresh; do not mask it by updating the saved state without doing the research.
 
-11. **Verify.** Dispatch a fresh subagent (it must not see your reasoning, only the files) with the **Audit brief** below. Fix every error it reports, then re-dispatch until it returns zero errors.
-    Done when: an audit pass returns zero errors.
+11. **Verify.** Scripts first, then one audit of what changed, then a re-check of the fixes only.
+    1. Run `scripts/verify_facts.py` (about 2 minutes: tag sizes, 64k KV cache, AA scores, Equivalent paid models, issue states) and `python3 scripts/report.py --check` (ranks, speeds, table rows, citations, STATE). Fix every FAIL before the audit; the audit doesn't redo these.
+    2. Save the scope: `git diff origin/main -- report.md candidates.json machines.yaml > <temp>/audit-diff.txt` (origin/main is the published report).
+    3. Dispatch **one** fresh subagent (it must not see your reasoning, only the files) with the **Audit brief** below and the path to the diff.
+    4. Fix every error it reports. Then re-check only the fixed claims yourself against their sources, rerun step 1, and stop. Don't dispatch a second full audit; if the fixes were large (a new tier, a rule change), dispatch the brief again with a diff of just the fixes.
+    Done when: both scripts pass, and every audit finding is fixed and re-checked.
 
 12. **Tell the user the Diff** in chat, plus the number of errors the audit caught and fixed: Stack versions, machines added, picks added/dropped/moved per tier and use case, score changes over 3 points, config changes, watched issues closed. Compare every old STATE pick with the new ones. To publish after verification, push to `main`; the GitHub Pages workflow checks and deploys the report, and the site check verifies the live URL.
     Done when: every old and new STATE pick is accounted for.
 
 ## Audit brief
 
-Paste this to the audit subagent, verbatim:
+Paste this to the audit subagent, verbatim, with the diff path filled in:
 
-> Audit `local-models-report.html` in this directory (the rendered page, plus the hidden STATE comment at the end). Research only, edit nothing. Treat every factual claim as unverified until you check it against its source. Check every one:
-> 1. Every tier heading's machine list against `machines.yaml`: each chip × memory pairing listed must exist there, and every `machines.yaml` row must appear in exactly one tier.
-> 2. Every hardware fact (memory options, bandwidth, GPU, VRAM) against the source URL in `machines.yaml` or the report's Sources table.
-> 3. Every Ollama tag: it exists on `https://ollama.com/library/<model>/tags`, and its size matches (`scripts/ollama_library.py tags <model>`).
-> 4. Every score (GS, TB) against `scripts/aa.py show "<name>"`, including the "E" marker and the effort row.
-> 5. Every Equivalent paid model against `scripts/aa.py nearest "<AA name>"`.
-> 6. Every rank against the Ranking rules, and every Mac tag (MLX or GGUF) against the Mac tag choice rules, in `.opencode/skills/refresh-local-models/SKILL.md`.
-> 7. Every Est. tok/s against the Speed estimate formula there.
-> 8. Every issue number and its state against `https://api.github.com/repos/ollama/ollama/issues/<n>`.
-> 9. Every config claim against the page cited for it.
-> 10. The STATE `[picks]` lines match the tier tables row for row.
-> 11. Every number written in prose (bullets) matches the tables or a cited source.
-> 12. No reader-visible text mentions this project's files, scripts or process; all such content is inside the STATE comment.
+> Audit the changes in `local-models-report.html` in this directory. Research only, edit nothing. The changes are in `<diff path>`: a diff of `report.md` (the report's source), `candidates.json` (model data the ranks are computed from) and `machines.yaml` (the fleet) against the published report.
+> Scripts already verified these, so don't redo them: tag existence and sizes, 64k KV-cache sizes, AA scores, Equivalent paid models, issue open/closed states (`scripts/verify_facts.py`), and ranks, speeds, STATE and citation numbering (`scripts/report.py --check`).
+> Check every changed or added claim against its source, treating each as unverified:
+> 1. Changed `candidates.json` fields the scripts don't cover: active/total parameters, tool support (the `tools` badge, a tool-handling chat template, or the registry config's `parser`), ⚠ flags (Ranking rule 3 in `.opencode/skills/refresh-local-models/SKILL.md`), vendor scores and AA row choice (the effort row rule there).
+> 2. Changed `machines.yaml` rows and tier headings: each chip × memory pairing and hardware fact against its source URL.
+> 3. Every changed or added sentence in `report.md`: config claims against the page cited for them, issue descriptions against the issue, numbers against the tables or a cited source.
+> 4. Rule changes in the diff: do the report's explanations still match the rules in the SKILL.md?
+> 5. No reader-visible text mentions this project's files, scripts or process; all such content is inside the STATE comment.
+> Unchanged text was audited before; report a problem in it only if you happen to see a clear error.
 > Write any throwaway files only inside a new subdirectory of the temp directory.
-> Return a list: location in the report, the claim, what the source says, the source. Return "0 errors" only if every claim in the report was checked.
+> Return a list: location in the report, the claim, what the source says, the source. Return "0 errors" only if every changed claim was checked.
 
 ## Fit rules (estimates)
 

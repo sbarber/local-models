@@ -116,30 +116,36 @@ def fmt(r):
             f'TBH={score(r["tbh"]):5} GPQA={score(r["gpqa"]):5} {price}{dep}')
 
 
+def nearest_paid(models, key, score):
+    """Paid models ordered as Equivalent paid models for a score ("gs" or "tb21")."""
+    paid = [row(m) for m in models
+            if not m.get("isOpenWeights") and m.get("modelCreatorName") in PAID_CREATORS]
+    candidates = [p for p in paid if p[key] is not None]
+
+    # Within 3 points: prefer current over deprecated, then closest.
+    # Beyond 3 points: closest wins outright.
+    def rank(p):
+        d = abs(p[key] - score)
+        if d <= 3:
+            return (0, bool(p["deprecated"]), d)
+        return (1, False, d)
+
+    return sorted(candidates, key=rank)
+
+
 def nearest(models, name, n=3):
     target = [row(m) for m in models if m["name"].lower() == name.lower()]
     if not target:
         sys.exit(f"No exact AA name match for {name!r}. Use `show` to find the exact name.")
     t = target[0]
-    paid = [row(m) for m in models
-            if not m.get("isOpenWeights") and m.get("modelCreatorName") in PAID_CREATORS]
     print(fmt(t))
     for key, label in (("tb21", "Agentic coding: Terminal-Bench 2.1"),
                        ("gs", "General use: General score")):
         if t[key] is None:
             print(f"  {label}: no score for this model")
             continue
-        cands = [p for p in paid if p[key] is not None]
-        # Within 3 points: prefer current over deprecated, then closest.
-        # Beyond 3 points: closest wins outright.
-        def rank(p):
-            d = abs(p[key] - t[key])
-            if d <= 3:
-                return (0, False, bool(p["deprecated"]), d)
-            return (1, False, False, d)
-        cands.sort(key=rank)
         print(f"  {label} = {t[key]}; nearest paid:")
-        for p in cands[:n]:
+        for p in nearest_paid(models, key, t[key])[:n]:
             print("    " + fmt(p))
 
 
