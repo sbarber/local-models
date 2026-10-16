@@ -37,7 +37,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
 6. **Scores.** `scripts/aa.py fetch`, then `scripts/aa.py show "<name>"`.
    - General: General score (GS), printed as `GS=` by `scripts/aa.py show` (`general_score` in `scripts/aa.py`). It's a weighted mean of the Intelligence Index's non-agentic, non-coding evals: HLE 10, CritPt 5, Omniscience penalty score 15, AA-LCR 5 (`GS_WEIGHTS`). The penalty score is +1 correct, 0 abstain, −0.5 wrong (`OMNI_PENALTY`; wrong share = `omniscienceAccuracy − omniscience/100`), rescaled to 0-1. Don't switch back to AA's accuracy + non-hallucination split: non-hallucination ignores correct answers, so heavy refusers top the small tiers. CritPt is halved because local models score near zero on it. A model missing any input has no GS and isn't ranked for General; there is no vendor fallback for GS. Note the Index version (`scripts/aa.py fingerprint`); if AA changes the Index's eval list, re-check `GS_WEIGHTS` against https://artificialanalysis.ai/methodology/intelligence-benchmarking and say so in the Diff. When a small-tier pick wins on few wrong answers rather than many right ones, say so in the tier notes.
    - Coding: the AA Terminal-Bench column with the best coverage of both candidates and paid models (currently `terminalBench21`). If it changes, say so in the Diff.
-   - Effort row: use the row matching Ollama's default behaviour: `Medium` if AA has one, else `Reasoning`/`High`, else the single row.
+   - Effort row: use the row matching Ollama's default thinking for local chat requests, read from `server/model_thinking.go` (`Model.Thinking`), not the renderer's own default: thinking is on by default for local renderers that support it, and Qwen 3.8 runs at `medium`. So: `Medium` if AA has one, else `Reasoning`/`High`, else the single row.
    - No AA score: use the vendor's model card score on the same benchmark, flagged `(vendor)`.
    Done when: every candidate has a score or is marked "no score".
 
@@ -102,10 +102,12 @@ Paste this to the audit subagent, verbatim:
 
 Sizes: a GGUF tag's size is the rounded figure on its tags page (`scripts/ollama_library.py tags`); for an MLX tag use the sum of its manifest's layer sizes to one decimal (the tags page only shows a rounded figure, and the script prints `?`). Apply every rule (fit, speed, rank) to these figures, not to exact byte counts.
 
-- Mac up to 36 GB: weights <= 60% of unified memory (macOS GPU cap + 64k context + OS).
+Agentic coding counts 64k context everywhere (OpenCode's minimum); General use is fit on weights on Macs up to 36 GB and on Dells, and must still leave room for Ollama's default 4k context. For each General pick that can't fit 64k, the report gives the largest standard `num_ctx` that fits (`max_context` in `scripts/ranking.py`). The context budget assumes the Mac GPU limit is raised (the user's call, 2026-10-16), so the macOS default cap is not a fit constraint.
+
+- Mac up to 36 GB: General: weights <= 60% of unified memory. Coding: weights + KV cache at 64k <= 80% of unified memory (the raised GPU limit; the report's examples are 26000 MB on 32 GB and 29000 MB on 36 GB).
 - Mac 48 GB and up: weights + KV cache at 64k context <= RAM - 16 GB (macOS and apps); above macOS's default GPU cap (~2/3 of RAM up to 36 GB, ~3/4 above; unsourced) this needs `iogpu.wired_limit_mb` raised (Report config section 3). KV cache = f16 K+V for the attention layers only, computed from the GGUF header (`block_count`, `attention.head_count_kv` (array → per layer, 0 = no attention), `key_length`/`value_length`, `full_attention_interval`, `sliding_window` + pattern: sliding layers hold only the window). An MLX tag uses the KV cache of the same model's GGUF header (same architecture). Both engines also keep a prompt cache of up to 8 GiB (llama-server's default `--cache-ram 8192`, which Ollama leaves set for non-decision models in `llm/llama_server.go`; MLX's `maxPagedOutBytes` in `mlxrunner/prefix_cache.go`); the Fit rules count it for neither, so it never favours one format. Check the advised `num_ctx` (Report config section 2) the same way.
-- Windows discrete GPU, model in VRAM: weights <= VRAM - 3 GB. A model too big for that runs split with system RAM (next rule).
-- Windows, MoE split GPU/system RAM or integrated GPU: weights <= RAM - 10 GB.
+- Windows discrete GPU, model in VRAM: weights <= VRAM - 3 GB (coding also: weights + 64k KV <= VRAM). A model too big for that runs split with system RAM (next rule).
+- Windows, MoE split GPU/system RAM or integrated GPU: weights <= RAM - 10 GB (coding: weights + 64k KV <= RAM - 10 GB).
 - Agentic coding needs 64k context (Ollama's OpenCode minimum: https://docs.ollama.com/integrations/opencode).
 
 ## Mac tag choice

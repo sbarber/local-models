@@ -12,12 +12,12 @@
         "qwen3.5:0.8b-q8_0": {
           "size_gb": 1.0,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.81
         },
         "qwen3.5:0.8b-nvfp4": {
           "size_gb": 1.01,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.81
         }
       },
       "tag_tb": {},
@@ -35,12 +35,12 @@
         "qwen3.5:2b-q4_K_M": {
           "size_gb": 1.9,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.81
         },
         "qwen3.5:2b-nvfp4": {
           "size_gb": 2.47,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.81
         }
       },
       "tag_tb": {},
@@ -58,12 +58,12 @@
         "qwen3.5:4b-q4_K_M": {
           "size_gb": 3.3,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         },
         "qwen3.5:4b-nvfp4": {
           "size_gb": 3.97,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         }
       },
       "tag_tb": {},
@@ -81,12 +81,12 @@
         "qwen3.5:9b-q4_K_M": {
           "size_gb": 6.6,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         },
         "qwen3.5:9b-nvfp4": {
           "size_gb": 7.15,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         }
       },
       "tag_tb": {},
@@ -238,7 +238,7 @@
     },
     {
       "name": "qwen3.8-flash-next",
-      "total": 125,
+      "total": 176,
       "active": 6,
       "gs": 40.2,
       "tb": 86.1,
@@ -270,12 +270,12 @@
         "gemma4:e2b-it-qat": {
           "size_gb": 4.3,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.97
         },
         "gemma4:e2b-nvfp4": {
           "size_gb": 7.48,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.97
         }
       },
       "tag_tb": {},
@@ -293,12 +293,12 @@
         "gemma4:e4b-it-qat": {
           "size_gb": 6.1,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 1.95
         },
         "gemma4:e4b-nvfp4": {
           "size_gb": 9.46,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 1.95
         }
       },
       "tag_tb": {},
@@ -316,12 +316,12 @@
         "gemma4:12b-it-qat": {
           "size_gb": 7.2,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 1.74
         },
         "gemma4:12b-nvfp4": {
           "size_gb": 7.71,
           "format": "mlx",
-          "kv64k_gb": 0
+          "kv64k_gb": 1.74
         }
       },
       "tag_tb": {},
@@ -479,7 +479,7 @@
         "granite4.2:3b-q4_K_M": {
           "size_gb": 2.2,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 5.37
         }
       },
       "tag_tb": {},
@@ -497,7 +497,7 @@
         "granite4.2:8b-q4_K_M": {
           "size_gb": 5.3,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 10.74
         }
       },
       "tag_tb": {},
@@ -533,7 +533,7 @@
         "granite4:350m-h": {
           "size_gb": 0.366,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.27
         }
       },
       "tag_tb": {},
@@ -551,7 +551,7 @@
         "granite4:1b-h-q8_0": {
           "size_gb": 1.6,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.54
         }
       },
       "tag_tb": {},
@@ -569,7 +569,7 @@
         "granite4:micro": {
           "size_gb": 2.1,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 5.37
         }
       },
       "tag_tb": {},
@@ -587,7 +587,7 @@
         "qwen3:4b-instruct-2507-q4_K_M": {
           "size_gb": 2.5,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 9.66
         }
       },
       "tag_tb": {},
@@ -605,7 +605,7 @@
         "lfm2.5:8b-a1b-q4_K_M": {
           "size_gb": 5.2,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 0.81
         }
       },
       "tag_tb": {},
@@ -623,7 +623,7 @@
         "qwen3:4b-thinking-2507-q4_K_M": {
           "size_gb": 2.5,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 9.66
         }
       },
       "tag_tb": {},
@@ -659,7 +659,7 @@
         "qwen3-next:80b-a3b-thinking-q4_K_M": {
           "size_gb": 50.0,
           "format": "gguf",
-          "kv64k_gb": 1.6
+          "kv64k_gb": 1.61
         }
       },
       "tag_tb": {},
@@ -677,7 +677,7 @@
         "ornith:9b-q4_K_M": {
           "size_gb": 5.6,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         }
       },
       "tag_tb": {},
@@ -713,7 +713,7 @@
         "ornith-1.5:9b": {
           "size_gb": 6.6,
           "format": "gguf",
-          "kv64k_gb": 0
+          "kv64k_gb": 2.15
         }
       },
       "tag_tb": {},
@@ -749,7 +749,7 @@
         "gpt-oss:120b": {
           "size_gb": 65.0,
           "format": "gguf",
-          "kv64k_gb": 2.4
+          "kv64k_gb": 4.83
         }
       },
       "tag_tb": {},
@@ -767,7 +767,7 @@
         "gpt-oss:20b": {
           "size_gb": 14.0,
           "format": "gguf",
-          "kv64k_gb": 1.6
+          "kv64k_gb": 3.22
         }
       },
       "tag_tb": {},
@@ -785,7 +785,7 @@
         "nemotron-3-super:120b-a12b-q4_K_M": {
           "size_gb": 87.0,
           "format": "gguf",
-          "kv64k_gb": 0.6
+          "kv64k_gb": 0.54
         }
       },
       "tag_tb": {},
@@ -803,7 +803,7 @@
         "qwen3-coder-next:q4_K_M": {
           "size_gb": 52.0,
           "format": "gguf",
-          "kv64k_gb": 1.6
+          "kv64k_gb": 1.61
         }
       },
       "tag_tb": {},
@@ -821,7 +821,7 @@
         "devstral-small-2:24b-instruct-2512-q4_K_M": {
           "size_gb": 15.0,
           "format": "gguf",
-          "kv64k_gb": 10.7
+          "kv64k_gb": 10.74
         }
       },
       "tag_tb": {},
@@ -857,7 +857,7 @@
         "glm-4.7-flash:q4_K_M": {
           "size_gb": 19.0,
           "format": "gguf",
-          "kv64k_gb": 5.0
+          "kv64k_gb": 63.08
         }
       },
       "tag_tb": {},
@@ -875,7 +875,7 @@
         "mistral-medium-3.5:128b-q4_K_M": {
           "size_gb": 80.0,
           "format": "gguf",
-          "kv64k_gb": 9.0
+          "kv64k_gb": 23.62
         }
       },
       "tag_tb": {},
@@ -893,12 +893,14 @@
         "devstral-2:123b-instruct-2512-q4_K_M": {
           "size_gb": 75.0,
           "format": "gguf",
-          "kv64k_gb": 9.0
+          "kv64k_gb": 23.62
         }
       },
       "tag_tb": {},
       "score_source": "AA (2026-10-15)",
       "aa_name": "Devstral 2"
     }
-  ]
+  ],
+  "kv_note": "kv64k_gb: f16 K+V at 65536 tokens from the GGUF header of the model's GGUF tag (attention layers only; sliding layers hold the window). MLX tags use the same value. glm-4.7-flash uses MLA, so its figure overstates. qwen3-next has no full_attention_interval key; llama.cpp defaults it to 4 (src/models/qwen3next.cpp), so 12 of 48 layers hold context.",
+  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active."
 }

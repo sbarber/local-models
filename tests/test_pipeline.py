@@ -78,12 +78,45 @@ class RankingTests(unittest.TestCase):
         self.assertTrue(all(row["tag"] != "sample:5" for row in ranking.rank(fleet, models, "Mac 16 GB", "coding")))
 
 
+class ContextTests(unittest.TestCase):
+    MODEL = {"name": "dense", "total": 4, "active": None, "gs": 20.0, "tb": 30.0,
+             "score_source": "AA", "tag_tb": {}, "flag": False,
+             "tags": {"dense:q4": {"format": "gguf", "size_gb": 2.5, "kv64k_gb": 9.66}}}
+
+    def fleet(self, memory):
+        machines = [{"name": "mac", "memory_gb": [memory], "bandwidth_gbs": 400,
+                     "tiers": {memory: "Mac test"}}]
+        return {"tiers": {"Mac test": {}}, "machines": machines}
+
+    def test_coding_counts_64k_context_with_raised_mac_limit(self):
+        # 2.5 GB weights fit 60% of 8 GB, but weights + 64k context (12.2 GB) don't fit 80%.
+        fleet = self.fleet(8)
+        self.assertTrue(ranking.rank(fleet, [self.MODEL], "Mac test", "general"))
+        self.assertFalse(ranking.rank(fleet, [self.MODEL], "Mac test", "coding"))
+        self.assertTrue(ranking.rank(self.fleet(16), [self.MODEL], "Mac test", "coding"))
+
+    def test_general_reports_largest_context_that_fits(self):
+        row = ranking.rank(self.fleet(8), [self.MODEL], "Mac test", "general")[0]
+        self.assertEqual(row["max_context"], 16384)
+
+    def test_general_needs_room_for_default_context(self):
+        model = {**self.MODEL, "tags": {"dense:q4": {"format": "gguf", "size_gb": 4.8, "kv64k_gb": 60}}}
+        self.assertFalse(ranking.rank(self.fleet(8), [model], "Mac test", "general"))
+
+    def test_vram_speed_requires_context_in_vram_for_coding(self):
+        machine = {"gpu_vram_gb": 24, "gpu_bandwidth_gbs": 896, "bandwidth_gbs": 100}
+        tag = {"kv64k_gb": 8}
+        self.assertEqual(ranking.bandwidth(machine, 17, tag, "general"), 896)
+        self.assertEqual(ranking.bandwidth(machine, 17, tag, "coding"), 100)
+
+
 class ReportTests(unittest.TestCase):
-    def test_existing_source_matches_html_and_all_91_picks(self):
+    def test_existing_source_matches_html_and_state_picks(self):
         source = (ROOT / "report.md").read_text()
         self.assertEqual(report.validate(source), source)
         self.assertEqual(report.render(source), (ROOT / "local-models-report.html").read_text())
-        self.assertEqual(sum(len(use) for tier in report.tables(source).values() for use in tier.values()), 91)
+        state_picks = source.split("[picks]\n", 1)[1].split("\nEND STATE", 1)[0].splitlines()
+        self.assertEqual(sum(len(use) for tier in report.tables(source).values() for use in tier.values()), len(state_picks))
 
     def test_rank_error_is_caught(self):
         source = (ROOT / "report.md").read_text()

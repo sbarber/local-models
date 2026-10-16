@@ -30,9 +30,20 @@ def machines_for_tier(fleet, tier):
     ]
 
 
-def bandwidth(machine, size, high=False):
+CONTEXT = 65536  # OpenCode's minimum, per Ollama's OpenCode integration docs
+MIN_GENERAL_CONTEXT = 4096  # Ollama's default context below 24 GiB of GPU memory
+MAC_RAISED_LIMIT = 0.8  # raised GPU limit on Macs up to 36 GB; the report's 32/36 GB examples are 26000/29000 MB
+
+
+def in_vram(machine, size, tag, use):
     vram = machine.get("gpu_vram_gb", 0)
-    if vram and size <= vram - 3:
+    if not vram or size > vram - 3:
+        return False
+    return use != "coding" or size + tag["kv64k_gb"] <= vram
+
+
+def bandwidth(machine, size, tag, use, high=False):
+    if in_vram(machine, size, tag, use):
         return machine["gpu_bandwidth_gbs"]
     ram = machine["bandwidth_gbs"]
     return (max(ram) if high else min(ram)) if isinstance(ram, list) else ram
@@ -48,13 +59,37 @@ def speed(model, size, bw):
     return 0.6 * bw / read_gb
 
 
-def fits(tier, machine, memory, tag, size):
+def context_budget(tier, machine, memory, tag, size):
+    """Memory for weights + context, assuming the Mac GPU limit is raised."""
     if tier.startswith("Mac"):
-        if memory <= 36:
-            return size <= memory * 0.6
-        return size + tag["kv64k_gb"] <= memory - 16
+        return memory * MAC_RAISED_LIMIT if memory <= 36 else memory - 16
+    vram = machine.get("gpu_vram_gb", 0)
+    if vram and size <= vram - 3 and size + tag["kv64k_gb"] <= vram:
+        return vram
+    return memory - 10
+
+
+def fits(tier, machine, memory, tag, size, use="general"):
+    # Coding needs 64k context, so it always counts context memory. General use
+    # on Macs up to 36 GB and on Dells is fit on weights; max_context() then
+    # says how much context those picks have room for.
+    if use == "coding" or (tier.startswith("Mac") and memory > 36):
+        return size + tag["kv64k_gb"] <= context_budget(tier, machine, memory, tag, size)
+    if tier.startswith("Mac"):
+        return size <= memory * 0.6
     vram = machine.get("gpu_vram_gb", 0)
     return (vram and size <= vram - 3) or size <= memory - 10
+
+
+def max_context(tier, machines, tag, size):
+    """Largest standard num_ctx (<= 64k) whose context fits every machine."""
+    if not tag["kv64k_gb"]:
+        return CONTEXT
+    room = min(context_budget(tier, m, mem, tag, size) - size for m, mem in machines)
+    for ctx in (65536, 32768, 16384, 8192, 4096):
+        if tag["kv64k_gb"] * ctx / CONTEXT <= room:
+            return ctx
+    return 0
 
 
 def choose_tag(model, tier, machines, use):
@@ -64,12 +99,12 @@ def choose_tag(model, tier, machines, use):
         if tag["format"] == "mlx" and not mac:
             continue
         size = tag_size(tag)
-        if not all(fits(tier, machine, memory, tag, size) for machine, memory in machines):
+        if not all(fits(tier, machine, memory, tag, size, use) for machine, memory in machines):
             continue
-        speeds = [speed(model, size, bandwidth(machine, size)) for machine, _ in machines]
+        speeds = [speed(model, size, bandwidth(machine, size, tag, use)) for machine, _ in machines]
         if max(speeds) < 15:
             continue
-        maximum = max(speed(model, size, bandwidth(machine, size, high=True)) for machine, _ in machines)
+        maximum = max(speed(model, size, bandwidth(machine, size, tag, use, high=True)) for machine, _ in machines)
         options.append((name, tag, size, speeds, maximum))
     if not options:
         return None
@@ -105,6 +140,8 @@ def rank(fleet, candidates, tier, use):
         if result is None:
             continue
         (tag, data, size, speeds, maximum), fastest_speed = result
+        if use == "general" and max_context(tier, machines, data, size) < MIN_GENERAL_CONTEXT:
+            continue
         score = model["gs"] if use == "general" else model["tag_tb"].get(tag, model["tb"])
         if score is None or (use == "coding" and score < 20):
             continue
@@ -113,6 +150,7 @@ def rank(fleet, candidates, tier, use):
             "machine_speeds": speeds, "rank_speed": fastest_speed,
             "vendor": use == "coding" and (model["score_source"] == "vendor" or tag in model["tag_tb"]),
             "flag": use == "coding" and model["flag"],
+            "max_context": max_context(tier, machines, data, size),
         })
     rows.sort(key=lambda row: -row["score"])
     changed = True

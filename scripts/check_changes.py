@@ -27,8 +27,8 @@ for line in m.group(1).splitlines():
     elif section == "picks" and line:
         picks.append([c.strip() for c in line.split("|")])
 
-def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
+def get(url, accept="application/json"):
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": accept})
     with urllib.request.urlopen(req, timeout=60) as r:
         return r.read().decode("utf-8", "ignore")
 
@@ -98,7 +98,7 @@ check("Watched issues", issues)
 
 # 6. Hardware: Apple MacBook Pro list
 def apple():
-    page = get("https://support.apple.com/en-us/docs/mac")
+    page = get("https://support.apple.com/en-us/docs/mac", accept="text/html")  # JSON Accept returns 404
     names = re.findall(r">\s*(MacBook Pro \([^<]{3,60}\))\s*<", page)
     if not names:
         raise RuntimeError("no MacBook Pro entries parsed")

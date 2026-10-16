@@ -35,7 +35,7 @@ rules:
 
 # How a Machine is placed in a Hardware tier. Mirrors the Runbook.
 tier_rules:
-  mac: "Unified memory. Up to 36 GB: weights <= 60% of memory (leaves room for macOS, the GPU memory cap and 64k context). 48 GB and up: weights + KV cache at 64k <= memory - 16 GB (needs iogpu.wired_limit_mb raised when above the default GPU cap)."
+  mac: "Unified memory. Up to 36 GB: General weights <= 60% of memory; coding weights + KV cache at 64k <= 80% of memory (GPU limit raised). 48 GB and up: weights + KV cache at 64k <= memory - 16 GB (needs iogpu.wired_limit_mb raised when above the default GPU cap)."
   windows_dgpu: "If a dense model fits the GPU: weights <= VRAM - 3 GB. Otherwise MoE models are split GPU/CPU and the tier is set by system RAM."
   windows_igpu: "Shared memory, ~100-140 GB/s. Weights <= RAM - 10 GB; only MoE models reach 15 tok/s."
   grouping: "Macs by memory, Windows by GPU/RAM class. A Machine with bandwidth far below the rest of its tier (base M1, ~67 GB/s vs 100+) gets its own tier."

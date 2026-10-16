@@ -22,6 +22,35 @@ TIER = re.compile(r"(?m)^### .*\{#(tier-[\w-]+)\}\n")
 ROW = re.compile(r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(GS|TB) ([\d.]+)(.*?)\|\s*([^|]+)\|", re.M)
 
 
+NAMED_CITATION = re.compile(r"\[\\\[(@?\w+)\\\]\]\(#ref-(@?\w+)\)")
+NAMED_SOURCE = re.compile(r'<li id="ref-(@?\w+)">.*?</li>', re.S)
+
+
+def renumber(source):
+    """Number sources by first citation; new ones may use ref-@name placeholders."""
+    split = "## Sources {#sources}"
+    body, refs = source.split(split, 1)
+    items = {m.group(1): m.group(0) for m in NAMED_SOURCE.finditer(refs)}
+    order = []
+    for label, target in NAMED_CITATION.findall(body):
+        if label != target:
+            raise ValueError(f"Citation label {label} links to ref-{target}")
+        if target not in items:
+            raise ValueError(f"Citation {target} has no source")
+        if target not in order:
+            order.append(target)
+    unused = [key for key in items if key not in order]
+    if unused:
+        raise ValueError(f"Uncited sources: {unused}")
+    number = {key: str(i) for i, key in enumerate(order, 1)}
+    body = NAMED_CITATION.sub(lambda m: f"[\\[{number[m.group(1)]}\\]](#ref-{number[m.group(2)]})", body)
+    start, end = refs.index('<ol class="refs">'), refs.index("</ol>") + len("</ol>")
+    listing = '<ol class="refs">\n' + "\n".join(
+        items[key].replace(f'id="ref-{key}"', f'id="ref-{number[key]}"', 1) for key in order
+    ) + "\n</ol>"
+    return body + split + refs[:start] + listing + refs[end:]
+
+
 def tables(source):
     """Read rank/score/speed rows from the human-authored Markdown tables."""
     sections = {}
@@ -121,7 +150,7 @@ def main():
     args = parser.parse_args()
     path = ROOT / "report.md"
     source = path.read_text()
-    corrected = validate(source)
+    corrected = validate(renumber(source))
     rendered = render(corrected)
     output = ROOT / "local-models-report.html"
     if args.check:

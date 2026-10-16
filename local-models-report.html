@@ -207,8 +207,8 @@
 </head>
 <body>
 <h1 id="local-models-report">Local Models Report</h1>
-<p><strong>Updated:</strong> 2026-10-15 · <strong>Stack:</strong>
-OpenCode 2.0.30 <a href="#ref-1">[1]</a> + Ollama 0.40.5 <a
+<p><strong>Updated:</strong> 2026-10-16 · <strong>Stack:</strong>
+OpenCode 2.0.31 <a href="#ref-1">[1]</a> + Ollama 0.40.5 <a
 href="#ref-2">[2]</a></p>
 <nav class="toc">
 <strong>Contents</strong>
@@ -255,7 +255,7 @@ and is estimated faster; when the two are within 10%, the MLX build is
 listed, because Ollama reports its NVFP4 builds about 20% faster than
 <code>q4_K_M</code> <a href="#ref-5">[5]</a> (<a href="#config-tags">tag
 choice</a>).</li>
-<li><strong>25 of the 40 picks in the Mac tiers from 16-24 GB up are MLX
+<li><strong>24 of the 40 picks in the Mac tiers from 16-24 GB up are MLX
 builds.</strong> GGUF is listed where its file is clearly smaller
 (<code>qwen3.5:4b-q4_K_M</code>), where a model has no MLX build
 (Granite, Ornith, <code>qwen3.5:122b-a10b</code>), for
@@ -273,6 +273,14 @@ memory cap (estimate; <a href="#config-gpu-limit">section 3</a>). Coding
 uses <code>120b-a12b-q4_K_M</code>, because NVIDIA reports the NVFP4
 build at TB 60.8 against 66.7 for the full model <a
 href="#ref-6">[6]</a>.</li>
+<li><strong>Coding picks count the memory for 64k of context, OpenCode's
+minimum.</strong> On Macs up to 36 GB they assume you raise macOS's GPU
+memory limit to about 80% of RAM (<a href="#config-gpu-limit">section
+3</a>). With that, the Ornith 35B MoE models fit the 32-36 GB coding
+table. On Windows 32 GB, <code>qwen3.5:35b-a3b</code> (General) and
+<code>ornith:35b</code> (coding) aren't listed: their context doesn't
+fit beside their weights. A few General picks on small machines need a
+context below 64k (<a href="#config-context">section 2</a>).</li>
 <li><strong>Use Ollama 0.40.5 or later.</strong> It adds Nemotron 3.5
 support to its bundled llama.cpp and updates MLX; 0.40.4 fixed two MLX
 bugs that affected agent use <a href="#ref-2">[2]</a>.</li>
@@ -295,7 +303,7 @@ says "I don't know" instead.</li>
 reasoning</strong> (AA-LCR 63.0% vs 24.3%).</li>
 </ul></li>
 <li><strong>For coding, <code>ornith-1.5:35b</code> ranks #1 on Macs
-with 48-96 GB and on the Pro Max 16 Plus, on its vendor's own score
+with 32-96 GB and on the Pro Max 16 Plus, on its vendor's own score
 only</strong> (TB 67.8) <a href="#ref-9">[9]</a>. On Mac 128 GB,
 <code>qwen3.8-flash-next:125b-a6b-nvfp4</code> leads both use cases (GS
 40.2, TB 86.1).</li>
@@ -357,6 +365,10 @@ so 2.1 is the column that covers both sides <a
 href="#ref-8">[8]</a>.</li>
 <li>Vendor-reported scores are used only when AA has none, and are
 flagged <strong>(vendor)</strong>.</li>
+<li><strong>Effort rows:</strong> where AA scores a model at several
+reasoning settings, the report uses the one Ollama runs by default:
+Medium for Qwen 3.8, and thinking on for Gemma 4 and the other thinking
+models <a href="#ref-16">[16]</a>.</li>
 </ul></li>
 <li><strong>Equivalent paid model</strong>: a paid model whose score on
 the same benchmark is close. Among paid models within 3 points, current
@@ -376,15 +388,22 @@ pick down. The Model reference lists the other build of each model.</li>
 <li><strong>Ranking rules:</strong>
 <ul>
 <li>Every pick must support tool calls in Ollama, fit on every machine
-in the tier with 64k context, and reach about 15 tok/s on at least one
-of them.</li>
+in the tier, and reach about 15 tok/s on at least one of them.</li>
+<li><strong>Context memory:</strong> coding picks must fit their weights
+plus 64k of context, OpenCode's minimum <a href="#ref-11">[11]</a>.
+General picks on Macs up to 36 GB and on the Dells are fit on their
+weights and must leave room for at least Ollama's default 4k context <a
+href="#ref-10">[10]</a>; where 64k won't fit, <a
+href="#config-context">section 2</a> gives the largest context that
+does.</li>
 <li>Tool support means Ollama reports it: either the model has the
 <code>tools</code> badge, or its model file carries a chat template that
 handles tools, which Ollama 0.40 also counts as tool support and runs
-through llama.cpp's own template code <a href="#ref-16">[16]</a>. Ornith
-1.5 and Granite 4.2 qualify the second way. MLX builds get tool support
-from their Ollama tool-call parser, the same one as their GGUF build <a
-href="#ref-16">[16]</a><a href="#ref-17">[17]</a>.</li>
+through llama.cpp's own template code <a href="#ref-17">[17]</a><a
+href="#ref-18">[18]</a>. Ornith 1.5 and Granite 4.2 qualify the second
+way. MLX builds get tool support from their Ollama tool-call parser, the
+same one as their GGUF build <a href="#ref-17">[17]</a><a
+href="#ref-19">[19]</a>.</li>
 <li>Coding picks need TB ≥ 20.</li>
 <li><strong>⚠ marks a coding pick with an open tool-call bug
 report.</strong> The report says tool calls break or go missing in
@@ -398,8 +417,9 @@ flagged pick, run a short OpenCode session that reads, edits and runs
 code, and watch for failed or missing tool calls.</li>
 <li>A model is excluded from coding only when an Ollama maintainer
 confirms such a bug: they reproduce or acknowledge it, or link their own
-fix. As of 2026-10-15 none of the open reports against a pick's parser
-is confirmed.</li>
+fix. As of 2026-10-16 no Ollama member or collaborator has confirmed any
+open report against a pick's parser. One Gemma 4 report was reproduced
+by an Ollama contributor (see the Mac 32-36 GB notes).</li>
 <li>When two models are within 3 points, the one that's faster on the
 tier's slowest machine ranks higher.</li>
 <li>Each tier keeps at least one pick that's fast on every machine in
@@ -412,18 +432,25 @@ it, if one exists.</li>
 <li><strong>Macs use unified memory.</strong> A model must fit the
 smallest machine in its tier.
 <ul>
-<li><strong>Up to 36 GB:</strong> a model's weights should take no more
-than about 60% of RAM, which leaves room for macOS, the GPU memory cap
-and 64k of context (estimate).</li>
-<li><strong>48 GB and up:</strong> the weights plus the memory for 64k
-of context must fit in RAM minus 16 GB, which keeps 16 GB for macOS and
-apps (estimate). Context memory is computed from each model's file at
-Ollama's default precision; hybrid models that keep context in only some
-layers need much less. Models above macOS's default GPU memory cap need
-the cap raised (<a href="#config-gpu-limit">section 3</a>).</li>
+<li><strong>Up to 36 GB:</strong> for General use, a model's weights
+should take no more than about 60% of RAM (estimate). For coding, the
+weights plus the memory for 64k of context must fit in 80% of RAM, which
+assumes you raise macOS's GPU memory limit to about that (<a
+href="#config-gpu-limit">section 3</a>); the rest is left for macOS and
+apps (estimate).</li>
+<li><strong>48 GB and up:</strong> for both use cases, the weights plus
+the memory for 64k of context must fit in RAM minus 16 GB, which keeps
+16 GB for macOS and apps (estimate). Context memory is computed from
+each model's file at Ollama's default precision; hybrid models that keep
+context in only some layers need much less. Models above macOS's default
+GPU memory cap need the cap raised (<a href="#config-gpu-limit">section
+3</a>).</li>
 </ul></li>
 <li><strong>18 GB and 24 GB Macs share a tier with 16 GB Macs.</strong>
-Under the 60% fit rule, no better model fits.</li>
+Under the 60% fit rule, no better General model fits. For coding,
+<code>gemma4:26b-nvfp4</code> (TB 39.0) also fits 24 GB Macs with the
+raised GPU limit, but not the 16 and 18 GB ones; the tier lists only
+models that fit all of them.</li>
 <li><strong>Base M1 Macs (8 and 16 GB) have their own tiers.</strong>
 Their bandwidth is so low that they get different picks from other Macs
 with the same memory.</li>
@@ -434,8 +461,8 @@ about 90-137 GB/s, versus 150-614 on Pro/Max Macs.
 <li>Only <strong>MoE models</strong> reach usable speed on them. MoE
 (mixture of experts) means only a few billion parameters are read for
 each token.</li>
-<li>Bandwidth figures: Apple specs <a href="#ref-18">[18]</a>; NVIDIA <a
-href="#ref-19">[19]</a>; Dell RAM speeds <a href="#ref-20">[20]</a>,
+<li>Bandwidth figures: Apple specs <a href="#ref-20">[20]</a>; NVIDIA <a
+href="#ref-21">[21]</a>; Dell RAM speeds <a href="#ref-22">[22]</a>,
 with bandwidth computed as MT/s × 16 bytes, i.e. a 128-bit bus
 (estimate). Dell's manuals give the memory bus width as 64-bit; the
 report reads that as per channel, with two channels (unsourced). If the
@@ -446,8 +473,11 @@ from Apple's "M2 has 50% more" (unsourced).</li>
 <li><strong>The Pro Max 16 Plus tiers depend on the GPU.</strong>
 <ul>
 <li>A model runs entirely in VRAM if it's no bigger than VRAM minus 3
-GB. Only the 24 GB RTX PRO 5000 can hold a 27B dense model that
-way.</li>
+GB; for coding, its 64k context must also fit in VRAM. Only the 24 GB
+RTX PRO 5000 can hold a 27B dense model that way.</li>
+<li><strong>Windows and Dell RAM:</strong> a model run from system RAM
+must fit in RAM minus 10 GB (estimate); for coding, that includes 64k of
+context.</li>
 <li>Otherwise Ollama splits the model between the GPU and system RAM,
 and RAM speed sets the pace.</li>
 </ul></li>
@@ -530,7 +560,7 @@ points.</strong> Picks 3 and 4 are within 3 points, so the faster
 <li><strong><code>granite4.2:3b-q4_K_M</code> has no <code>tools</code>
 badge in Ollama</strong> but carries a tool-calling chat template in its
 model file, so Ollama supports tools with it <a
-href="#ref-21">[21]</a><a href="#ref-16">[16]</a>.</li>
+href="#ref-23">[23]</a><a href="#ref-17">[17]</a>.</li>
 <li><strong><code>qwen3.5:0.8b-nvfp4</code> is an MLX build</strong>
 (4-bit, 1.0 GB), the same size as the 8-bit GGUF
 <code>qwen3.5:0.8b-q8_0</code>. Ollama's MLX launch post asked for a Mac
@@ -821,7 +851,7 @@ unconfirmed); if Gemma 12B is slow on your Mac, use
 <code>gemma4:12b-it-qat</code>.</li>
 <li><strong><code>granite4.2:8b-q4_K_M</code> is #1 for General</strong>
 (GS 22.7). Like the 3B, it has a tool-calling chat template but no
-<code>tools</code> badge <a href="#ref-16">[16]</a>.</li>
+<code>tools</code> badge <a href="#ref-17">[17]</a>.</li>
 <li><strong>The five General picks are close in score
 (18.9-23.3)</strong>, so speed decides much of the order.
 <code>qwen3.5:9b-nvfp4</code> has the top score (GS 23.3) but ranks #2
@@ -839,9 +869,10 @@ bug with its 35B sibling.</strong> It has no Ollama parser, and the open
 bug (<a href="https://github.com/ollama/ollama/issues/17957">#17957</a>)
 names only <code>ornith-1.5:35b</code>. The proposed fix (<a
 href="https://github.com/ollama/ollama/pull/17965">PR 17965</a>) says
-the cause covers every model of this family without a parser, which
-includes the 9B. The bug shows only when a request sets both tools and a
-JSON response format.</li>
+the cause covers <code>qwen35</code>-architecture models loaded without
+a renderer or parser; the 9B is one, though the PR doesn't name it. The
+bug shows only when a request sets both tools and a JSON response
+format.</li>
 </ul>
 <hr />
 <h3 id="tier-mac-32-36">Mac 32-36 GB: M1 Pro / M1 Max / M2 Pro / M2 Max
@@ -913,39 +944,38 @@ Picks marked ⚠ have unresolved tool-call reports.</p>
 <tbody>
 <tr>
 <td style="text-align: left;">1</td>
+<td style="text-align: left;"><code>ornith-1.5:35b</code></td>
+<td style="text-align: left;">TB 67.8 (vendor)</td>
+<td style="text-align: left;">37-140</td>
+<td style="text-align: left;">GPT-5.6 Luna (high), low confidence</td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><code>ornith:35b-q4_K_M</code></td>
+<td style="text-align: left;">TB 64.2 (vendor) ⚠</td>
+<td style="text-align: left;">40-153</td>
+<td style="text-align: left;">GPT-5.6 Terra (low), low confidence</td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
 <td style="text-align: left;"><code>qwen3.8:27b-nvfp4</code></td>
 <td style="text-align: left;">TB 65.2 ⚠</td>
 <td style="text-align: left;">4-15</td>
 <td style="text-align: left;">GPT-5.6 Terra (low)</td>
 </tr>
 <tr>
-<td style="text-align: left;">2</td>
+<td style="text-align: left;">4</td>
 <td style="text-align: left;"><code>qwen3.6:27b-q4_K_M</code></td>
 <td style="text-align: left;">TB 60.7 ⚠</td>
 <td style="text-align: left;">4-16</td>
 <td style="text-align: left;">GPT-5.6 Terra (low)</td>
 </tr>
 <tr>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">5</td>
 <td style="text-align: left;"><code>muse-glimmer:30b-nvfp4</code></td>
 <td style="text-align: left;">TB 51.7</td>
 <td style="text-align: left;">4-16</td>
 <td style="text-align: left;">Gemini 3.5 Flash-Lite</td>
-</tr>
-<tr>
-<td style="text-align: left;">4</td>
-<td style="text-align: left;"><code>ornith-1.5:9b</code></td>
-<td style="text-align: left;">TB 46.2 (vendor)</td>
-<td style="text-align: left;">11-42</td>
-<td style="text-align: left;">Claude 4.5 Haiku (reasoning), low
-confidence</td>
-</tr>
-<tr>
-<td style="text-align: left;">5</td>
-<td style="text-align: left;"><code>gemma4:26b-nvfp4</code></td>
-<td style="text-align: left;">TB 39.0 ⚠</td>
-<td style="text-align: left;">29-111</td>
-<td style="text-align: left;">GPT-5.6 Luna (non-reasoning)</td>
 </tr>
 </tbody>
 </table>
@@ -961,10 +991,12 @@ would estimate under 15 tok/s on every machine in this tier.</li>
 <li><strong>The dense 27B and 30B picks estimate 15+ tok/s only on the
 M5 Max, and <code>qwen3.5:27b-int4</code> also on the M4 Max.</strong>
 Expect about 4-15 on the other chips.</li>
-<li><strong>The larger picks are close to macOS's default GPU memory cap
-here.</strong> Run <code>ollama ps</code> after loading; if it shows
-less than 100% GPU, raise the cap (<a href="#config-gpu-limit">section
-3</a>).</li>
+<li><strong>Coding picks here assume the raised GPU memory
+limit</strong> (<a href="#config-gpu-limit">section 3</a>): each needs
+its weights plus 64k of context, 18-24 GB (estimate), within 80% of RAM.
+With that limit, the two Ornith 35B MoE models fit and lead coding on
+their vendor's scores <a href="#ref-9">[9]</a>; they're also the fast
+options (37-153 tok/s).</li>
 <li><strong>Watch MLX builds on 32 GB Macs.</strong> Two open reports,
 neither confirmed: <a
 href="https://github.com/ollama/ollama/issues/18131">#18131</a>
@@ -978,10 +1010,7 @@ of the same model instead: <code>qwen3.5:27b-q4_K_M</code>,
 <code>muse-glimmer:30b-q4_K_M</code>, <code>gemma4:26b-a4b-it-qat</code>
 or <code>qwen3.8:27b-q4_K_M</code>.</li>
 <li><strong>The MoE pick <code>gemma4:26b-nvfp4</code> is the fast
-option</strong> (29-111 tok/s) for both use cases.</li>
-<li><strong>Coding: <code>gemma4:26b-nvfp4</code> is at #5 because none
-of the four above it is fast on every machine.</strong>
-<code>ornith-1.5:9b</code> is ranked on a vendor score.</li>
+option for General use</strong> (29-111 tok/s).</li>
 <li><strong>Gemma 4 has at least fourteen open tool-call bug
 reports</strong> (<a
 href="https://github.com/ollama/ollama/issues/18649">#18649</a>, <a
@@ -998,9 +1027,12 @@ href="https://github.com/ollama/ollama/issues/18861">#18861</a>, <a
 href="https://github.com/ollama/ollama/issues/15573">#15573</a>, <a
 href="https://github.com/ollama/ollama/issues/15719">#15719</a>, and <a
 href="https://github.com/ollama/ollama/issues/17562">#17562</a> in
-Cline). None is confirmed, but test it in OpenCode first.
-<code>north-mini-code-1.0:q4_K_M</code> (TB 35.6, 38-145 tok/s) is the
-next fast option.</li>
+Cline). No Ollama member or collaborator has confirmed one. On <a
+href="https://github.com/ollama/ollama/issues/15315">#15315</a>, an
+Ollama contributor reproduced it and their tool-call repair (<a
+href="https://github.com/ollama/ollama/pull/15374">PR 15374</a>) was
+merged, but the issue is still open. Test Gemma 4 in OpenCode before
+relying on it.</li>
 </ul>
 <hr />
 <h3 id="tier-mac-48-96">Mac 48-96 GB: M1 Max / M2 Max / M3 Max / M4 Pro
@@ -1129,7 +1161,7 @@ build (17 GB) is faster than both; within 10%, the MLX build is listed
 for coding (83-205).</li>
 <li><strong><code>nemotron-3.5-bolt</code> isn't ranked.</strong> Its
 only local tag is a 2-bit build (<code>IQ2_XXS</code>, 25 GB), NVIDIA's
-quantization-aware release <a href="#ref-22">[22]</a>. This report ranks
+quantization-aware release <a href="#ref-24">[24]</a>. This report ranks
 only 4-bit and 8-bit builds, and whether AA's GS 31.6 was measured on
 this build isn't stated.</li>
 <li><strong>The two Ornith 35B models lead coding on their vendor's
@@ -1153,7 +1185,7 @@ href="https://github.com/ollama/ollama/issues/17426">#17426</a> (hangs
 while thinking on an M5 Pro, Ollama 0.32) and <a
 href="https://github.com/ollama/ollama/issues/15880">#15880</a>
 (thinking loop on an earlier build of <code>35b-a3b-nvfp4</code>; the
-tag has been rebuilt since <a href="#ref-22">[22]</a>). If it stalls,
+tag has been rebuilt since <a href="#ref-24">[24]</a>). If it stalls,
 use <code>qwen3.6:35b-a3b-q4_K_M</code>.</li>
 </ul>
 <hr />
@@ -1179,7 +1211,7 @@ Picks marked ⚠ have unresolved tool-call reports.</p>
 <td
 style="text-align: left;"><code>qwen3.8-flash-next:125b-a6b-nvfp4</code></td>
 <td style="text-align: left;">GS 40.2</td>
-<td style="text-align: left;">48-73</td>
+<td style="text-align: left;">67-103</td>
 <td style="text-align: left;">GPT-6 Luna (medium)</td>
 </tr>
 <tr>
@@ -1230,7 +1262,7 @@ style="text-align: left;"><code>nemotron-3.5-super:120b-a12b-nvfp4</code></td>
 <td
 style="text-align: left;"><code>qwen3.8-flash-next:125b-a6b-nvfp4</code></td>
 <td style="text-align: left;">TB 86.1 ⚠</td>
-<td style="text-align: left;">48-73</td>
+<td style="text-align: left;">67-103</td>
 <td style="text-align: left;">Claude Fable 5.1 (low, default
 fallback)</td>
 </tr>
@@ -1397,7 +1429,7 @@ for serious coding work.</li>
 and faster. Granite is safer for facts, Qwen better for long documents
 (<a href="#summary">summary</a>).</li>
 <li>Ollama runs the Intel iGPU through Vulkan, which is on by default
-when the backend is installed <a href="#ref-23">[23]</a>. Ollama's docs
+when the backend is installed <a href="#ref-25">[25]</a>. Ollama's docs
 don't state Intel iGPU support on Windows (unverified).</li>
 </ul>
 <hr />
@@ -1406,9 +1438,9 @@ don't state Intel iGPU support on Windows (unverified).</li>
 1000 or 2000 (8 GB) · Dell Pro Precision 5 16 PW516261, integrated or
 RTX PRO 500/1000/2000</h3>
 <p><strong>Confidence:</strong> General scores are from Artificial
-Analysis. Coding includes vendor-reported scores; see (vendor) in the
-table. All speeds are estimates, not measurements on these machines.
-Picks marked ⚠ have unresolved tool-call reports.</p>
+Analysis. Coding scores are from Artificial Analysis. All speeds are
+estimates, not measurements on these machines. Picks marked ⚠ have
+unresolved tool-call reports.</p>
 <p><strong>General use</strong></p>
 <table>
 <thead>
@@ -1423,20 +1455,13 @@ Picks marked ⚠ have unresolved tool-call reports.</p>
 <tbody>
 <tr>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;"><code>qwen3.5:35b-a3b-q4_K_M</code></td>
-<td style="text-align: left;">GS 26.7</td>
-<td style="text-align: left;">29-44</td>
-<td style="text-align: left;">GPT-5.6 Terra (non-reasoning)</td>
-</tr>
-<tr>
-<td style="text-align: left;">2</td>
 <td style="text-align: left;"><code>gemma4:26b-a4b-it-qat</code></td>
 <td style="text-align: left;">GS 24.7</td>
 <td style="text-align: left;">22-33</td>
 <td style="text-align: left;">GPT-6 Luna (non-reasoning)</td>
 </tr>
 <tr>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
 <td
 style="text-align: left;"><code>qwen3:30b-a3b-thinking-2507-q4_K_M</code></td>
 <td style="text-align: left;">GS 20.3</td>
@@ -1445,18 +1470,26 @@ style="text-align: left;"><code>qwen3:30b-a3b-thinking-2507-q4_K_M</code></td>
 (reasoning)</td>
 </tr>
 <tr>
-<td style="text-align: left;">4</td>
+<td style="text-align: left;">3</td>
 <td style="text-align: left;"><code>qwen3.5:4b-q4_K_M</code></td>
 <td style="text-align: left;">GS 19.9</td>
 <td style="text-align: left;">16-70</td>
 <td style="text-align: left;">Gemini 2.5 Flash-Lite (reasoning)</td>
 </tr>
 <tr>
-<td style="text-align: left;">5</td>
+<td style="text-align: left;">4</td>
 <td style="text-align: left;"><code>granite4.2:8b-q4_K_M</code></td>
 <td style="text-align: left;">GS 22.7</td>
 <td style="text-align: left;">10-16</td>
 <td style="text-align: left;">GPT-6 Luna (non-reasoning)</td>
+</tr>
+<tr>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;"><code>granite4.2:3b-q4_K_M</code></td>
+<td style="text-align: left;">GS 18.9</td>
+<td style="text-align: left;">32-105</td>
+<td style="text-align: left;">Gemini 2.5 Flash-Lite Preview (Sep '25)
+(non-reasoning)</td>
 </tr>
 </tbody>
 </table>
@@ -1474,20 +1507,13 @@ style="text-align: left;"><code>qwen3:30b-a3b-thinking-2507-q4_K_M</code></td>
 <tbody>
 <tr>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;"><code>ornith:35b-q4_K_M</code></td>
-<td style="text-align: left;">TB 64.2 (vendor) ⚠</td>
-<td style="text-align: left;">30-46</td>
-<td style="text-align: left;">GPT-5.6 Terra (low), low confidence</td>
-</tr>
-<tr>
-<td style="text-align: left;">2</td>
 <td style="text-align: left;"><code>gemma4:26b-a4b-it-qat</code></td>
 <td style="text-align: left;">TB 39.0 ⚠</td>
 <td style="text-align: left;">22-33</td>
 <td style="text-align: left;">GPT-5.6 Luna (non-reasoning)</td>
 </tr>
 <tr>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">2</td>
 <td
 style="text-align: left;"><code>north-mini-code-1.0:q4_K_M</code></td>
 <td style="text-align: left;">TB 35.6 ⚠</td>
@@ -1495,7 +1521,7 @@ style="text-align: left;"><code>north-mini-code-1.0:q4_K_M</code></td>
 <td style="text-align: left;">GPT-5.5 Instant (June 2026)</td>
 </tr>
 <tr>
-<td style="text-align: left;">4</td>
+<td style="text-align: left;">3</td>
 <td style="text-align: left;"><code>qwen3.5:4b-q4_K_M</code></td>
 <td style="text-align: left;">TB 25.8 ⚠</td>
 <td style="text-align: left;">16-70</td>
@@ -1504,34 +1530,36 @@ style="text-align: left;"><code>north-mini-code-1.0:q4_K_M</code></td>
 </tbody>
 </table>
 <ul>
-<li><strong><code>qwen3.5:35b-a3b-q4_K_M</code> is #1 for
-General</strong> (GS 26.7). At 22 GB it just fits the 32 GB machines
-with room for the OS and context (estimate). It has no Terminal-Bench
-2.1 score in its default (reasoning) mode, so it isn't ranked for
-coding.</li>
+<li><strong><code>gemma4:26b-a4b-it-qat</code> is #1 for both use
+cases</strong> (GS 24.7, TB 39.0).</li>
+<li><strong>Larger MoE models don't leave room for context
+here.</strong> <code>qwen3.5:35b-a3b-q4_K_M</code> (22 GB) and
+<code>ornith:35b-q4_K_M</code> (21 GB) fit only by their weights, with
+no room left for even Ollama's default 4k context (General) or
+OpenCode's 64k (coding) once 10 GB is kept for Windows and apps
+(estimate). <code>qwen3:30b-a3b-thinking-2507-q4_K_M</code> (19 GB) has
+room for a 16k context in General use (<a href="#config-context">section
+2</a>).</li>
 <li><strong>Dense 27B models estimate only 3-5 tok/s here.</strong></li>
-<li><strong>On the Pro Max 16 and Pro Precision 5 16, only
-<code>qwen3.5:4b-q4_K_M</code> fits in VRAM, and only on the 8 GB
-cards.</strong> Larger models run from system RAM.</li>
-<li><strong><code>ornith:35b-q4_K_M</code> is ranked on its vendor's
-score</strong> <a href="#ref-9">[9]</a>. It and
-<code>gemma4:26b-a4b-it-qat</code> carry unconfirmed reports that they
-fail inside a coding agent (<a
-href="https://github.com/ollama/ollama/issues/16992">#16992</a> in
-Claude Code, <a
+<li><strong>On the Pro Max 16 and Pro Precision 5 16, only the two
+smallest picks fit in VRAM:</strong> <code>granite4.2:3b-q4_K_M</code>
+on every card, and <code>qwen3.5:4b-q4_K_M</code> on the 8 GB cards.
+Larger models run from system RAM.</li>
+<li><strong><code>gemma4:26b-a4b-it-qat</code> carries an unconfirmed
+report that it fails inside a coding agent</strong> (<a
 href="https://github.com/ollama/ollama/issues/17562">#17562</a> in
 Cline).</li>
 <li><strong>The Dell Pro Precision 5 Series 16 (PW516261) is in this
 tier</strong>, with 32 GB of LPDDR5x at 8533 MT/s and integrated
-graphics or an RTX PRO 500, 1000 or 2000 <a href="#ref-24">[24]</a>. Its
+graphics or an RTX PRO 500, 1000 or 2000 <a href="#ref-26">[26]</a>. Its
 faster memory (~137 GB/s, estimate assuming a 128-bit bus) gives it the
 top of each speed range, like the Pro 14 Premium. Whether it is the
 planned MC16260 isn't confirmed by Dell.</li>
-<li><strong>All four coding picks are flagged.</strong> Test your choice
-in OpenCode before relying on it;
+<li><strong>All three coding picks are flagged.</strong> Test your
+choice in OpenCode before relying on it;
 <code>north-mini-code-1.0:q4_K_M</code> is a coding MoE model trained on
 OpenCode and three other agent harnesses <a
-href="#ref-25">[25]</a>.</li>
+href="#ref-27">[27]</a>.</li>
 </ul>
 <hr />
 <h3 id="tier-pm16p-8-16">Dell Pro Max 16 Plus MB16250, 64 GB, with RTX
@@ -1648,8 +1676,8 @@ confidence</td>
 RAM</strong>, so RAM bandwidth sets their speeds.</li>
 <li><strong><code>nemotron-3.5-lightning</code> ranks below
 <code>gemma4:26b-a4b-it-qat</code></strong> despite a higher score
-because they're within 3 points and Gemma is faster on the 8 GB
-GPUs.</li>
+because they're within 3 points and Gemma is faster; both run from
+system RAM on every machine in this tier.</li>
 <li><strong>The two Ornith 9B models fit in VRAM on the 12 and 16 GB
 GPUs</strong> (61-96 tok/s) but run from RAM on the 8 GB GPUs (9-12
 tok/s).</li>
@@ -1768,7 +1796,7 @@ Picks marked ⚠ have unresolved tool-call reports.</p>
 <ul>
 <li><strong>This is the best Windows machine for local models.</strong>
 Six of the eight models picked here fit in the 24 GB of VRAM, which runs
-at 896 GB/s <a href="#ref-19">[19]</a>.
+at 896 GB/s <a href="#ref-21">[21]</a>.
 <code>qwen3.6:35b-a3b-q4_K_M</code> (24 GB) and
 <code>ornith-1.5:35b</code> (23 GB) are over the VRAM-minus-3 GB limit,
 so they run split and are estimated from system RAM.</li>
@@ -1789,13 +1817,13 @@ path is affected isn't reported.</li>
 <hr />
 <h2 id="model-reference">Model reference</h2>
 <p>GGUF tag sizes are from each model's tags page <a
-href="#ref-22">[22]</a>. MLX tag sizes are the sum of the layer sizes in
-the registry manifest, to one decimal <a href="#ref-17">[17]</a>; the
+href="#ref-24">[24]</a>. MLX tag sizes are the sum of the layer sizes in
+the registry manifest, to one decimal <a href="#ref-19">[19]</a>; the
 tags page rounds them. MLX builds are marked (MLX); the tier tables show
 which build each tier uses. Issues marked "MLX" affect only the MLX
 build; every MLX build also shares the open MLX reports in <a
 href="#watched-issues">Watched issues</a>. Licenses are from the Hugging
-Face model cards <a href="#ref-26">[26]</a> unless noted.</p>
+Face model cards <a href="#ref-28">[28]</a> unless noted.</p>
 <table>
 <thead>
 <tr>
@@ -1813,7 +1841,7 @@ Face model cards <a href="#ref-26">[26]</a> unless noted.</p>
 <td style="text-align: left;">27B dense</td>
 <td style="text-align: left;">18.2 GB · 18 GB</td>
 <td style="text-align: left;">Apache-2.0 · Alibaba <a
-href="#ref-27">[27]</a></td>
+href="#ref-29">[29]</a></td>
 <td style="text-align: left;">Qwen parser note below; <a
 href="https://github.com/ollama/ollama/issues/17765">#17765</a> (image
 tag dropped with tools); <a
@@ -1912,14 +1940,14 @@ weights), <a
 href="https://github.com/ollama/ollama/issues/18269">#18269</a> (stuck
 "Stopping..." on a 32 GB Mac) are reported on the <code>30b-mlx</code>
 tag (19.1 GB), which holds the <code>30b-nvfp4</code> weights plus a
-draft model <a href="#ref-17">[17]</a>; whether they affect
+draft model <a href="#ref-19">[19]</a>; whether they affect
 <code>30b-nvfp4</code> isn't reported</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>gemma4:26b-nvfp4</code> (MLX) ·
 <code>gemma4:26b-a4b-it-qat</code></td>
 <td style="text-align: left;">26B MoE, 4B active (25.2B total, 3.8B
-active on the same page) <a href="#ref-28">[28]</a></td>
+active on the same page) <a href="#ref-30">[30]</a></td>
 <td style="text-align: left;">16.1 GB · 16 GB</td>
 <td style="text-align: left;">Apache-2.0 · Google</td>
 <td style="text-align: left;"><strong>Drops tool calls</strong> (<a
@@ -1949,7 +1977,7 @@ href="https://github.com/ollama/ollama/issues/17362">#17362</a>
 <td style="text-align: left;">30B MoE, 3B active</td>
 <td style="text-align: left;">19 GB · 19.7 GB</td>
 <td style="text-align: left;">Apache-2.0 + Cohere use policy · Cohere <a
-href="#ref-25">[25]</a></td>
+href="#ref-27">[27]</a></td>
 <td style="text-align: left;">Uses the <code>cohere</code> parser: <a
 href="https://github.com/ollama/ollama/issues/18053">#18053</a> (tool
 call returned as text on GGUF tags)</td>
@@ -1957,10 +1985,13 @@ call returned as text on GGUF tags)</td>
 <tr>
 <td style="text-align: left;"><code>lfm2.5:8b-a1b-q4_K_M</code></td>
 <td style="text-align: left;">8.3B MoE, 1.5B active <a
-href="#ref-26">[26]</a></td>
+href="#ref-28">[28]</a></td>
 <td style="text-align: left;">5.2 GB</td>
 <td style="text-align: left;">LFM 1.0 license · Liquid AI</td>
-<td style="text-align: left;">None open</td>
+<td style="text-align: left;"><a
+href="https://github.com/ollama/ollama/issues/18681">#18681</a> (its
+<code>lfm2</code> parser can lose a tool-call tag split across stream
+chunks; General pick only, so no flag)</td>
 </tr>
 <tr>
 <td
@@ -1978,7 +2009,7 @@ thinking text left out of the prompt; not tool calls)</td>
 <td style="text-align: left;">9B dense</td>
 <td style="text-align: left;">5.6 GB</td>
 <td style="text-align: left;">MIT · DeepReinforce <a
-href="#ref-29">[29]</a></td>
+href="#ref-31">[31]</a></td>
 <td style="text-align: left;"><a
 href="https://github.com/ollama/ollama/issues/16992">#16992</a> (on
 <code>ornith:35b-q4_K_M</code>: parser leaks raw tool-call XML)</td>
@@ -1988,7 +2019,8 @@ href="https://github.com/ollama/ollama/issues/16992">#16992</a> (on
 <td style="text-align: left;">35B MoE, 3B active <a
 href="#ref-9">[9]</a></td>
 <td style="text-align: left;">21 GB</td>
-<td style="text-align: left;">MIT (unsourced) · DeepReinforce</td>
+<td style="text-align: left;">MIT (license file in the Ollama tag <a
+href="#ref-19">[19]</a>) · DeepReinforce</td>
 <td style="text-align: left;"><a
 href="https://github.com/ollama/ollama/issues/16992">#16992</a> (parser
 leaks raw tool-call XML in Claude Code; unconfirmed)</td>
@@ -1996,7 +2028,7 @@ leaks raw tool-call XML in Claude Code; unconfirmed)</td>
 <tr>
 <td style="text-align: left;"><code>ornith-1.5:35b</code></td>
 <td style="text-align: left;">35B MoE, 3B active; reads images <a
-href="#ref-30">[30]</a></td>
+href="#ref-32">[32]</a></td>
 <td style="text-align: left;">23 GB</td>
 <td style="text-align: left;">License unsourced · Ornith Team <a
 href="#ref-9">[9]</a></td>
@@ -2008,21 +2040,23 @@ agent use, so not flagged)</td>
 <tr>
 <td style="text-align: left;"><code>ornith-1.5:9b</code></td>
 <td style="text-align: left;">9B dense; reads images <a
-href="#ref-30">[30]</a></td>
+href="#ref-32">[32]</a></td>
 <td style="text-align: left;">6.6 GB</td>
 <td style="text-align: left;">License unsourced · Ornith Team <a
 href="#ref-9">[9]</a></td>
 <td style="text-align: left;">No Ollama parser. <a
 href="https://github.com/ollama/ollama/issues/17957">#17957</a> is
-reported on the 35B only; the fix's author says the cause covers the 9B
-too</td>
+reported on the 35B only; the fix (<a
+href="https://github.com/ollama/ollama/pull/17965">PR 17965</a>) covers
+<code>qwen35</code>-architecture models without a parser, which includes
+the 9B</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>granite4.2:3b-q4_K_M</code></td>
 <td style="text-align: left;">3B dense</td>
 <td style="text-align: left;">2.2 GB</td>
 <td style="text-align: left;">Apache-2.0 · IBM (license from the model
-file) <a href="#ref-21">[21]</a></td>
+file) <a href="#ref-23">[23]</a></td>
 <td style="text-align: left;"><a
 href="https://github.com/ollama/ollama/issues/16505">#16505</a> (Granite
 speed regression since Ollama 0.30; not tool calls)</td>
@@ -2031,11 +2065,14 @@ speed regression since Ollama 0.30; not tool calls)</td>
 <td
 style="text-align: left;"><code>qwen3.8-flash-next:125b-a6b-nvfp4</code>
 (MLX) · <code>125b-a6b-q4_K_M</code></td>
-<td style="text-align: left;">125B MoE, 6B active <a
-href="#ref-31">[31]</a></td>
+<td style="text-align: left;">125B MoE, 6B active, plus a 51B n-gram
+embedding table; speed is estimated over all 176B <a
+href="#ref-33">[33]</a></td>
 <td style="text-align: left;">104.9 GB · 120 GB</td>
-<td style="text-align: left;">Qwen Community License 1.0 · Alibaba <a
-href="#ref-31">[31]</a></td>
+<td style="text-align: left;">Qwen Community License 1.0 per the Ollama
+page <a href="#ref-33">[33]</a>; the <code>-nvfp4</code> tag's license
+file is Apache 2.0 and the <code>-q4_K_M</code> tag's is the Qwen
+Community License 1.0 <a href="#ref-19">[19]</a> · Alibaba</td>
 <td style="text-align: left;">Qwen parser note below; <a
 href="https://github.com/ollama/ollama/issues/17778">#17778</a> (HTTP
 500 "no user query found", mostly when the conversation overflows
@@ -2046,7 +2083,7 @@ context)</td>
 <td style="text-align: left;">8B dense</td>
 <td style="text-align: left;">5.3 GB</td>
 <td style="text-align: left;">Apache-2.0 · IBM (license from the model
-file) <a href="#ref-21">[21]</a></td>
+file) <a href="#ref-23">[23]</a></td>
 <td style="text-align: left;"><a
 href="https://github.com/ollama/ollama/issues/16505">#16505</a> (Granite
 speed regression since Ollama 0.30; not tool calls)</td>
@@ -2056,7 +2093,7 @@ speed regression since Ollama 0.30; not tool calls)</td>
 <td style="text-align: left;">1B (from the tag name)</td>
 <td style="text-align: left;">1.6 GB</td>
 <td style="text-align: left;">Apache-2.0 · IBM <a
-href="#ref-32">[32]</a></td>
+href="#ref-34">[34]</a></td>
 <td style="text-align: left;"><a
 href="https://github.com/ollama/ollama/issues/12692">#12692</a> (wrong
 memory estimate for Granite 4 hybrid models), <a
@@ -2111,10 +2148,10 @@ model file)</td>
 style="text-align: left;"><code>nemotron-3.5-super:120b-a12b-nvfp4</code>
 (MLX, General) · <code>120b-a12b-q4_K_M</code> (coding)</td>
 <td style="text-align: left;">120B MoE, 12B active; hybrid
-Mamba-2/Transformer; reads images <a href="#ref-33">[33]</a></td>
+Mamba-2/Transformer; reads images <a href="#ref-35">[35]</a></td>
 <td style="text-align: left;">79.6 GB · 90 GB</td>
 <td style="text-align: left;">OpenMDW 1.1 · NVIDIA <a
-href="#ref-33">[33]</a></td>
+href="#ref-35">[35]</a></td>
 <td style="text-align: left;">Uses the <code>nemotron-3-nano</code>
 parser; none open</td>
 </tr>
@@ -2122,7 +2159,7 @@ parser; none open</td>
 </table>
 <p><strong>Qwen parser note:</strong> Qwen 3.5, 3.6 and 3.8 all use
 Ollama's <code>qwen3.5</code> tool-call parser <a
-href="#ref-17">[17]</a>. It has an open issue that breaks tool calls (<a
+href="#ref-19">[19]</a>. It has an open issue that breaks tool calls (<a
 href="https://github.com/ollama/ollama/issues/16383">#16383</a>: strict
 parsing returns 500), so all three are flagged for coding.</p>
 <p><strong>Considered and left out:</strong></p>
@@ -2150,13 +2187,13 @@ parsing returns 500), so all three are flagged for coding.</p>
 <code>qwen3:0.6b</code>, <code>qwen3:1.7b</code>,
 <code>granite4:350m</code>, <code>gemma3n</code></td>
 <td style="text-align: left;">Context window below 64k (32k or 40k on
-their tags pages) <a href="#ref-22">[22]</a></td>
+their tags pages) <a href="#ref-24">[24]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>lfm2.5-thinking</code></td>
 <td style="text-align: left;">Sources conflict on context: its tags page
 lists 125k, but the model description on the same page says 32,768
-tokens <a href="#ref-34">[34]</a>. Left out to be safe; it would rank #6
+tokens <a href="#ref-36">[36]</a>. Left out to be safe; it would rank #6
 or lower anyway</td>
 </tr>
 <tr>
@@ -2198,17 +2235,19 @@ file)</td>
 and <code>-mlx-bf16</code> tags</td>
 <td style="text-align: left;">8-bit and 16-bit MLX builds. Every model
 here with an MLX build also has a 4-bit one, which is smaller and faster
-<a href="#ref-17">[17]</a></td>
+<a href="#ref-19">[19]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-mlx</code> tags</td>
 <td style="text-align: left;">Mostly the same weights as the
 <code>-nvfp4</code> tag. Where they differ, the <code>-mlx</code> build
 is bigger, so slower: 8-bit for <code>qwen3.5:0.8b-mlx</code> and
-<code>2b-mlx</code>; a bigger 4-bit build for
-<code>qwen3.5:9b-mlx</code>; and <code>gemma4:26b-mlx</code> and
-<code>muse-glimmer:30b-mlx</code> add a speculative-decoding draft model
-<a href="#ref-17">[17]</a></td>
+<code>2b-mlx</code>; bigger 4-bit builds for <code>qwen3.5:9b-mlx</code>
+and <code>gemma4:26b-mlx</code> (both <code>gemma4:26b</code> tags carry
+a speculative-decoding draft model; the <code>-mlx</code> one is
+larger); and <code>muse-glimmer:30b-mlx</code> is the
+<code>30b-nvfp4</code> weights plus a draft model <a
+href="#ref-19">[19]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-coding-</code> tags (Qwen 3.5,
@@ -2223,7 +2262,7 @@ the plain tags</td>
 3.8, Gemma 4) and <code>-dflash</code> tags (Muse Glimmer)</td>
 <td style="text-align: left;">Speculative-decoding builds. The speed
 estimate can't model their gain, so they're ranked as the plain tags <a
-href="#ref-22">[22]</a></td>
+href="#ref-24">[24]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>gemma4:31b-it-qat</code>,
@@ -2254,11 +2293,20 @@ href="https://github.com/ollama/ollama/issues/17638">#17638</a>)</td>
 its successor <code>nemotron-3.5-super</code></td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>bonsai-2</code></td>
+<td style="text-align: left;">Only 2-bit ternary builds
+(<code>q2_0</code>) and no AA score; can't be ranked <a
+href="#ref-24">[24]</a></td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>nemotron-3.5-bolt</code></td>
 <td style="text-align: left;">Only local tag is a 2-bit build
 (<code>IQ2_XXS</code>, 25 GB), NVIDIA's quantization-aware release <a
-href="#ref-22">[22]</a>; the report ranks 4-bit or 8-bit builds only,
-and whether AA's GS 31.6 was measured on this build isn't stated</td>
+href="#ref-24">[24]</a>; the report ranks 4-bit or 8-bit builds only,
+and whether AA's GS 31.6 was measured on this build isn't stated. An
+open report says it crashes on Apple silicon on any request with tools
+(<a href="https://github.com/ollama/ollama/issues/19057">#19057</a>; not
+reproduced on other backends by an Ollama collaborator)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>lfm2.5:24b</code></td>
@@ -2283,7 +2331,8 @@ about 3-5 tok/s; fail the speed filter</td>
 <code>deepseek-v4-pro</code>, <code>deepseek-v4.1-flash</code>,
 <code>minimax-m3</code>, <code>minimax-m2.7</code>,
 <code>mistral-large-3</code>, <code>mistral-large-4</code>,
-<code>nemotron-3-ultra</code>, <code>muse-spark-open</code></td>
+<code>nemotron-3-ultra</code>, <code>muse-spark-open</code>,
+<code>beam</code></td>
 <td style="text-align: left;">Cloud-only in Ollama</td>
 </tr>
 <tr>
@@ -2294,7 +2343,7 @@ about 3-5 tok/s; fail the speed filter</td>
 <code>d1</code></td>
 <td style="text-align: left;">Decision models: they turn a state and
 typed questions into decisions (classification, routing, scoring). Not
-general chat or coding models <a href="#ref-35">[35]</a></td>
+general chat or coding models <a href="#ref-37">[37]</a></td>
 </tr>
 </tbody>
 </table>
@@ -2321,19 +2370,19 @@ href="#ref-10">[10]</a>.</td>
 <td style="text-align: left;"><code>OLLAMA_FLASH_ATTENTION</code></td>
 <td style="text-align: left;"><code>1</code></td>
 <td style="text-align: left;">Already automatic on supported backends;
-setting it removes doubt <a href="#ref-36">[36]</a></td>
+setting it removes doubt <a href="#ref-38">[38]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>OLLAMA_KEEP_ALIVE</code></td>
 <td style="text-align: left;"><code>30m</code></td>
 <td style="text-align: left;">Default 5m unloads the model during pauses
-in an agent session <a href="#ref-36">[36]</a></td>
+in an agent session <a href="#ref-38">[38]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>OLLAMA_NUM_PARALLEL</code></td>
 <td style="text-align: left;"><code>1</code> (default)</td>
 <td style="text-align: left;">Each parallel slot multiplies KV-cache
-memory <a href="#ref-36">[36]</a></td>
+memory <a href="#ref-38">[38]</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>OLLAMA_KV_CACHE_TYPE</code></td>
@@ -2341,7 +2390,7 @@ memory <a href="#ref-36">[36]</a></td>
 <code>q8_0</code> if memory is tight</td>
 <td style="text-align: left;"><code>q8_0</code> roughly halves context
 memory; per the FAQ, "this usually has no noticeable impact" <a
-href="#ref-36">[36]</a>. Open <a
+href="#ref-38">[38]</a>. Open <a
 href="https://github.com/ollama/ollama/issues/17347">#17347</a> reports
 Qwen 3.5/3.6 stopping before tool calls with <code>q8_0</code> on AMD
 ROCm</td>
@@ -2352,24 +2401,24 @@ ROCm</td>
 <ul>
 <li><strong>macOS:</strong> run
 <code>launchctl setenv OLLAMA_CONTEXT_LENGTH 65536</code> (and likewise
-for the others), then restart the Ollama app <a href="#ref-36">[36]</a>.
+for the others), then restart the Ollama app <a href="#ref-38">[38]</a>.
 Also set the context length with the app's Settings slider <a
 href="#ref-10">[10]</a>.</li>
 <li><strong>Windows:</strong>
 <ol type="1">
-<li>Quit Ollama from the tray.</li>
+<li>Quit Ollama by clicking its icon in the taskbar.</li>
 <li>Open Settings → "Edit environment variables for your account" and
 add the variables.</li>
-<li>Start Ollama again <a href="#ref-36">[36]</a>.</li>
+<li>Start Ollama again <a href="#ref-38">[38]</a>.</li>
 </ol></li>
 <li><strong>Windows GPU extras:</strong>
 <ul>
 <li>NVIDIA driver must be <strong>551.61 or newer</strong> <a
-href="#ref-37">[37]</a>.</li>
+href="#ref-39">[39]</a>.</li>
 <li>If the Intel iGPU causes instability on a Pro Max, keep Vulkan on
 and set <code>GGML_VK_VISIBLE_DEVICES</code> to the NVIDIA GPU's index.
 <code>OLLAMA_VULKAN=0</code> turns Vulkan off completely and is the
-general fallback <a href="#ref-23">[23]</a>.</li>
+general fallback <a href="#ref-25">[25]</a>.</li>
 </ul></li>
 </ul>
 <h3 id="config-context">2. Per-model context fix (required)</h3>
@@ -2397,6 +2446,52 @@ VRAM beside their weights</td>
 </tr>
 </tbody>
 </table>
+<p><strong>General picks with less room.</strong> These General picks
+fit by their weights, but 64k of context wouldn't fit beside them
+(estimate, with the Mac GPU limit raised as in <a
+href="#config-gpu-limit">section 3</a>). Use the largest context that
+fits:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Tier</th>
+<th style="text-align: left;"><code>num_ctx</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>granite4.2:3b-q4_K_M</code></td>
+<td style="text-align: left;">Mac M1 8 GB, Mac 8 GB, Latitude 7350</td>
+<td style="text-align: left;"><code>32768</code></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>qwen3:4b-thinking-2507-q4_K_M</code></td>
+<td style="text-align: left;">Mac M1 8 GB, Mac 8 GB, Latitude 7350</td>
+<td style="text-align: left;"><code>16384</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>granite4.2:8b-q4_K_M</code></td>
+<td style="text-align: left;">Mac 16-24 GB</td>
+<td style="text-align: left;"><code>32768</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lfm2.5:8b-a1b-q4_K_M</code></td>
+<td style="text-align: left;">Latitude 7350</td>
+<td style="text-align: left;"><code>32768</code></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><code>qwen3:30b-a3b-thinking-2507-q4_K_M</code></td>
+<td style="text-align: left;">Windows 32 GB</td>
+<td style="text-align: left;"><code>16384</code></td>
+</tr>
+</tbody>
+</table>
+<p>These are too small for OpenCode, which needs 64k <a
+href="#ref-11">[11]</a>; none of these models is a coding pick in those
+tiers.</p>
 <pre><code># Modelfile (example: Mac 48-96 GB)
 FROM qwen3.8:27b-nvfp4
 PARAMETER num_ctx 131072
@@ -2410,21 +2505,21 @@ to the GGUF build; the full tag tells you which one you get (<a
 href="#config-tags">tag choice</a>).</p>
 <p><strong>MLX builds take the same fix.</strong> Ollama passes
 <code>num_ctx</code> to the MLX runner, which reports it as the model's
-context length <a href="#ref-38">[38]</a>.
+context length <a href="#ref-40">[40]</a>.
 <code>qwen3.8-flash-next:125b-a6b-nvfp4</code> ships
-<code>num_ctx 262144</code> <a href="#ref-17">[17]</a>; the Modelfile
+<code>num_ctx 262144</code> <a href="#ref-19">[19]</a>; the Modelfile
 value replaces it, and OpenCode's <code>limit.context</code> must match
 whichever applies (<a href="#config-opencode">section 5</a>).</p>
 <p><strong>Sampling settings:</strong> most Ollama tags already carry
 the vendor's recommended values. For example, <code>qwen3.8</code> ships
 with temperature 1, top_p 0.95 and top_k 20, matching its model card <a
-href="#ref-27">[27]</a>.</p>
+href="#ref-29">[29]</a>.</p>
 <p><strong><code>qwen3.6:35b-a3b</code> for coding.</strong> Both its
 builds (<code>-nvfp4</code> and <code>-q4_K_M</code>) ship
-<code>presence_penalty 1.5</code> <a href="#ref-17">[17]</a>, Qwen's
+<code>presence_penalty 1.5</code> <a href="#ref-19">[19]</a>, Qwen's
 value for general tasks in thinking mode, which it runs by default. For
 precise coding Qwen gives <code>presence_penalty 0.0</code> <a
-href="#ref-39">[39]</a> (<a
+href="#ref-41">[41]</a> (<a
 href="https://github.com/ollama/ollama/issues/17197">#17197</a>). Both
 <code>qwen3.6:27b</code> builds already ship <code>0</code>. Add this to
 the 35B's coding Modelfile:</p>
@@ -2436,31 +2531,31 @@ Terminal-Bench at temperature 1.0 and top_p 1.0 <a
 href="#ref-9">[9]</a>; add those to the Modelfile to match.</p>
 <p><strong>Ornith 1.0 tags (<code>ornith:9b-q4_K_M</code>,
 <code>ornith:35b-q4_K_M</code>) ship temperature 0.6, top_k 20 and top_p
-0.95</strong> <a href="#ref-17">[17]</a>, but the Terminal-Bench scores
+0.95</strong> <a href="#ref-19">[19]</a>, but the Terminal-Bench scores
 in the tables were run at temperature 1.0 and top_p 1.0 <a
 href="#ref-9">[9]</a>. To match them, add
 <code>PARAMETER temperature 1</code> and <code>PARAMETER top_p 1</code>
 to the Modelfile.</p>
 <p><strong><code>nemotron-3.5-super:120b-a12b-nvfp4</code> ships no
 sampling settings either,</strong> while its GGUF build ships
-temperature 1 and top_p 0.95 <a href="#ref-17">[17]</a>. Add the same
+temperature 1 and top_p 0.95 <a href="#ref-19">[19]</a>. Add the same
 two lines to the MLX build's Modelfile:</p>
 <pre><code>PARAMETER temperature 1
 PARAMETER top_p 0.95</code></pre>
 <p>For coding with either Qwen 3.6 pick, Qwen's thinking-mode value for
 precise coding is <code>PARAMETER temperature 0.6</code> <a
-href="#ref-40">[40]</a>.</p>
+href="#ref-42">[42]</a>.</p>
 <p><strong><code>qwen3.5:122b-a10b-q4_K_M</code> ships no
 <code>presence_penalty</code>,</strong> so Ollama's default of 0
 applies; Qwen gives <code>presence_penalty 1.5</code> for general tasks
-in thinking mode <a href="#ref-41">[41]</a>. For General use add
+in thinking mode <a href="#ref-43">[43]</a>. For General use add
 <code>PARAMETER presence_penalty 1.5</code>.</p>
 <p><strong>Qwen 3.5 coding picks</strong>
 (<code>qwen3.5:4b-q4_K_M</code>, <code>qwen3.5:9b-nvfp4</code>) ship
 <code>temperature 1</code> and <code>presence_penalty 1.5</code>. Qwen's
 card gives <code>temperature 0.6</code> and
 <code>presence_penalty 0</code> for precise coding in thinking mode <a
-href="#ref-42">[42]</a>, so add both to their Modelfiles when used for
+href="#ref-44">[44]</a>, so add both to their Modelfiles when used for
 coding.</p>
 <h3 id="config-gpu-limit">3. Mac GPU memory limit</h3>
 <p>macOS caps how much unified memory the GPU can use. The default cap
@@ -2468,13 +2563,13 @@ isn't published by Apple; it's commonly reported as about 2/3 of RAM on
 Macs up to 36 GB and about 3/4 above that (unsourced). A model that
 doesn't fit under the cap still runs, but part of it runs on the CPU
 (unsourced). <code>ollama ps</code> shows that split <a
-href="#ref-36">[36]</a>, and Ollama advises avoiding CPU offload for
+href="#ref-38">[38]</a>, and Ollama advises avoiding CPU offload for
 best performance <a href="#ref-10">[10]</a>.</p>
 <p><strong>Check first.</strong> Load the model, then run
 <code>ollama ps</code>. If PROCESSOR reads <strong>100% GPU</strong>,
 the model is entirely on the GPU, so leave the cap alone. A split such
 as <code>48%/52% CPU/GPU</code> means part of it spilled <a
-href="#ref-36">[36]</a>.</p>
+href="#ref-38">[38]</a>.</p>
 <table>
 <thead>
 <tr>
@@ -2485,11 +2580,14 @@ href="#ref-36">[36]</a>.</p>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Mac 32-36 GB</td>
-<td style="text-align: left;">If <code>ollama ps</code> shows less than
-100% GPU with a pick of 16 GB or more (16-19 GB + context is close to
-the default cap)</td>
-<td style="text-align: left;"><code>26000</code> on 32 GB ·
+<td style="text-align: left;">Macs up to 36 GB</td>
+<td style="text-align: left;">When a coding pick's weights plus 64k of
+context exceed the default cap: the coding fit estimates, and the
+General context sizes in <a href="#config-context">section 2</a>, allow
+up to about 80% of RAM</td>
+<td style="text-align: left;"><code>6500</code> on 8 GB ·
+<code>13000</code> on 16 GB · <code>14700</code> on 18 GB ·
+<code>19600</code> on 24 GB · <code>26000</code> on 32 GB ·
 <code>29000</code> on 36 GB</td>
 </tr>
 <tr>
@@ -2503,7 +2601,7 @@ fits under it (estimate)</td>
 <td style="text-align: left;"><code>114000</code></td>
 </tr>
 <tr>
-<td style="text-align: left;">All other tiers</td>
+<td style="text-align: left;">Mac 48-96 GB</td>
 <td style="text-align: left;">Not needed for the picks in this
 report</td>
 <td style="text-align: left;">—</td>
@@ -2511,8 +2609,9 @@ report</td>
 </tbody>
 </table>
 <p>The value is in MB. It must be larger than the model and smaller than
-total RAM <a href="#ref-43">[43]</a>. The example values leave about
-7-17 GB for macOS (estimate).</p>
+total RAM <a href="#ref-45">[45]</a>. The example values leave about
+1.6-17 GB for macOS (estimate). On 8 and 16 GB Macs that's tight: close
+other apps while a model is loaded, and watch for swapping.</p>
 <p><strong>Until the next reboot:</strong></p>
 <pre><code>sudo sysctl -w iogpu.wired_limit_mb=26000</code></pre>
 <p><strong>Permanent:</strong> add the same setting to
@@ -2552,12 +2651,12 @@ because it isn't measured on these machines.</li>
 <code>qwen3.6:35b-a3b</code>, <code>qwen3.5:9b</code>,
 <code>gemma4:12b</code>, <code>gemma4:26b</code> and
 <code>nemotron-3.5-super:120b-a12b</code> each list an MLX build and a
-GGUF build <a href="#ref-17">[17]</a>. On Apple silicon Ollama picks MLX
-first; elsewhere it picks GGUF first <a href="#ref-44">[44]</a>. The
+GGUF build <a href="#ref-19">[19]</a>. On Apple silicon Ollama picks MLX
+first; elsewhere it picks GGUF first <a href="#ref-46">[46]</a>. The
 tables always give the full tag.</li>
 <li><strong>To check which engine loaded,</strong> run
 <code>ollama ps</code>: its RUNNER column reads <code>mlx</code> for the
-MLX build <a href="#ref-45">[45]</a>.</li>
+MLX build <a href="#ref-47">[47]</a>.</li>
 <li><strong>If an MLX build misbehaves, switch to the GGUF build of the
 same model</strong> (listed beside it in the <a
 href="#model-reference">Model reference</a>). It has the same score; the
@@ -2593,17 +2692,18 @@ later.</li>
 <p><strong>Ollama is discovered automatically.</strong> OpenCode 2
 probes <code>http://127.0.0.1:11434</code>, lists every Ollama model
 that can chat, and reads context, vision and tool-use capabilities from
-Ollama, with no provider config needed <a href="#ref-46">[46]</a>.
+Ollama, with no provider config needed <a href="#ref-48">[48]</a>.
 Select a model as <code>ollama/&lt;tag&gt;</code>.</p>
 <p><strong>Still override the context limit.</strong> Discovery reads
 each model's maximum context from Ollama, not your <code>num_ctx</code>
-<a href="#ref-47">[47]</a>, and requests go through Ollama's
+<a href="#ref-49">[49]</a>, and requests go through Ollama's
 <code>/v1</code> endpoint, which has no way to set the context size <a
-href="#ref-48">[48]</a><a href="#ref-12">[12]</a>. So keep the Modelfile
+href="#ref-50">[50]</a><a href="#ref-12">[12]</a>. So keep the Modelfile
 fix from section 2, and tell OpenCode the same limit. A
-<code>limit</code> set in config overrides the discovered value. Example
-for a Mac with 48-96 GB, matching the Modelfile above <a
-href="#ref-48">[48]</a><a href="#ref-46">[46]</a>:</p>
+<code>limit</code> set in config overrides the discovered value <a
+href="#ref-51">[51]</a>. Example for a Mac with 48-96 GB, matching the
+Modelfile above <a href="#ref-50">[50]</a><a
+href="#ref-48">[48]</a>:</p>
 <pre><code>{
   &quot;$schema&quot;: &quot;https://opencode.ai/config.json&quot;,
   &quot;model&quot;: &quot;ollama/oc-qwen3.8-27b&quot;,
@@ -2624,28 +2724,28 @@ href="#ref-48">[48]</a><a href="#ref-46">[46]</a>:</p>
 <li><strong><code>limit.context</code> must equal the model's
 <code>num_ctx</code>.</strong> It tells OpenCode when to compact; it
 doesn't change Ollama. Automatic compaction is on by default and keeps
-10% of the limit free <a href="#ref-49">[49]</a>.</li>
+10% of the limit free <a href="#ref-52">[52]</a>.</li>
 <li><strong>Malformed tool calls fail visibly (since 2.0.25).</strong>
 OpenCode no longer repairs bad tool-call JSON; it sends the model a tool
-error so it can retry <a href="#ref-50">[50]</a>. With the parser bugs
+error so it can retry <a href="#ref-53">[53]</a>. With the parser bugs
 above, expect the odd retried tool call rather than a silent fix.</li>
 <li><strong>Key names changed from 1.x:</strong> 2.x uses
 <code>providers</code>, <code>package</code>, <code>settings</code> and
-<code>capabilities.tools</code> <a href="#ref-48">[48]</a><a
-href="#ref-46">[46]</a>, where 1.x used <code>provider</code>,
+<code>capabilities.tools</code> <a href="#ref-50">[50]</a><a
+href="#ref-48">[48]</a>, where 1.x used <code>provider</code>,
 <code>npm</code>, <code>options</code> and <code>tool_call</code> <a
-href="#ref-51">[51]</a>. <code>small_model</code> isn't in the 2.x docs;
+href="#ref-54">[54]</a>. <code>small_model</code> isn't in the 2.x docs;
 title and summary work is done by hidden built-in agents <a
-href="#ref-52">[52]</a>.</li>
+href="#ref-55">[55]</a>.</li>
 <li><strong>The config schema describes 2.x.</strong> The schema at
 <code>opencode.ai/config.json</code> has the <code>providers</code> key
 and marks 1.x keys such as <code>provider</code> and
-<code>small_model</code> as deprecated <a href="#ref-51">[51]</a>.</li>
+<code>small_model</code> as deprecated <a href="#ref-54">[54]</a>.</li>
 <li><strong>Remote Ollama:</strong> set
 <code>providers.ollama.settings.baseURL</code> to its <code>/v1</code>
 URL <a href="#ref-48">[48]</a>.</li>
 <li><strong>Keep MCP servers to a minimum.</strong> MCP tools consume
-model context <a href="#ref-53">[53]</a>, on top of OpenCode's own
+model context <a href="#ref-56">[56]</a>, on top of OpenCode's own
 system prompt and tools.</li>
 <li><strong>Prefer the config above to
 <code>ollama launch opencode</code>.</strong> Ollama's OpenCode page
@@ -2845,14 +2945,14 @@ holds the <code>30b-nvfp4</code> weights</td>
 <hr />
 <h2 id="sources">Sources</h2>
 <ol class="refs">
-<li id="ref-1">OpenCode 2.x release (npm <code>@opencode/cli</code> 2.0.30, published 2026-10-15): <a href="https://registry.npmjs.org/@opencode/cli/latest">https://registry.npmjs.org/@opencode/cli/latest</a></li>
+<li id="ref-1">OpenCode 2.x release (npm <code>@opencode/cli</code> 2.0.31, published 2026-10-16): <a href="https://registry.npmjs.org/@opencode/cli/latest">https://registry.npmjs.org/@opencode/cli/latest</a></li>
 <li id="ref-2">Ollama v0.40.5 release (published 2026-10-14; Nemotron 3.5 support in llama.cpp, MLX update): <a href="https://github.com/ollama/ollama/releases/tag/v0.40.5">https://github.com/ollama/ollama/releases/tag/v0.40.5</a>; v0.40.4 release (published 2026-10-12; MLX fixes in PRs 18955 and 18956): <a href="https://github.com/ollama/ollama/releases/tag/v0.40.4">https://github.com/ollama/ollama/releases/tag/v0.40.4</a></li>
 <li id="ref-3">Ollama blog, MLX on Apple silicon: <a href="https://ollama.com/blog/mlx">https://ollama.com/blog/mlx</a></li>
 <li id="ref-4">Ollama v0.40.0 release notes, &ldquo;Models run on MLX on Apple Silicon by default&rdquo;: <a href="https://github.com/ollama/ollama/releases/tag/v0.40.0">https://github.com/ollama/ollama/releases/tag/v0.40.0</a></li>
 <li id="ref-5">Ollama blog, MLX performance: <a href="https://ollama.com/blog/mlx-performance">https://ollama.com/blog/mlx-performance</a></li>
 <li id="ref-6">NVIDIA, Nemotron 3.5 Super VL 120B-A12B model card (API catalog copy; BF16 and NVFP4 benchmark table): <a href="https://build.nvidia.com/nvidia/nemotron-3.5-super-vl-120b-a12b.md">https://build.nvidia.com/nvidia/nemotron-3.5-super-vl-120b-a12b.md</a></li>
 <li id="ref-7">Artificial Analysis, Intelligence Index methodology (v4.3.2 evals and weights): <a href="https://artificialanalysis.ai/methodology/intelligence-benchmarking">https://artificialanalysis.ai/methodology/intelligence-benchmarking</a></li>
-<li id="ref-8">Artificial Analysis leaderboard (per-eval scores behind Intelligence Index v4.3.2, and Terminal-Bench 2.1, read 2026-10-15): <a href="https://artificialanalysis.ai/leaderboards/models">https://artificialanalysis.ai/leaderboards/models</a></li>
+<li id="ref-8">Artificial Analysis leaderboard (per-eval scores behind Intelligence Index v4.3.2, and Terminal-Bench 2.1, read 2026-10-16): <a href="https://artificialanalysis.ai/leaderboards/models">https://artificialanalysis.ai/leaderboards/models</a></li>
 <li id="ref-9">Ornith Team, Ornith-1.5 announcement and benchmark tables: <a href="https://ornith.ai/ornith_1_5.html">https://ornith.ai/ornith_1_5.html</a></li>
 <li id="ref-10">Ollama docs, Context length: <a href="https://docs.ollama.com/context-length">https://docs.ollama.com/context-length</a></li>
 <li id="ref-11">Ollama docs, OpenCode integration: <a href="https://docs.ollama.com/integrations/opencode">https://docs.ollama.com/integrations/opencode</a></li>
@@ -2860,61 +2960,64 @@ holds the <code>30b-nvfp4</code> weights</td>
 <li id="ref-13">Artificial Analysis, AA-Omniscience paper (metric definitions §2.4; −0.5 penalty suggestion §5): <a href="https://arxiv.org/abs/2511.13029">https://arxiv.org/abs/2511.13029</a></li>
 <li id="ref-14">Wei et al. (OpenAI), Measuring short-form factuality in large language models (SimpleQA), §2.4 on penalising wrong answers: <a href="https://arxiv.org/abs/2411.04368">https://arxiv.org/abs/2411.04368</a></li>
 <li id="ref-15">Artificial Analysis, CritPt evaluation page (70 problems; scores expected to move): <a href="https://artificialanalysis.ai/evaluations/critpt">https://artificialanalysis.ai/evaluations/critpt</a>; CritPt paper: <a href="https://arxiv.org/abs/2509.26574">https://arxiv.org/abs/2509.26574</a></li>
-<li id="ref-16">Ollama source, tool support read from the model's chat template (<code>chatTemplateHasToolSupport</code>, v0.40.1) or from its built-in tool-call parser (<code>parserCapabilities</code>, v0.40.5): <a href="https://github.com/ollama/ollama/blob/v0.40.1/server/images.go">https://github.com/ollama/ollama/blob/v0.40.1/server/images.go</a> · <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/images.go">https://github.com/ollama/ollama/blob/v0.40.5/server/images.go</a></li>
-<li id="ref-17">Ollama registry manifests and config blobs (<code>runner</code>, <code>format</code> and <code>parser</code> fields), e.g. <a href="https://registry.ollama.ai/v2/library/qwen3.5/manifests/9b">https://registry.ollama.ai/v2/library/qwen3.5/manifests/9b</a></li>
-<li id="ref-18">Apple MacBook Pro tech specs: <a href="https://support.apple.com/en-us/111893">111893</a> · <a href="https://support.apple.com/en-us/111902">111902</a> · <a href="https://support.apple.com/en-us/111901">111901</a> · <a href="https://support.apple.com/en-us/111869">111869</a> · <a href="https://support.apple.com/en-us/111340">111340</a> · <a href="https://support.apple.com/en-us/111838">111838</a> · <a href="https://support.apple.com/en-us/117735">117735</a> · <a href="https://support.apple.com/en-us/117736">117736</a> · <a href="https://support.apple.com/en-us/117737">117737</a> · <a href="https://support.apple.com/en-us/121552">121552</a> · <a href="https://support.apple.com/en-us/121553">121553</a> · <a href="https://support.apple.com/en-us/121554">121554</a> · <a href="https://support.apple.com/en-us/125405">125405</a> · <a href="https://support.apple.com/en-us/126318">126318</a> · <a href="https://support.apple.com/en-us/126319">126319</a></li>
-<li id="ref-19">NVIDIA professional laptop GPU comparison: <a href="https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/">https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/</a></li>
-<li id="ref-20">Dell specs: Latitude 7350 <a href="https://dl.dell.com/content/manual34075453-latitude-7350-owner-s-manual.pdf">owner's manual</a> · Pro 14 Premium PA14250 <a href="https://dl.dell.com/content/manual2592419-dell-pro-14-premium-pa14250-owner-s-manual.pdf">owner's manual</a> · PA14260 <a href="https://dl.dell.com/content/manual19413430-dell-pro-14-premium-pa14260-setup-and-specifications.pdf">setup and specifications</a> · Pro Max 16 <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-laptop-spec-sheet.pdf">spec sheet</a> · Pro Max 16 Plus <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf">spec sheet</a></li>
-<li id="ref-21">Ollama library, granite4.2: <a href="https://ollama.com/library/granite4.2">https://ollama.com/library/granite4.2</a></li>
-<li id="ref-22">Ollama library tags pages, e.g. <a href="https://ollama.com/library/qwen3.5/tags">https://ollama.com/library/qwen3.5/tags</a></li>
-<li id="ref-23">Ollama docs, Hardware support (GPU, Vulkan): <a href="https://docs.ollama.com/gpu">https://docs.ollama.com/gpu</a></li>
-<li id="ref-24">Dell, Dell Pro Precision 5 Series 16 (PW516261) brochure: <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf">https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf</a>; Dell support page: <a href="https://www.dell.com/support/product-details/en-us/product/dell-pro-precision-pw516261-laptop/overview">https://www.dell.com/support/product-details/en-us/product/dell-pro-precision-pw516261-laptop/overview</a></li>
-<li id="ref-25">Ollama library, north-mini-code-1.0: <a href="https://ollama.com/library/north-mini-code-1.0">https://ollama.com/library/north-mini-code-1.0</a></li>
-<li id="ref-26">Hugging Face model cards: <a href="https://huggingface.co/Qwen">Qwen</a> · <a href="https://huggingface.co/google/gemma-4-12B-it">Gemma 4 12B</a> · <a href="https://huggingface.co/LiquidAI/LFM2.5-8B-A1B">LFM2.5-8B-A1B</a> · <a href="https://huggingface.co/ibm-granite/granite-4.1-3b">Granite 4.1 3B</a></li>
-<li id="ref-27">Qwen3.8-27B model card: <a href="https://huggingface.co/Qwen/Qwen3.8-27B">https://huggingface.co/Qwen/Qwen3.8-27B</a></li>
-<li id="ref-28">Ollama library, gemma4 (26B A4B: total and active parameters): <a href="https://ollama.com/library/gemma4">https://ollama.com/library/gemma4</a></li>
-<li id="ref-29">Ornith-1.0-9B model card: <a href="https://huggingface.co/ornith-ai/Ornith-1.0-9B-GGUF">https://huggingface.co/ornith-ai/Ornith-1.0-9B-GGUF</a></li>
-<li id="ref-30">Ollama library, ornith-1.5: <a href="https://ollama.com/library/ornith-1.5">https://ollama.com/library/ornith-1.5</a></li>
-<li id="ref-31">Ollama library, qwen3.8-flash-next (parameters and license): <a href="https://ollama.com/library/qwen3.8-flash-next">https://ollama.com/library/qwen3.8-flash-next</a></li>
-<li id="ref-32">Ollama library, granite4 (sizes and license): <a href="https://ollama.com/library/granite4">https://ollama.com/library/granite4</a></li>
-<li id="ref-33">Ollama library, nemotron-3.5-super: <a href="https://ollama.com/library/nemotron-3.5-super">https://ollama.com/library/nemotron-3.5-super</a></li>
-<li id="ref-34">Ollama library, lfm2.5-thinking: <a href="https://ollama.com/library/lfm2.5-thinking">https://ollama.com/library/lfm2.5-thinking</a></li>
-<li id="ref-35">Ollama model library: <a href="https://ollama.com/library?sort=popular">https://ollama.com/library?sort=popular</a></li>
-<li id="ref-36">Ollama docs, FAQ: <a href="https://docs.ollama.com/faq">https://docs.ollama.com/faq</a></li>
-<li id="ref-37">Ollama docs, Windows: <a href="https://docs.ollama.com/windows">https://docs.ollama.com/windows</a></li>
-<li id="ref-38">Ollama v0.40.5 source, <code>num_ctx</code> passed to the MLX runner (<code>mlxrunner.NewClient</code>) and reported as its context length: <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/sched.go">https://github.com/ollama/ollama/blob/v0.40.5/server/sched.go</a> · <a href="https://github.com/ollama/ollama/blob/v0.40.5/mlxrunner/client.go">https://github.com/ollama/ollama/blob/v0.40.5/mlxrunner/client.go</a></li>
-<li id="ref-39">Qwen3.6-35B-A3B model card (sampling parameters): <a href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B">https://huggingface.co/Qwen/Qwen3.6-35B-A3B</a></li>
-<li id="ref-40">Qwen3.6-27B model card: <a href="https://huggingface.co/Qwen/Qwen3.6-27B">https://huggingface.co/Qwen/Qwen3.6-27B</a></li>
-<li id="ref-41">Qwen3.5-122B-A10B model card (sampling parameters): <a href="https://huggingface.co/Qwen/Qwen3.5-122B-A10B">https://huggingface.co/Qwen/Qwen3.5-122B-A10B</a></li>
-<li id="ref-42">Qwen3.5-9B model card: <a href="https://huggingface.co/Qwen/Qwen3.5-9B">https://huggingface.co/Qwen/Qwen3.5-9B</a></li>
-<li id="ref-43">mlx-lm README (<code>iogpu.wired_limit_mb</code>): <a href="https://github.com/ml-explore/mlx-lm">https://github.com/ml-explore/mlx-lm</a></li>
-<li id="ref-44">Ollama v0.40.1 source, runner preference for manifest lists (<code>runnerPreferences</code>): <a href="https://github.com/ollama/ollama/blob/v0.40.1/manifest/manifest.go">https://github.com/ollama/ollama/blob/v0.40.1/manifest/manifest.go</a></li>
-<li id="ref-45">Ollama v0.40.1 source, <code>ollama ps</code> columns: <a href="https://github.com/ollama/ollama/blob/v0.40.1/cmd/cmd.go">https://github.com/ollama/ollama/blob/v0.40.1/cmd/cmd.go</a></li>
-<li id="ref-46">OpenCode 2 docs, Models: <a href="https://opencode.ai/v2/docs/models">https://opencode.ai/v2/docs/models</a></li>
-<li id="ref-47">OpenCode PR #53438, shared local provider discovery (in 2.0.24+): <a href="https://github.com/anomalyco/opencode/pull/53438">https://github.com/anomalyco/opencode/pull/53438</a></li>
-<li id="ref-48">OpenCode 2 docs, Providers: <a href="https://opencode.ai/v2/docs/providers">https://opencode.ai/v2/docs/providers</a></li>
-<li id="ref-49">OpenCode 2 docs, Compaction: <a href="https://opencode.ai/v2/docs/compaction">https://opencode.ai/v2/docs/compaction</a></li>
-<li id="ref-50">OpenCode PR #53685, reject malformed tool arguments (in 2.0.25): <a href="https://github.com/anomalyco/opencode/pull/53685">https://github.com/anomalyco/opencode/pull/53685</a></li>
-<li id="ref-51">OpenCode config schema: <a href="https://opencode.ai/config.json">https://opencode.ai/config.json</a></li>
-<li id="ref-52">OpenCode 2 docs, Agents: <a href="https://opencode.ai/v2/docs/agents">https://opencode.ai/v2/docs/agents</a></li>
-<li id="ref-53">OpenCode 2 docs, MCP servers: <a href="https://opencode.ai/v2/docs/mcp-servers">https://opencode.ai/v2/docs/mcp-servers</a></li>
+<li id="ref-16">Ollama v0.40.5 source, default thinking per model (local models default thinking on; Qwen 3.8 defaults to "medium"), applied to chat requests that don't set it: <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/model_thinking.go">https://github.com/ollama/ollama/blob/v0.40.5/server/model_thinking.go</a> · <a href="https://github.com/ollama/ollama/blob/v0.40.5/model/renderers/thinking.go">https://github.com/ollama/ollama/blob/v0.40.5/model/renderers/thinking.go</a></li>
+<li id="ref-17">Ollama source, tool support read from the model's chat template (<code>chatTemplateHasToolSupport</code>, v0.40.1) or from its built-in tool-call parser (<code>parserCapabilities</code>, v0.40.5): <a href="https://github.com/ollama/ollama/blob/v0.40.1/server/images.go">https://github.com/ollama/ollama/blob/v0.40.1/server/images.go</a> · <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/images.go">https://github.com/ollama/ollama/blob/v0.40.5/server/images.go</a></li>
+<li id="ref-18">Ollama v0.40.5 source, llama.cpp's Jinja chat template used unless Ollama renders the chat itself (<code>DisableJinja: usesOllamaRenderedChat(m)</code>): <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/routes.go">https://github.com/ollama/ollama/blob/v0.40.5/server/routes.go</a></li>
+<li id="ref-19">Ollama registry manifests and config blobs (<code>runner</code>, <code>format</code> and <code>parser</code> fields), e.g. <a href="https://registry.ollama.ai/v2/library/qwen3.5/manifests/9b">https://registry.ollama.ai/v2/library/qwen3.5/manifests/9b</a></li>
+<li id="ref-20">Apple MacBook Pro tech specs: <a href="https://support.apple.com/en-us/111893">111893</a> · <a href="https://support.apple.com/en-us/111902">111902</a> · <a href="https://support.apple.com/en-us/111901">111901</a> · <a href="https://support.apple.com/en-us/111869">111869</a> · <a href="https://support.apple.com/en-us/111340">111340</a> · <a href="https://support.apple.com/en-us/111838">111838</a> · <a href="https://support.apple.com/en-us/117735">117735</a> · <a href="https://support.apple.com/en-us/117736">117736</a> · <a href="https://support.apple.com/en-us/117737">117737</a> · <a href="https://support.apple.com/en-us/121552">121552</a> · <a href="https://support.apple.com/en-us/121553">121553</a> · <a href="https://support.apple.com/en-us/121554">121554</a> · <a href="https://support.apple.com/en-us/125405">125405</a> · <a href="https://support.apple.com/en-us/126318">126318</a> · <a href="https://support.apple.com/en-us/126319">126319</a></li>
+<li id="ref-21">NVIDIA professional laptop GPU comparison: <a href="https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/">https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/</a></li>
+<li id="ref-22">Dell specs: Latitude 7350 <a href="https://dl.dell.com/content/manual34075453-latitude-7350-owner-s-manual.pdf">owner's manual</a> · Pro 14 Premium PA14250 <a href="https://dl.dell.com/content/manual2592419-dell-pro-14-premium-pa14250-owner-s-manual.pdf">owner's manual</a> · PA14260 <a href="https://dl.dell.com/content/manual19413430-dell-pro-14-premium-pa14260-setup-and-specifications.pdf">setup and specifications</a> · Pro Max 16 <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-laptop-spec-sheet.pdf">spec sheet</a> · Pro Max 16 Plus <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/technical-support/dell-pro-max-16-plus-laptop-spec-sheet.pdf">spec sheet</a></li>
+<li id="ref-23">Ollama library, granite4.2: <a href="https://ollama.com/library/granite4.2">https://ollama.com/library/granite4.2</a></li>
+<li id="ref-24">Ollama library tags pages, e.g. <a href="https://ollama.com/library/qwen3.5/tags">https://ollama.com/library/qwen3.5/tags</a></li>
+<li id="ref-25">Ollama docs, Hardware support (GPU, Vulkan): <a href="https://docs.ollama.com/gpu">https://docs.ollama.com/gpu</a></li>
+<li id="ref-26">Dell, Dell Pro Precision 5 Series 16 (PW516261) brochure: <a href="https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf">https://www.delltechnologies.com/asset/en-us/products/workstations/briefs-summaries/dell-pro-precision-5-series-16-laptop-pw516261-brochure.pdf</a>; Dell support page: <a href="https://www.dell.com/support/product-details/en-us/product/dell-pro-precision-pw516261-laptop/overview">https://www.dell.com/support/product-details/en-us/product/dell-pro-precision-pw516261-laptop/overview</a></li>
+<li id="ref-27">Ollama library, north-mini-code-1.0: <a href="https://ollama.com/library/north-mini-code-1.0">https://ollama.com/library/north-mini-code-1.0</a></li>
+<li id="ref-28">Hugging Face model cards: <a href="https://huggingface.co/Qwen">Qwen</a> · <a href="https://huggingface.co/google/gemma-4-12B-it">Gemma 4 12B</a> · <a href="https://huggingface.co/LiquidAI/LFM2.5-8B-A1B">LFM2.5-8B-A1B</a></li>
+<li id="ref-29">Qwen3.8-27B model card: <a href="https://huggingface.co/Qwen/Qwen3.8-27B">https://huggingface.co/Qwen/Qwen3.8-27B</a></li>
+<li id="ref-30">Ollama library, gemma4 (26B A4B: total and active parameters): <a href="https://ollama.com/library/gemma4">https://ollama.com/library/gemma4</a></li>
+<li id="ref-31">Ornith-1.0-9B model card: <a href="https://huggingface.co/ornith-ai/Ornith-1.0-9B-GGUF">https://huggingface.co/ornith-ai/Ornith-1.0-9B-GGUF</a></li>
+<li id="ref-32">Ollama library, ornith-1.5: <a href="https://ollama.com/library/ornith-1.5">https://ollama.com/library/ornith-1.5</a></li>
+<li id="ref-33">Ollama library, qwen3.8-flash-next (parameters and license): <a href="https://ollama.com/library/qwen3.8-flash-next">https://ollama.com/library/qwen3.8-flash-next</a></li>
+<li id="ref-34">Ollama library, granite4 (sizes and license): <a href="https://ollama.com/library/granite4">https://ollama.com/library/granite4</a></li>
+<li id="ref-35">Ollama library, nemotron-3.5-super: <a href="https://ollama.com/library/nemotron-3.5-super">https://ollama.com/library/nemotron-3.5-super</a></li>
+<li id="ref-36">Ollama library, lfm2.5-thinking: <a href="https://ollama.com/library/lfm2.5-thinking">https://ollama.com/library/lfm2.5-thinking</a></li>
+<li id="ref-37">Ollama model library: <a href="https://ollama.com/library?sort=popular">https://ollama.com/library?sort=popular</a></li>
+<li id="ref-38">Ollama docs, FAQ: <a href="https://docs.ollama.com/faq">https://docs.ollama.com/faq</a></li>
+<li id="ref-39">Ollama docs, Windows: <a href="https://docs.ollama.com/windows">https://docs.ollama.com/windows</a></li>
+<li id="ref-40">Ollama v0.40.5 source, <code>num_ctx</code> passed to the MLX runner (<code>mlxrunner.NewClient</code>) and reported as its context length: <a href="https://github.com/ollama/ollama/blob/v0.40.5/server/sched.go">https://github.com/ollama/ollama/blob/v0.40.5/server/sched.go</a> · <a href="https://github.com/ollama/ollama/blob/v0.40.5/mlxrunner/client.go">https://github.com/ollama/ollama/blob/v0.40.5/mlxrunner/client.go</a></li>
+<li id="ref-41">Qwen3.6-35B-A3B model card (sampling parameters): <a href="https://huggingface.co/Qwen/Qwen3.6-35B-A3B">https://huggingface.co/Qwen/Qwen3.6-35B-A3B</a></li>
+<li id="ref-42">Qwen3.6-27B model card: <a href="https://huggingface.co/Qwen/Qwen3.6-27B">https://huggingface.co/Qwen/Qwen3.6-27B</a></li>
+<li id="ref-43">Qwen3.5-122B-A10B model card (sampling parameters): <a href="https://huggingface.co/Qwen/Qwen3.5-122B-A10B">https://huggingface.co/Qwen/Qwen3.5-122B-A10B</a></li>
+<li id="ref-44">Qwen3.5-9B model card: <a href="https://huggingface.co/Qwen/Qwen3.5-9B">https://huggingface.co/Qwen/Qwen3.5-9B</a></li>
+<li id="ref-45">mlx-lm README (<code>iogpu.wired_limit_mb</code>): <a href="https://github.com/ml-explore/mlx-lm">https://github.com/ml-explore/mlx-lm</a></li>
+<li id="ref-46">Ollama v0.40.1 source, runner preference for manifest lists (<code>runnerPreferences</code>): <a href="https://github.com/ollama/ollama/blob/v0.40.1/manifest/manifest.go">https://github.com/ollama/ollama/blob/v0.40.1/manifest/manifest.go</a></li>
+<li id="ref-47">Ollama v0.40.1 source, <code>ollama ps</code> columns: <a href="https://github.com/ollama/ollama/blob/v0.40.1/cmd/cmd.go">https://github.com/ollama/ollama/blob/v0.40.1/cmd/cmd.go</a></li>
+<li id="ref-48">OpenCode 2 docs, Models: <a href="https://opencode.ai/v2/docs/models">https://opencode.ai/v2/docs/models</a></li>
+<li id="ref-49">OpenCode PR #53438, shared local provider discovery (in 2.0.24+): <a href="https://github.com/anomalyco/opencode/pull/53438">https://github.com/anomalyco/opencode/pull/53438</a></li>
+<li id="ref-50">OpenCode 2 docs, Providers: <a href="https://opencode.ai/v2/docs/providers">https://opencode.ai/v2/docs/providers</a></li>
+<li id="ref-51">OpenCode source, config model overrides applied after provider discovery (<code>packages/core/src/config/plugin/provider.ts</code>, production branch), and PR #55778 (in 2.0.31), configured limits seeded before model transforms: <a href="https://github.com/anomalyco/opencode/blob/production/packages/core/src/config/plugin/provider.ts">https://github.com/anomalyco/opencode/blob/production/packages/core/src/config/plugin/provider.ts</a> · <a href="https://github.com/anomalyco/opencode/pull/55778">https://github.com/anomalyco/opencode/pull/55778</a></li>
+<li id="ref-52">OpenCode 2 docs, Compaction: <a href="https://opencode.ai/v2/docs/compaction">https://opencode.ai/v2/docs/compaction</a></li>
+<li id="ref-53">OpenCode PR #53685, reject malformed tool arguments (in 2.0.25): <a href="https://github.com/anomalyco/opencode/pull/53685">https://github.com/anomalyco/opencode/pull/53685</a></li>
+<li id="ref-54">OpenCode config schema: <a href="https://opencode.ai/config.json">https://opencode.ai/config.json</a></li>
+<li id="ref-55">OpenCode 2 docs, Agents: <a href="https://opencode.ai/v2/docs/agents">https://opencode.ai/v2/docs/agents</a></li>
+<li id="ref-56">OpenCode 2 docs, MCP servers: <a href="https://opencode.ai/v2/docs/mcp-servers">https://opencode.ai/v2/docs/mcp-servers</a></li>
 </ol>
 
 <!-- STATE (read by the update process; not shown on the page)
-refreshed: 2026-10-15
+refreshed: 2026-10-16
 [source versions]
-opencode_stable: v2.0.30
+opencode_stable: v2.0.31
 ollama_stable: v0.40.5
 aa_index_version: 4.3.2
 aa_coding_column: terminalBench21
 aa_general_score: GS = hle 10, critpt 5, omniscience penalty 15 (correct +1, abstain 0, wrong -0.5; wrong = omniscienceAccuracy - omniscience/100; rescaled 0-1), lcr 5 (all required)
-lmarena_publish_date: 2026-10-13
+lmarena_publish_date: 2026-10-15
 macbook_pro_newest: MacBook Pro (14-inch, M5 Pro or M5 Max)
 dell_next_gen_found: Dell Pro Precision 5 Series 16 PW516261 (added to Windows 32 GB tier 2026-10-15 at user request; link to MC16260 unconfirmed)
 mac_tag_choice: best build per model per tier, GGUF or MLX (MLX within 10% wins); user decision 2026-10-15
 open_watched_issues: 18754,16279,18131,17426,15880,17362,18840,17778,18649,18390,18354,16383,18053,18530,17882,17562,11991,12203,17197,16992,17957,13820,17602,17638,17656,18269
-fleet_sha256: 5004d588927e3b657872d02742a9dad2db8dff41df8164bf55f3bcf2b5d7b29c
-candidates_sha256: ec02bc5cd0435ae8e400c7262285b9701cc63f47063d26a1d55b0be77ac6eb68
+fleet_sha256: 0334ec9a6f365048d565a176537d8ae5666ca27c985075a1167528b6a2c04742
+candidates_sha256: c65b9620e4512608cb7897744537d3fc80de14dc734195cf25298c7bb87307bd
 [picks]
 Mac M1 8 GB | general | 1 | granite4.2:3b-q4_K_M | GS 18.9
 Mac M1 8 GB | general | 2 | qwen3:4b-thinking-2507-q4_K_M | GS 14.6
@@ -2947,11 +3050,11 @@ Mac 32-36 GB | general | 2 | qwen3.6:27b-q4_K_M | GS 32.0
 Mac 32-36 GB | general | 3 | muse-glimmer:30b-nvfp4 | GS 32.0
 Mac 32-36 GB | general | 4 | gemma4:26b-nvfp4 | GS 24.7
 Mac 32-36 GB | general | 5 | qwen3.8:27b-nvfp4 | GS 27.1
-Mac 32-36 GB | coding | 1 | qwen3.8:27b-nvfp4 | TB 65.2 flag
-Mac 32-36 GB | coding | 2 | qwen3.6:27b-q4_K_M | TB 60.7 flag
-Mac 32-36 GB | coding | 3 | muse-glimmer:30b-nvfp4 | TB 51.7
-Mac 32-36 GB | coding | 4 | ornith-1.5:9b | TB 46.2 vendor
-Mac 32-36 GB | coding | 5 | gemma4:26b-nvfp4 | TB 39.0 flag
+Mac 32-36 GB | coding | 1 | ornith-1.5:35b | TB 67.8 vendor
+Mac 32-36 GB | coding | 2 | ornith:35b-q4_K_M | TB 64.2 vendor flag
+Mac 32-36 GB | coding | 3 | qwen3.8:27b-nvfp4 | TB 65.2 flag
+Mac 32-36 GB | coding | 4 | qwen3.6:27b-q4_K_M | TB 60.7 flag
+Mac 32-36 GB | coding | 5 | muse-glimmer:30b-nvfp4 | TB 51.7
 Mac 48-96 GB | general | 1 | qwen3.6:35b-a3b-nvfp4 | GS 30.4
 Mac 48-96 GB | general | 2 | qwen3.5:27b-int4 | GS 29.0
 Mac 48-96 GB | general | 3 | qwen3.6:27b-nvfp4 | GS 32.0
@@ -2978,15 +3081,14 @@ Latitude 7350 | general | 3 | lfm2.5:8b-a1b-q4_K_M | GS 12.8
 Latitude 7350 | general | 4 | qwen3:4b-thinking-2507-q4_K_M | GS 14.6
 Latitude 7350 | general | 5 | qwen3.5:0.8b-q8_0 | GS 8.7
 Latitude 7350 | coding | 1 | qwen3.5:4b-q4_K_M | TB 25.8 flag
-Windows 32 GB | general | 1 | qwen3.5:35b-a3b-q4_K_M | GS 26.7
-Windows 32 GB | general | 2 | gemma4:26b-a4b-it-qat | GS 24.7
-Windows 32 GB | general | 3 | qwen3:30b-a3b-thinking-2507-q4_K_M | GS 20.3
-Windows 32 GB | general | 4 | qwen3.5:4b-q4_K_M | GS 19.9
-Windows 32 GB | general | 5 | granite4.2:8b-q4_K_M | GS 22.7
-Windows 32 GB | coding | 1 | ornith:35b-q4_K_M | TB 64.2 vendor flag
-Windows 32 GB | coding | 2 | gemma4:26b-a4b-it-qat | TB 39.0 flag
-Windows 32 GB | coding | 3 | north-mini-code-1.0:q4_K_M | TB 35.6 flag
-Windows 32 GB | coding | 4 | qwen3.5:4b-q4_K_M | TB 25.8 flag
+Windows 32 GB | general | 1 | gemma4:26b-a4b-it-qat | GS 24.7
+Windows 32 GB | general | 2 | qwen3:30b-a3b-thinking-2507-q4_K_M | GS 20.3
+Windows 32 GB | general | 3 | qwen3.5:4b-q4_K_M | GS 19.9
+Windows 32 GB | general | 4 | granite4.2:8b-q4_K_M | GS 22.7
+Windows 32 GB | general | 5 | granite4.2:3b-q4_K_M | GS 18.9
+Windows 32 GB | coding | 1 | gemma4:26b-a4b-it-qat | TB 39.0 flag
+Windows 32 GB | coding | 2 | north-mini-code-1.0:q4_K_M | TB 35.6 flag
+Windows 32 GB | coding | 3 | qwen3.5:4b-q4_K_M | TB 25.8 flag
 Pro Max 16 Plus, 8-16 GB GPU | general | 1 | qwen3.6:35b-a3b-q4_K_M | GS 30.4
 Pro Max 16 Plus, 8-16 GB GPU | general | 2 | qwen3.5:35b-a3b-q4_K_M | GS 26.7
 Pro Max 16 Plus, 8-16 GB GPU | general | 3 | gemma4:26b-a4b-it-qat | GS 24.7
