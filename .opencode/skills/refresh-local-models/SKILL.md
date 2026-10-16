@@ -30,7 +30,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
    - Place every new row in a tier per `tier_rules` in `machines.yaml`: Macs by memory, Windows by GPU/RAM class. A Machine whose bandwidth is far below the rest of its tier (like the base M1, ~67 GB/s vs 100+) gets its own tier, so it doesn't drag the tier's "one fast pick" down.
    Done when: every rule checked and every row in `machines` has a tier and a `source` URL.
 
-5. **Candidates.** `scripts/ollama_library.py --tools` lists models with the `tools` badge. Keep: every model in the previous Picks, plus every model updated in the last 12 months. Drop cloud-only models (`scripts/ollama_library.py tags <model>` shows no local sizes). Rank GGUF tags only (`q4_K_M`, `-it-qat`, or 8-bit where no 4-bit exists); `-mlx`, `-nvfp4`, `-mxfp8`, `-int4`, `-int8` are Apple-only MLX formats and appear only as optional Mac swaps. Also check every model updated in the last 12 months that lacks the badge: Ollama still reports tool support when the registry config blob has no `renderer` and the GGUF `tokenizer.chat_template` handles tools (Ollama v0.40.1 `server/images.go`, `chatTemplateHasToolSupport`). Read the template with a ranged GET of the model blob's GGUF header. Such models are candidates; decision models (`decision` capability) never are. Note the rest under "Considered and left out". Record each candidate's tags, sizes, total/active params, license, origin (Ollama page, vendor model card on Hugging Face).
+5. **Candidates.** `scripts/ollama_library.py --tools` lists models with the `tools` badge. Keep: every model in the previous Picks, plus every model updated in the last 12 months. Drop cloud-only models (`scripts/ollama_library.py tags <model>` shows no local sizes). Record both formats: GGUF tags (`q4_K_M`, `-it-qat`, or 8-bit where no 4-bit exists) and MLX tags (`-nvfp4`, `-mlx`, `-int4`, or `-mxfp8`/`-int8` where no 4-bit exists; Apple silicon only). MLX tag size = sum of the manifest's layer sizes. Windows tiers use GGUF only; Mac tiers pick per model per **Mac tag choice**. Also check every model updated in the last 12 months that lacks the badge: Ollama still reports tool support when the registry config blob has no `renderer` and the GGUF `tokenizer.chat_template` handles tools (Ollama v0.40.1 `server/images.go`, `chatTemplateHasToolSupport`). Read the template with a ranged GET of the model blob's GGUF header. Such models are candidates; decision models (`decision` capability) never are. Note the rest under "Considered and left out". Record each candidate's tags, sizes, total/active params, license, origin (Ollama page, vendor model card on Hugging Face).
    Done when: every kept candidate has sizes and params.
 
 6. **Scores.** `scripts/aa.py fetch`, then `scripts/aa.py show "<name>"`.
@@ -43,7 +43,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
 7. **Bugs.** For each candidate, search open issues by model name and by its parser name (Ranking rule 3): `https://api.github.com/search/issues?q=repo:ollama/ollama+<name>+in:title+state:open`. Also re-check every issue in the Report's Watched issues table (`https://api.github.com/repos/ollama/ollama/issues/<n>`).
    Done when: every candidate and watched issue checked.
 
-8. **Fit, speed, rank.** Put every candidate (tag, size, active/total params, AA rows, family, vendor score) and every Machine from `machines.yaml` into a throwaway script in the temp directory, and compute fit, speed and rank there with **Fit rules**, **Speed estimate** and **Ranking rules**. Ranking by hand is how the first Refresh got 31 audit errors.
+8. **Fit, speed, rank.** Put every candidate (tag, size, active/total params, AA rows, family, vendor score) and every Machine from `machines.yaml` into a throwaway script in the temp directory, and compute fit, speed and rank there with **Fit rules**, **Mac tag choice**, **Speed estimate** and **Ranking rules**. Ranking by hand is how the first Refresh got 31 audit errors.
    Done when: the script prints 1-5 picks per tier × use case (or none), with speed ranges.
 
 9. **Paid equivalents and config.** `scripts/aa.py nearest "<AA name>"` per pick. Re-verify each config claim against the pages in **Config sources**.
@@ -87,7 +87,7 @@ Paste this to the audit subagent, verbatim:
 > 3. Every Ollama tag: it exists on `https://ollama.com/library/<model>/tags`, and its size matches (`scripts/ollama_library.py tags <model>`).
 > 4. Every score (GS, TB) against `scripts/aa.py show "<name>"`, including the "E" marker and the effort row.
 > 5. Every Equivalent paid model against `scripts/aa.py nearest "<AA name>"`.
-> 6. Every rank against the Ranking rules in `.opencode/skills/refresh-local-models/SKILL.md`.
+> 6. Every rank against the Ranking rules, and every Mac tag (MLX or GGUF) against the Mac tag choice rules, in `.opencode/skills/refresh-local-models/SKILL.md`.
 > 7. Every Est. tok/s against the Speed estimate formula there.
 > 8. Every issue number and its state against `https://api.github.com/repos/ollama/ollama/issues/<n>`.
 > 9. Every config claim against the page cited for it.
@@ -99,12 +99,27 @@ Paste this to the audit subagent, verbatim:
 
 ## Fit rules (estimates)
 
+Sizes: a GGUF tag's size is the rounded figure on its tags page (`scripts/ollama_library.py tags`); for an MLX tag use the sum of its manifest's layer sizes to one decimal (the tags page only shows a rounded figure, and the script prints `?`). Apply every rule (fit, speed, rank) to these figures, not to exact byte counts.
+
 - Mac up to 36 GB: weights <= 60% of unified memory (macOS GPU cap + 64k context + OS).
-- Mac 48 GB and up: weights + KV cache at 64k context <= RAM - 16 GB (macOS and apps); above macOS's default GPU cap (~2/3 of RAM below 64 GB, ~3/4 at 64 GB+) this needs `iogpu.wired_limit_mb` raised (Report config section 3). KV cache = f16 K+V for the attention layers only, computed from the GGUF header (`block_count`, `attention.head_count_kv` (array → per layer, 0 = no attention), `key_length`/`value_length`, `full_attention_interval`, `sliding_window` + pattern: sliding layers hold only the window). Check the advised `num_ctx` (Report config section 2) the same way.
+- Mac 48 GB and up: weights + KV cache at 64k context <= RAM - 16 GB (macOS and apps); above macOS's default GPU cap (~2/3 of RAM up to 36 GB, ~3/4 above; unsourced) this needs `iogpu.wired_limit_mb` raised (Report config section 3). KV cache = f16 K+V for the attention layers only, computed from the GGUF header (`block_count`, `attention.head_count_kv` (array → per layer, 0 = no attention), `key_length`/`value_length`, `full_attention_interval`, `sliding_window` + pattern: sliding layers hold only the window). An MLX tag uses the KV cache of the same model's GGUF header (same architecture). Both engines also keep a prompt cache of up to 8 GiB (llama-server's default `--cache-ram 8192`, which Ollama leaves set for non-decision models in `llm/llama_server.go`; MLX's `maxPagedOutBytes` in `mlxrunner/prefix_cache.go`); the Fit rules count it for neither, so it never favours one format. Check the advised `num_ctx` (Report config section 2) the same way.
 - Windows discrete GPU, model in VRAM: weights <= VRAM - 3 GB. A model too big for that runs split with system RAM (next rule).
 - Windows, MoE split GPU/system RAM or integrated GPU: weights <= RAM - 10 GB.
 - Agentic coding needs 64k context (Ollama's OpenCode minimum: https://docs.ollama.com/integrations/opencode).
-- Mac tags: rank GGUF tags; rank an MLX tag (for both use cases) only when its GGUF tag doesn't fit. ollama/ollama#18620 (MLX tool-call leak) was fixed in Ollama v0.40.4, so MLX tags are no longer barred from coding. Mac General tables carry an **MLX swap** column naming the `-nvfp4` tag of the same model (else `-mlx`; `—` if none; say "avoid" when an open bug hits only the MLX tag) (size = sum of the manifest's layer sizes). Since Ollama 0.40, short tags (e.g. `qwen3.5:9b`) can be manifest lists with an MLX and a GGUF child, and Apple silicon picks MLX; list explicit GGUF tags (check the manifest's `runner` with `Accept: application/vnd.ollama.manifest.list.v2+json`).
+
+## Mac tag choice
+
+On Mac tiers each model is ranked once, as its best tag in either format (the user's call, 2026-10-15: "the best model for the tier, no matter if it's MLX or GGUF"). Scores belong to the model, so the tag only changes fit and speed.
+
+1. Drop tags that fail the Fit rules on any Machine in the tier or the speed filter (Ranking rule 1), or that a confirmed open bug hits (Ranking rule 3, or any confirmed MLX-only bug for that model) while the other format is clear.
+2. Of the rest, take the tag with the highest Est. tok/s on the tier's slowest Machine (Speed estimate; same formula for both formats, no MLX bonus).
+3. If an MLX tag is within 10% of that speed, take the MLX tag instead, unless it would drop below 15 tok/s on a Machine where the faster tag reaches 15. Reason: MLX is Ollama's default on Apple silicon and Ollama reports NVFP4 ~20% faster than q4_K_M (cite the Ollama blog; unverified on the fleet). Among qualifying MLX tags prefer `-nvfp4` (Ollama: NVFP4 keeps accuracy), then the fastest of `-mlx`/`-int4`. `-mlx` tags often hold the `-nvfp4` weights; compare manifest tensor digests.
+4. Ranking rule 4 compares each model at its **fastest** tag's speed, so the MLX preference never moves a pick down; the table shows the chosen tag and its own speed. Ranking rule 5 uses the shown tag's speed.
+5. A vendor score published for one specific quantized tag (e.g. NVIDIA's NVFP4 Terminal-Bench) applies to that tag only. If tags of one model then differ in score, take the tag that ranks higher (more than 3 points apart: the higher score; otherwise steps 2-3).
+6. Tables have no MLX swap column; the Tag column shows the chosen tag, in either format. The Model reference lists both formats per model with sizes.
+7. MLX tags must still report tool support: safetensors models get it from their `parser` (`parserCapabilities` in `server/images.go`), not from the GGUF chat template. Check each MLX tag's default params blob too; some ship none or a different `num_ctx`.
+
+Always list explicit tags, never short tags: since Ollama 0.40 a short tag (e.g. `qwen3.5:9b`) can be a manifest list with an MLX and a GGUF child, and Apple silicon picks MLX (check the manifest's `runner` with `Accept: application/vnd.ollama.manifest.list.v2+json`). Open MLX-runner issues that aren't confirmed bugs (e.g. ollama/ollama#18754, low GPU use on an M4 Pro) go in the Model reference and Watched issues, with "if MLX isn't faster on your Mac, use the GGUF tag" and that tag named.
 
 ## Speed estimate
 
@@ -121,7 +136,7 @@ Est. tok/s = 0.6 × bandwidth (GB/s) ÷ GB read per token. GB read per token = t
 
 Sampling: check each pick's Ollama default params (`ollama show <tag> --modelfile` or the registry) against its vendor card; list any mismatch as a Modelfile override in the config section.
 
-Equivalent paid model: `scripts/aa.py nearest` (OpenAI, Anthropic, Google, xAI) on the score. Within 3 points it prefers measured, then current, then closest.
+Equivalent paid model: `scripts/aa.py nearest` (OpenAI, Anthropic, Google, xAI) on the score. Within 3 points it prefers current over deprecated, then closest.
 
 ## Config sources
 
