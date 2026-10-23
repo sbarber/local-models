@@ -64,6 +64,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
       <!-- STATE (read by the update process; not shown on the page)
       refreshed: YYYY-MM-DD
       [source versions]
+      library_checked: YYYY-MM-DD HH:MM UTC   (when step 5 read the library; the Change check flags later updates, same day included)
       opencode_stable: vX.Y.Z
       ...
       [picks]
@@ -79,7 +80,10 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
     4. Fix every error it reports. Then re-check only the fixed claims yourself against their sources, rerun step 1, and stop. Don't dispatch a second full audit; if the fixes were large (a new tier, a rule change), dispatch the brief again with a diff of just the fixes.
     Done when: both scripts pass, and every audit finding is fixed and re-checked.
 
-12. **Tell the user the Diff** in chat, plus the number of errors the audit caught and fixed: Stack versions, machines added, picks added/dropped/moved per tier and use case, score changes over 3 points, config changes, watched issues closed. Compare every old STATE pick with the new ones. To publish after verification, push to `main`; the GitHub Pages workflow checks and deploys the report, and the site check verifies the live URL.
+12. **Publish.** Every Refresh ends published (the user's call, 2026-10-23); don't ask first. Commit everything the Refresh changed (`Refresh YYYY-MM-DD: <headline changes>`) and push to `main`. The "Verify and publish report" workflow tests, builds and deploys to GitHub Pages: follow it with `gh run watch` and confirm the live `local-models-report.html` shows the new **Updated:** date. If the workflow fails, fix the cause and push again; never leave a Refresh unpublished.
+    Done when: the workflow run succeeded and the live page shows the new date.
+
+13. **Tell the user the Diff** in chat, plus the number of errors the audit caught and fixed and the live URL: Stack versions, machines added, picks added/dropped/moved per tier and use case, score changes over 3 points, config changes, watched issues closed. Compare every old STATE pick with the new ones.
     Done when: every old and new STATE pick is accounted for.
 
 ## Audit brief

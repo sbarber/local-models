@@ -75,9 +75,10 @@ check("Artificial Analysis", aa)
 # 3. Ollama library: even models without the tools badge can support tools.
 def library():
     lib = json.loads(subprocess.check_output([sys.executable, "scripts/ollama_library.py", "--json"]))
-    fresh = updated_models(lib, refreshed)
+    since = state.get("library_checked", refreshed)
+    fresh = updated_models(lib, since)
     if fresh:
-        reasons.append("Ollama library models added/updated since " + refreshed + ": " + ", ".join(fresh))
+        reasons.append("Ollama library models added/updated since " + since + ": " + ", ".join(fresh))
 check("Ollama library", library)
 
 # 4. LMArena publish date

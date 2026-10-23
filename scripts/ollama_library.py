@@ -48,7 +48,8 @@ def library():
 def tags(model):
     page = get(f"https://ollama.com/library/{model}/tags")
     t = text(re.sub(r"<script.*?</script>", "", page, flags=re.S))
-    rows = re.findall(re.escape(model) + r":([\w.\-]+) [0-9a-f]{12} • ([\d.]+\s?[GMT]B) • (\S+) context window", t)
+    # A runner badge ("MLX") can sit between the tag and its digest, even on GGUF tags.
+    rows = re.findall(re.escape(model) + r":([\w.\-]+) (?:[A-Z]{2,5} )?[0-9a-f]{12} • ([\d.]+\s?[GMT]B) • (\S+) context window", t)
     seen, out = set(), []
     for tag, size, ctx in rows:
         if tag not in seen:

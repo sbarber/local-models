@@ -98,6 +98,8 @@ def choose_tag(model, tier, machines, use):
     for name, tag in model["tags"].items():
         if tag["format"] == "mlx" and not mac:
             continue
+        if mac and tag.get("mac") is False:  # e.g. NVFP4 GGUF: llama.cpp's Metal backend can't run it
+            continue
         size = tag_size(tag)
         if not all(fits(tier, machine, memory, tag, size, use) for machine, memory in machines):
             continue

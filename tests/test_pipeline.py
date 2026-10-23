@@ -64,6 +64,16 @@ class RankingTests(unittest.TestCase):
         chosen, _ = ranking.choose_tag(model, "Mac 16 GB", [({"bandwidth_gbs": 200}, 16)], "coding")
         self.assertEqual(chosen[0], "sample:gguf")
 
+    def test_tag_marked_not_for_mac_is_skipped_on_macs(self):
+        model = {"name": "sample", "total": 4, "active": None, "gs": 25.0, "tb": 30.0,
+                 "score_source": "AA", "tag_tb": {}, "flag": False,
+                 "tags": {"sample:gguf-nvfp4": {"format": "gguf", "size_gb": 3, "kv64k_gb": 0, "mac": False},
+                          "sample:q4": {"format": "gguf", "size_gb": 4, "kv64k_gb": 0}}}
+        chosen, _ = ranking.choose_tag(model, "Mac 16 GB", [({"bandwidth_gbs": 200}, 16)], "general")
+        self.assertEqual(chosen[0], "sample:q4")
+        chosen, _ = ranking.choose_tag(model, "Windows 32 GB", [({"bandwidth_gbs": 200}, 32)], "general")
+        self.assertEqual(chosen[0], "sample:gguf-nvfp4")
+
     def test_tool_call_flag_follows_chosen_tag(self):
         machines = [{"name": "mac", "memory_gb": [16], "bandwidth_gbs": 200, "tiers": {16: "Mac 16 GB"}}]
         fleet = {"tiers": {"Mac 16 GB": {}}, "machines": machines}
@@ -194,6 +204,8 @@ class ChangeDetectionTests(unittest.TestCase):
                   {"name": "also-local", "capabilities": ["cloud", "tools"],
                    "updated": "Oct 16, 2026 2:00 PM UTC"}]
         self.assertEqual(change_detection.updated_models(models, "2026-10-15"), ["no-badge", "also-local"])
+        self.assertEqual(change_detection.updated_models(models, "2026-10-16 13:00 UTC"), ["no-badge", "also-local"])
+        self.assertEqual(change_detection.updated_models(models, "2026-10-16 14:30 UTC"), [])
 
     def test_hash_ignores_file_timestamp_but_detects_same_day_edit(self):
         import tempfile
