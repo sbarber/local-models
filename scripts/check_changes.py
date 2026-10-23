@@ -28,7 +28,10 @@ for line in m.group(1).splitlines():
         picks.append([c.strip() for c in line.split("|")])
 
 def get(url, accept="application/json"):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": accept})
+    headers = {"User-Agent": "Mozilla/5.0", "Accept": accept}
+    if url.startswith("https://api.github.com/") and os.environ.get("GITHUB_TOKEN"):
+        headers["Authorization"] = f"Bearer {os.environ['GITHUB_TOKEN']}"  # avoids the anonymous rate limit
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=60) as r:
         return r.read().decode("utf-8", "ignore")
 

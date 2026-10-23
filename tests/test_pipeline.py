@@ -64,6 +64,20 @@ class RankingTests(unittest.TestCase):
         chosen, _ = ranking.choose_tag(model, "Mac 16 GB", [({"bandwidth_gbs": 200}, 16)], "coding")
         self.assertEqual(chosen[0], "sample:gguf")
 
+    def test_tool_call_flag_follows_chosen_tag(self):
+        machines = [{"name": "mac", "memory_gb": [16], "bandwidth_gbs": 200, "tiers": {16: "Mac 16 GB"}}]
+        fleet = {"tiers": {"Mac 16 GB": {}}, "machines": machines}
+        model = {"name": "sample", "total": 4, "active": None, "gs": 25.0, "tb": 30.0,
+                 "score_source": "AA", "tag_tb": {}, "flag": False,
+                 "tag_flag": {"sample:nvfp4": True},
+                 "tags": {"sample:gguf": {"format": "gguf", "size_gb": 4, "kv64k_gb": 0},
+                          "sample:nvfp4": {"format": "mlx", "size_gb": 4.3, "kv64k_gb": 0}}}
+        row = ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]
+        self.assertEqual((row["tag"], row["flag"]), ("sample:nvfp4", True))
+        model["tags"]["sample:nvfp4"]["size_gb"] = 6
+        row = ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]
+        self.assertEqual((row["tag"], row["flag"]), ("sample:gguf", False))
+
     def test_coding_floor_and_fast_fallback(self):
         machines = [{"name": "low", "memory_gb": [16], "bandwidth_gbs": 100,
                      "tiers": {16: "Mac 16 GB"}}]

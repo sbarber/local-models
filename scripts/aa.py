@@ -32,17 +32,37 @@ def _get(url):
         return r.read().decode("utf-8", "ignore")
 
 
-def fetch():
-    html = _get(URL)
+def _rsc(url):
+    html = _get(url)
     chunks = re.findall(r'self\.__next_f\.push\(\[1,(".*?")\]\)</script>', html, flags=re.S)
     if not chunks:
-        sys.exit("AA page format changed: no self.__next_f chunks found. Update scripts/aa.py.")
-    txt = "".join(json.loads(c) for c in chunks)
-    i = txt.find('{"models":[')
+        sys.exit(f"AA page format changed: no self.__next_f chunks found in {url}. Update scripts/aa.py.")
+    return "".join(json.loads(c) for c in chunks)
+
+
+def _scored_array(txt, key, url):
+    i = txt.find(f'"{key}":[{{')
     if i < 0:
-        sys.exit('AA page format changed: no {"models":[ array found. Update scripts/aa.py.')
-    models, _ = json.JSONDecoder().raw_decode(txt[i:])
-    models = models["models"]
+        sys.exit(f'AA page format changed: no "{key}":[ array in {url}. Update scripts/aa.py.')
+    arr, _ = json.JSONDecoder().raw_decode(txt[i + len(key) + 3:])
+    arr = [m for m in arr if isinstance(m, dict)]  # a model page refers to itself by "$" reference
+    if not (arr and "intelligenceIndex" in arr[0] and "terminalBench21" in arr[0]):
+        sys.exit(f'AA page format changed: "{key}" array in {url} has no score fields. Update scripts/aa.py.')
+    return arr
+
+
+def fetch():
+    # Since October 2026 the leaderboard embeds only current models ("initialModels").
+    # Deprecated models are still scored on every model page's "models" array, which
+    # names the creator in a "creator" object instead of "modelCreatorName".
+    models = _scored_array(_rsc(URL), "initialModels", URL)
+    page = f"https://artificialanalysis.ai/models/{models[0]['slug']}"
+    known = {m["name"] for m in models}
+    for m in _scored_array(_rsc(page), "models", page):
+        if m["name"] in known:
+            continue
+        m.setdefault("modelCreatorName", (m.get("creator") or {}).get("name"))
+        models.append(m)
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     with open(CACHE, "w") as f:
         json.dump(models, f)

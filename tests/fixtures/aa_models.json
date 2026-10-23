@@ -558,5 +558,47 @@
     "modelCreatorName": "Google",
     "isOpenWeights": true,
     "deprecated": false
+  },
+  {
+    "name": "NVIDIA Nemotron 3 Nano 4B",
+    "hle": 0.0486561631139944,
+    "critpt": 0,
+    "omniscienceAccuracy": 0.09566666666666666,
+    "omniscience": -70.53333333333333,
+    "lcr": 0.216666666666667,
+    "terminalBench21": 0.0374531835205993,
+    "intelligenceIndex": 4.76910061591993,
+    "intelligenceIndexIsEstimated": false,
+    "modelCreatorName": "NVIDIA",
+    "isOpenWeights": true,
+    "deprecated": false
+  },
+  {
+    "name": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
+    "hle": 0.113994439295644,
+    "critpt": 0.00857142857142857,
+    "omniscienceAccuracy": 0.173,
+    "omniscience": -51.56666666666667,
+    "lcr": 0.38,
+    "terminalBench21": 0.0674157303370786,
+    "intelligenceIndex": 8.8961440122188,
+    "intelligenceIndexIsEstimated": false,
+    "modelCreatorName": "NVIDIA",
+    "isOpenWeights": true,
+    "deprecated": false
+  },
+  {
+    "name": "Nemotron 3 Nano Omni 30B A3B Reasoning",
+    "hle": 0.0481927710843374,
+    "critpt": 0,
+    "omniscienceAccuracy": 0.152,
+    "omniscience": -57.43333333333333,
+    "lcr": 0.396666666666667,
+    "terminalBench21": 0.0674157303370786,
+    "intelligenceIndex": 10.2506761710987,
+    "intelligenceIndexIsEstimated": true,
+    "modelCreatorName": "NVIDIA",
+    "isOpenWeights": true,
+    "deprecated": false
   }
 ]

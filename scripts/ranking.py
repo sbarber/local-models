@@ -149,7 +149,9 @@ def rank(fleet, candidates, tier, use):
             "tag": tag, "score": score, "speed_min": min(speeds), "speed_max": maximum,
             "machine_speeds": speeds, "rank_speed": fastest_speed,
             "vendor": use == "coding" and (model["score_source"] == "vendor" or tag in model["tag_tb"]),
-            "flag": use == "coding" and model["flag"],
+            # Tags of one model can use different parsers (e.g. an MLX tag with a parser,
+            # a GGUF tag with none), so a tag-level flag overrides the model's.
+            "flag": use == "coding" and model.get("tag_flag", {}).get(tag, model["flag"]),
             "max_context": max_context(tier, machines, data, size),
         })
     rows.sort(key=lambda row: -row["score"])

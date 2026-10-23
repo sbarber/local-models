@@ -1,5 +1,5 @@
 {
-  "source_date": "2026-10-15",
+  "source_date": "2026-10-22",
   "models": [
     {
       "name": "qwen3.5:0.8b",
@@ -21,7 +21,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 0.8B (Reasoning)"
     },
     {
@@ -44,7 +44,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 2B (Reasoning)"
     },
     {
@@ -67,7 +67,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 4B (Reasoning)"
     },
     {
@@ -90,7 +90,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 9B (Reasoning)"
     },
     {
@@ -118,7 +118,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 27B (Reasoning)"
     },
     {
@@ -146,7 +146,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 35B A3B (Reasoning)"
     },
     {
@@ -164,7 +164,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.5 122B A10B (Reasoning)"
     },
     {
@@ -187,7 +187,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.6 27B (Reasoning)"
     },
     {
@@ -210,7 +210,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.6 35B A3B (Reasoning)"
     },
     {
@@ -233,7 +233,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.8 27B (Medium)"
     },
     {
@@ -256,7 +256,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3.8-Flash-Next"
     },
     {
@@ -279,7 +279,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Gemma 4 E2B (Reasoning)"
     },
     {
@@ -302,7 +302,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Gemma 4 E4B (Reasoning)"
     },
     {
@@ -325,7 +325,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Gemma 4 12B (Reasoning)"
     },
     {
@@ -348,7 +348,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Gemma 4 26B A4B (Reasoning)"
     },
     {
@@ -371,7 +371,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Gemma 4 31B (Reasoning)"
     },
     {
@@ -394,7 +394,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Muse Glimmer (High)"
     },
     {
@@ -436,13 +436,13 @@
           "kv64k_gb": 0.47
         },
         "nemotron-3.5-lightning:30b-a3b-nvfp4": {
-          "size_gb": 22.67,
+          "size_gb": 19.073,
           "format": "mlx",
           "kv64k_gb": 0.47
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Nemotron 3.5 Lightning"
     },
     {
@@ -465,7 +465,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "North Mini Code"
     },
     {
@@ -483,7 +483,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.2 3B"
     },
     {
@@ -501,7 +501,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.2 8B"
     },
     {
@@ -519,7 +519,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.2 30B"
     },
     {
@@ -537,7 +537,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.0 H 350M"
     },
     {
@@ -555,7 +555,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.0 H 1B"
     },
     {
@@ -573,7 +573,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Granite 4.0 Micro"
     },
     {
@@ -591,7 +591,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3 4B 2507 Instruct"
     },
     {
@@ -609,7 +609,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "LFM2.5-8B-A1B"
     },
     {
@@ -627,7 +627,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3 4B 2507 (Reasoning)"
     },
     {
@@ -645,7 +645,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3 30B A3B 2507 (Reasoning)"
     },
     {
@@ -663,7 +663,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3 Next 80B A3B (Reasoning)"
     },
     {
@@ -753,7 +753,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "gpt-oss-120b (High)"
     },
     {
@@ -771,7 +771,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "gpt-oss-20b (High)"
     },
     {
@@ -789,7 +789,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Nemotron 3 Super 120B A12B (Reasoning)"
     },
     {
@@ -807,7 +807,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Qwen3 Coder Next"
     },
     {
@@ -825,7 +825,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Devstral Small 2"
     },
     {
@@ -840,10 +840,15 @@
           "size_gb": 24.0,
           "format": "gguf",
           "kv64k_gb": 0.4
+        },
+        "nemotron-cascade-2:30b-a3b-nvfp4": {
+          "size_gb": 18.31,
+          "format": "mlx",
+          "kv64k_gb": 0.4
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Nemotron Cascade 2 30B A3B"
     },
     {
@@ -861,7 +866,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "GLM-4.7-Flash (Reasoning)"
     },
     {
@@ -879,7 +884,7 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Mistral Medium 3.5"
     },
     {
@@ -897,10 +902,124 @@
         }
       },
       "tag_tb": {},
-      "score_source": "AA (2026-10-15)",
+      "score_source": "AA (2026-10-22)",
       "aa_name": "Devstral 2"
+    },
+    {
+      "name": "flint:40b",
+      "total": 39.8,
+      "active": 2.5,
+      "gs": null,
+      "tb": 54.9,
+      "flag": false,
+      "tags": {
+        "flint:40b-a2b-qat-int4": {
+          "size_gb": 22.58,
+          "format": "mlx",
+          "kv64k_gb": 1.92
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "ornith-1.5:122b",
+      "total": 122,
+      "active": 10,
+      "gs": null,
+      "tb": 81.2,
+      "flag": false,
+      "tags": {
+        "ornith-1.5:122b-q4_K_M": {
+          "size_gb": 77.0,
+          "format": "gguf",
+          "kv64k_gb": 1.61
+        },
+        "ornith-1.5:122b-nvfp4": {
+          "size_gb": 73.39,
+          "format": "mlx",
+          "kv64k_gb": 1.61
+        }
+      },
+      "tag_flag": {
+        "ornith-1.5:122b-nvfp4": true
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null
+    },
+    {
+      "name": "nemotron-3-nano:4b",
+      "total": 4,
+      "active": null,
+      "gs": 10.1,
+      "tb": 3.7,
+      "flag": false,
+      "tags": {
+        "nemotron-3-nano:4b-q4_K_M": {
+          "size_gb": 2.8,
+          "format": "gguf",
+          "kv64k_gb": 1.07
+        },
+        "nemotron-3-nano:4b-nvfp4": {
+          "size_gb": 2.95,
+          "format": "mlx",
+          "kv64k_gb": 1.07
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-22)",
+      "aa_name": "NVIDIA Nemotron 3 Nano 4B"
+    },
+    {
+      "name": "nemotron-3-nano:30b",
+      "total": 30,
+      "active": 3,
+      "gs": 18.2,
+      "tb": 6.7,
+      "flag": false,
+      "tags": {
+        "nemotron-3-nano:30b-a3b-q4_K_M": {
+          "size_gb": 24.0,
+          "format": "gguf",
+          "kv64k_gb": 0.4
+        },
+        "nemotron-3-nano:30b-a3b-nvfp4": {
+          "size_gb": 18.31,
+          "format": "mlx",
+          "kv64k_gb": 0.4
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-22)",
+      "aa_name": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)"
+    },
+    {
+      "name": "nemotron3:33b",
+      "total": 33,
+      "active": 3,
+      "gs": 15.3,
+      "tb": 6.7,
+      "flag": false,
+      "tags": {
+        "nemotron3:33b-q4_K_M": {
+          "size_gb": 28.0,
+          "format": "gguf",
+          "kv64k_gb": 0.4
+        },
+        "nemotron3:33b-nvfp4": {
+          "size_gb": 21.19,
+          "format": "mlx",
+          "kv64k_gb": 0.4
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-10-22)",
+      "aa_name": "Nemotron 3 Nano Omni 30B A3B Reasoning"
     }
   ],
   "kv_note": "kv64k_gb: f16 K+V at 65536 tokens from the GGUF header of the model's GGUF tag (attention layers only; sliding layers hold the window). MLX tags use the same value. glm-4.7-flash uses MLA, so its figure overstates. qwen3-next has no full_attention_interval key; llama.cpp defaults it to 4 (src/models/qwen3next.cpp), so 12 of 48 layers hold context.",
-  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active."
+  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names.",
+  "tag_flag_note": "tag_flag overrides flag for one tag: ornith-1.5:122b-nvfp4 (MLX) uses the ornith parser (open #16992); the 122b-q4_K_M GGUF tag has no parser. flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) are omitted: their config requires Ollama 0.40.9, which is only a release candidate. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead."
 }
