@@ -40,12 +40,35 @@ def _rsc(url):
     return "".join(json.loads(c) for c in chunks)
 
 
+# Since late October 2026 the leaderboard nests scores in a "scores" object with kebab-case
+# eval slugs; model pages keep the flat camelCase fields. Map the slugs onto the flat names
+# (checked value-for-value against a model page's "models" array on 2026-10-26).
+SCORE_SLUGS = {
+    "humanitys-last-exam": "hle",
+    "critpt": "critpt",
+    "omniscience-accuracy": "omniscienceAccuracy",
+    "artificial-analysis-long-context-reasoning": "lcr",
+    "gpqa-diamond": "gpqa",
+    "terminalbench-hard": "terminalbenchHard",
+    "terminalbench-2-1": "terminalBench21",
+    "terminalbench-4-0": "terminalBench40",
+}
+
+
+def flatten_scores(m):
+    scores = m.pop("scores", None)
+    if isinstance(scores, dict):
+        for slug, field in SCORE_SLUGS.items():
+            m.setdefault(field, scores.get(slug))
+    return m
+
+
 def _scored_array(txt, key, url):
     i = txt.find(f'"{key}":[{{')
     if i < 0:
         sys.exit(f'AA page format changed: no "{key}":[ array in {url}. Update scripts/aa.py.')
     arr, _ = json.JSONDecoder().raw_decode(txt[i + len(key) + 3:])
-    arr = [m for m in arr if isinstance(m, dict)]  # a model page refers to itself by "$" reference
+    arr = [flatten_scores(m) for m in arr if isinstance(m, dict)]  # a model page refers to itself by "$" reference
     if not (arr and "intelligenceIndex" in arr[0] and "terminalBench21" in arr[0]):
         sys.exit(f'AA page format changed: "{key}" array in {url} has no score fields. Update scripts/aa.py.')
     return arr

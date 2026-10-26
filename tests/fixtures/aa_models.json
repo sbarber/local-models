@@ -600,5 +600,19 @@
     "modelCreatorName": "NVIDIA",
     "isOpenWeights": true,
     "deprecated": false
+  },
+  {
+    "name": "Nemotron 3.5 Bolt 74B-A9B",
+    "hle": 0.246524559777572,
+    "critpt": 0.0428571428571429,
+    "omniscienceAccuracy": 0.17083333333333334,
+    "omniscience": -19.166666666666668,
+    "lcr": 0.696666666666667,
+    "terminalBench21": null,
+    "intelligenceIndex": 21.4072054842003,
+    "intelligenceIndexIsEstimated": false,
+    "modelCreatorName": "NVIDIA",
+    "isOpenWeights": true,
+    "deprecated": false
   }
 ]

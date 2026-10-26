@@ -38,6 +38,14 @@ class RankingTests(unittest.TestCase):
                 self.assertGreater(info["size_gb"], 0)
                 self.assertIn(info["format"], ("gguf", "mlx"))
 
+    def test_two_bit_tags_are_vendor_qad_releases_only(self):
+        for model in self.candidates:
+            for tag, info in model["tags"].items():
+                if info.get("bits", 4) < 4:
+                    self.assertTrue(info.get("vendor_qad", "").startswith("https://"), tag)
+                    others = [t for t in model["tags"].values() if t is not info]
+                    self.assertTrue(all(t.get("bits", 4) < 4 for t in others), tag)
+
     def test_near_tie_prefers_mlx_but_faster_build_determines_rank(self):
         m = {"name": "sample", "total": 4, "active": None, "gs": 25.0, "tb": 30.0,
              "score_source": "AA", "tag_tb": {}, "flag": False,
@@ -216,6 +224,12 @@ class ChangeDetectionTests(unittest.TestCase):
             self.assertEqual(before, change_detection.content_hash(p))
             p.write_text("new")
             self.assertNotEqual(before, change_detection.content_hash(p))
+
+    def test_nested_leaderboard_scores_are_flattened(self):
+        m = aa.flatten_scores({"name": "x", "intelligenceIndex": 20,
+                               "scores": {"terminalbench-2-1": 0.3, "humanitys-last-exam": 0.1}})
+        self.assertEqual((m["terminalBench21"], m["hle"], m["lcr"]), (0.3, 0.1, None))
+        self.assertNotIn("scores", m)
 
     def test_zero_score_prints_as_zero(self):
         entry = {"name": "Zero", "gs": 0.0, "ii": 0, "ii_est": False, "tb21": 0.0,
