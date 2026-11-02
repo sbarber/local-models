@@ -39,7 +39,7 @@ One of the 5 highest-quality models for a Hardware tier and Use case that suppor
 _Avoid_: Best model, recommended model
 
 **General score (GS)**:
-The score that ranks General use: a weighted mean of the AA Intelligence Index's non-agentic, non-coding evals: HLE 10, CritPt 5, Omniscience penalty score 15, AA-LCR 5. The Omniscience penalty score gives +1 per correct answer, 0 per "I don't know" and −0.5 per wrong answer, so a model can't score well just by refusing (AA's non-hallucination rate rewards that).
+The score that ranks General use: a weighted mean of HLE 10, CritPt 5 and AA-LCR 5, the non-agentic, non-coding evals of the AA Intelligence Index up to v4.3.2 (AA's legacy columns since v5.0). AA-Omniscience is left out until its v1.1 covers the candidates (2026-11-02).
 _Avoid_: Intelligence Index (it is about half agentic and coding work), II
 
 **Equivalent paid model**:

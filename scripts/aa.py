@@ -10,8 +10,8 @@ Usage:
   scripts/aa.py fingerprint                # stable summary used by check-changes.sh
 
 Scores are printed as AA shows them (0-100). "E" = intelligence index estimated by AA.
-GS = General score: weighted mean of HLE, CritPt, an Omniscience penalty score and
-AA-LCR (see GS_WEIGHTS); blank when any input is missing.
+GS = General score: weighted mean of HLE, CritPt and AA-LCR (see GS_WEIGHTS);
+blank when any input is missing.
 """
 import json
 import os
@@ -110,8 +110,12 @@ def pct(x):
 #   score gives +1 per correct answer, 0 per abstention and -OMNI_PENALTY per wrong answer
 #   (the -0.5 the AA-Omniscience paper suggests, arXiv 2511.13029 section 5), rescaled to 0-1.
 # - CritPt weight 10 -> 5: small models score near 0 on its 70 problems, so it mostly adds noise.
+# Index v5.0 (October 2026) replaced AA-Omniscience v1 with v1.1 and dropped the v1 data; v1.1
+# covers few local models yet, so the omniscience penalty is left out (the user's call,
+# 2026-11-02) and GS uses the legacy HLE, CritPt and AA-LCR columns, which AA still publishes.
+# Restore "omniPenalty": 15 when v1.1 covers the candidates.
 OMNI_PENALTY = 0.5
-GS_WEIGHTS = {"hle": 10, "critpt": 5, "omniPenalty": 15, "lcr": 5}
+GS_WEIGHTS = {"hle": 10, "critpt": 5, "lcr": 5}
 
 
 def omni_penalty(m):

@@ -231,6 +231,12 @@ class ChangeDetectionTests(unittest.TestCase):
         self.assertEqual((m["terminalBench21"], m["hle"], m["lcr"]), (0.3, 0.1, None))
         self.assertNotIn("scores", m)
 
+    def test_general_score_needs_no_omniscience(self):
+        # Index v5.0 dropped AA-Omniscience v1 data; GS = HLE 10, CritPt 5, AA-LCR 5.
+        m = {"name": "x", "hle": 0.2, "critpt": 0.0, "lcr": 0.6}
+        self.assertEqual(aa.general_score(m), 25.0)
+        self.assertIsNone(aa.general_score({**m, "lcr": None}))
+
     def test_zero_score_prints_as_zero(self):
         entry = {"name": "Zero", "gs": 0.0, "ii": 0, "ii_est": False, "tb21": 0.0,
                  "tbh": 0.0, "gpqa": 0.0, "price": (None, None), "deprecated": False}
