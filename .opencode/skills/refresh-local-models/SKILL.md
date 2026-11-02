@@ -18,7 +18,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
    Done when: the STATE block is in context.
 
 3. **Stack.** Never count betas or release candidates.
-   - OpenCode: the **2.x** line (`@opencode/cli`), declared stable by the user on 2026-10-05 even though GitHub still marks 1.x as "latest release". Version = `https://registry.npmjs.org/@opencode%2fcli/latest`. Config docs: `https://opencode.ai/v2/docs` (providers, models, config, compaction, agents, mcp-servers). If OpenCode later moves 2.x to GitHub releases or ships 3.x, ask the user which line counts before switching.
+   - OpenCode: the **2.x** line (`@opencode/cli`), declared stable by the user on 2026-10-05 even though GitHub still marks 1.x as "latest release". Version = `https://registry.npmjs.org/@opencode%2fcli/latest`. Config docs: `https://opencode.ai/v2/docs` (providers, models, config, compaction, agents, mcp-servers). 2.x now also appears on GitHub releases (2.2.5, 2026-10-30) while GitHub's "latest" is still 1.x; always use the latest stable 2.x release (the user's call, 2026-11-02). If OpenCode ships 3.x, ask the user which line counts before switching.
    - Ollama: GitHub "latest release", `https://api.github.com/repos/ollama/ollama/releases/latest`.
    Read the release notes since the previous versions for: context-length defaults, env vars, MLX/Vulkan changes, OpenCode provider/config changes. On a major-version change, rewrite the OpenCode config section from that version's docs.
    Done when: both versions recorded and every relevant release-note change listed.
