@@ -10,7 +10,7 @@ Usage:
   scripts/aa.py fingerprint                # stable summary used by check-changes.sh
 
 Scores are printed as AA shows them (0-100). "E" = intelligence index estimated by AA.
-GS = General score: weighted mean of HLE, CritPt and AA-LCR (see GS_WEIGHTS);
+GS = General score: weighted mean of HLE and AA-LCR (see GS_WEIGHTS);
 blank when any input is missing.
 """
 import json
@@ -103,19 +103,17 @@ def pct(x):
     return None if x is None else round(x * 100, 1)
 
 
-# General score (GS): the Intelligence Index's non-agentic, non-coding evals (GDP.pdf is not
-# in AA's leaderboard data), with two changes from the Index's weights:
-# - Omniscience uses a penalty score instead of accuracy + non-hallucination. Non-hallucination
-#   ignores correct answers, so a model that abstains on everything scores 100%. The penalty
-#   score gives +1 per correct answer, 0 per abstention and -OMNI_PENALTY per wrong answer
-#   (the -0.5 the AA-Omniscience paper suggests, arXiv 2511.13029 section 5), rescaled to 0-1.
-# - CritPt weight 10 -> 5: small models score near 0 on its 70 problems, so it mostly adds noise.
-# Index v5.0 (October 2026) replaced AA-Omniscience v1 with v1.1 and dropped the v1 data; v1.1
-# covers few local models yet, so the omniscience penalty is left out (the user's call,
-# 2026-11-02) and GS uses the legacy HLE, CritPt and AA-LCR columns, which AA still publishes.
-# Restore "omniPenalty": 15 when v1.1 covers the candidates.
+# General score (GS): HLE 10 and AA-LCR 5, two of the non-agentic, non-coding evals of the
+# Intelligence Index up to v4.3.2, kept by AA as legacy columns after v5.0 (October 2026).
+# - AA-Omniscience is left out (the user's call, 2026-11-02): v5.0 replaced v1 with v1.1, which
+#   isn't comparable, and dropped the v1 data. If v1.1 comes to cover the candidates, the penalty
+#   score below (+1 correct, 0 abstain, -OMNI_PENALTY wrong, rescaled to 0-1; arXiv 2511.13029
+#   section 5) is the form to restore, at weight 15. Not AA's accuracy + non-hallucination split:
+#   non-hallucination ignores correct answers, so a model that abstains on everything scores 100%.
+# - CritPt is left out (the user's call, 2026-11-04): 27 of 50 candidates score 0 on it, and at
+#   weight 5 it added at most 2.8 GS points.
 OMNI_PENALTY = 0.5
-GS_WEIGHTS = {"hle": 10, "critpt": 5, "lcr": 5}
+GS_WEIGHTS = {"hle": 10, "lcr": 5}
 
 
 def omni_penalty(m):

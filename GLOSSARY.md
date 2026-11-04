@@ -39,7 +39,7 @@ One of the 5 highest-quality models for a Hardware tier and Use case that suppor
 _Avoid_: Best model, recommended model
 
 **General score (GS)**:
-The score that ranks General use: a weighted mean of HLE 10, CritPt 5 and AA-LCR 5, the non-agentic, non-coding evals of the AA Intelligence Index up to v4.3.2 (AA's legacy columns since v5.0). AA-Omniscience is left out until its v1.1 covers the candidates (2026-11-02).
+The score that ranks General use: a weighted mean of HLE 10 and AA-LCR 5, two non-agentic, non-coding evals of the AA Intelligence Index up to v4.3.2 (AA's legacy columns since v5.0). AA-Omniscience (since 2026-11-02) and CritPt (since 2026-11-04) are left out. LMArena ratings are shown beside it, not part of it.
 _Avoid_: Intelligence Index (it is about half agentic and coding work), II
 
 **Equivalent paid model**:

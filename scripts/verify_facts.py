@@ -4,7 +4,8 @@
 Checks: picked tags exist and their sizes match the snapshot (tags page for GGUF,
 registry manifest for MLX); 64k KV-cache sizes match each GGUF header; AA scores
 match the snapshot; every Equivalent paid model matches the nearest-paid rule;
-every linked Ollama issue's state matches what the report says about it.
+every linked Ollama issue's state matches what the report says about it; LMArena ratings
+shown beside GS match the leaderboard dataset.
 
 Usage: scripts/verify_facts.py [--fetch]   # --fetch refreshes the AA cache first
 Exit code: 0 = all checks pass, 1 = mismatches or a source could not be read.
@@ -24,7 +25,7 @@ import ollama_library
 from change_detection import score_changes
 
 ROOT = Path(__file__).resolve().parent.parent
-ROW = re.compile(r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(GS|TB) ([\d.]+)[^|]*\|[^|]+\|\s*([^|]+?)\s*\|\s*$", re.M)
+ROW = re.compile(r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(GS|TB) ([\d.]+)[^|]*\|[^|]+\|\s*([^|]+?)\s*\|(?:[^|\n]*\|)?[ \t]*$", re.M)
 ISSUE = re.compile(r"github\.com/ollama/ollama/issues/(\d+)")
 WATCHED = re.compile(r"(?m)^open_watched_issues:\s*(.*)$")
 
@@ -134,6 +135,40 @@ def check_kv(candidates, pool):
     return problems
 
 
+ARENA = ("https://datasets-server.huggingface.co/rows?dataset=lmarena-ai/leaderboard-dataset"
+         "&config=text_style_control&split=latest&offset={}&length=100")
+
+
+def arena_ratings():
+    """Overall-category LMArena text (style control) ratings; overall rows come first."""
+    ratings, offset = {}, 0
+    while True:
+        with urllib.request.urlopen(ARENA.format(offset), timeout=60) as response:
+            rows = [r["row"] for r in json.loads(response.read())["rows"]]
+        overall = [r for r in rows if r["category"] == "overall"]
+        ratings.update({r["model_name"]: r for r in overall})
+        if not rows or len(overall) < len(rows):
+            return ratings
+        offset += 100
+
+
+def check_arena(candidates):
+    live = arena_ratings()
+    problems = []
+    for model in candidates:
+        arena = model.get("arena")
+        if not arena:
+            continue
+        row = live.get(arena["name"])
+        if row is None:
+            problems.append(f"{model['name']}: LMArena no longer lists {arena['name']}")
+            continue
+        ci = round((row["rating_upper"] - row["rating_lower"]) / 2)
+        if (round(row["rating"]), ci) != (arena["rating"], arena["ci"]):
+            problems.append(f"{model['name']}: LMArena {round(row['rating'])} ±{ci}, snapshot {arena['rating']} ±{arena['ci']}")
+    return problems
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fetch", action="store_true", help="refresh the AA cache before checking")
@@ -150,6 +185,7 @@ def main():
             "KV cache at 64k": lambda: check_kv(candidates, pool),
             "AA scores": lambda: score_changes(models, candidates),
             "Equivalent paid models": lambda: check_equivalents(rows, models),
+            "LMArena ratings": lambda: check_arena(candidates),
             "Issue states": lambda: issue_line_problems(
                 source, dict(pool.map(lambda n: issue_state(n, token), sorted(set(ISSUE.findall(source)))))),
         }

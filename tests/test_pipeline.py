@@ -96,6 +96,17 @@ class RankingTests(unittest.TestCase):
         row = ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]
         self.assertEqual((row["tag"], row["flag"]), ("sample:gguf", False))
 
+    def test_vendor_score_needs_aa_harness(self):
+        machines = [{"name": "mac", "memory_gb": [16], "bandwidth_gbs": 200, "tiers": {16: "Mac 16 GB"}}]
+        fleet = {"tiers": {"Mac 16 GB": {}}, "machines": machines}
+        model = {"name": "sample", "total": 4, "active": None, "gs": 25.0, "tb": 40.0,
+                 "score_source": "vendor", "tag_tb": {}, "flag": False, "tb_harness": "claude-code",
+                 "tags": {"sample:q4": {"format": "gguf", "size_gb": 4, "kv64k_gb": 0}}}
+        self.assertEqual(ranking.rank(fleet, [model], "Mac 16 GB", "coding"), [])
+        self.assertTrue(ranking.rank(fleet, [model], "Mac 16 GB", "general"))
+        model["tb_harness"] = "terminus-2"
+        self.assertEqual(ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]["score"], 40.0)
+
     def test_coding_floor_and_fast_fallback(self):
         machines = [{"name": "low", "memory_gb": [16], "bandwidth_gbs": 100,
                      "tiers": {16: "Mac 16 GB"}}]
@@ -187,7 +198,16 @@ class ReportTests(unittest.TestCase):
 
     def test_rank_error_is_caught(self):
         source = (ROOT / "report.md").read_text()
-        tampered = source.replace("| 1 | `granite4.2:3b-q4_K_M`", "| 1 | `not-a-real-tag`", 1)
+        import re
+        tampered = re.sub(r"\| 1 \| `[^`]+`", "| 1 | `not-a-real-tag`", source, count=1)
+        with self.assertRaisesRegex(ValueError, "table differs from ranking"):
+            report.validate(tampered)
+
+    def test_arena_column_is_checked(self):
+        import re
+        source = (ROOT / "report.md").read_text()
+        tampered = re.sub(r"\| (\d{4}) ±(\d+) \|$", r"| 9999 ±\2 |", source, count=1, flags=re.M)
+        self.assertNotEqual(tampered, source)
         with self.assertRaisesRegex(ValueError, "table differs from ranking"):
             report.validate(tampered)
 
@@ -232,9 +252,9 @@ class ChangeDetectionTests(unittest.TestCase):
         self.assertNotIn("scores", m)
 
     def test_general_score_needs_no_omniscience(self):
-        # Index v5.0 dropped AA-Omniscience v1 data; GS = HLE 10, CritPt 5, AA-LCR 5.
-        m = {"name": "x", "hle": 0.2, "critpt": 0.0, "lcr": 0.6}
-        self.assertEqual(aa.general_score(m), 25.0)
+        # GS = HLE 10, AA-LCR 5; AA-Omniscience (2026-11-02) and CritPt (2026-11-04) left out.
+        m = {"name": "x", "hle": 0.2, "critpt": 0.5, "lcr": 0.5}
+        self.assertEqual(aa.general_score(m), 30.0)
         self.assertIsNone(aa.general_score({**m, "lcr": None}))
 
     def test_zero_score_prints_as_zero(self):

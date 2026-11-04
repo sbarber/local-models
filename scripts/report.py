@@ -19,7 +19,7 @@ STATE = re.compile(r"<!-- STATE[^\n]*\n.*?\nEND STATE -->", re.S)
 SOURCES = re.compile(r'<li id="ref-(\d+)">')
 CITATIONS = re.compile(r"\[\\\[(\d+)\\\]\]\(#ref-(\d+)\)")
 TIER = re.compile(r"(?m)^### .*\{#(tier-[\w-]+)\}\n")
-ROW = re.compile(r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(GS|TB) ([\d.]+)(.*?)\|\s*([^|]+)\|", re.M)
+ROW = re.compile(r"^\|\s*(\d+)\s*\|\s*`([^`]+)`\s*\|\s*(GS|TB) ([\d.]+)(.*?)\|\s*([^|]+)\|[^|\n]*\|(?:([^|\n]*)\|)?[ \t]*$", re.M)
 
 
 NAMED_CITATION = re.compile(r"\[\\\[(@?\w+)\\\]\]\(#ref-(@?\w+)\)")
@@ -63,8 +63,9 @@ def tables(source):
                 raise ValueError(f"Missing {use} table in {heading.group(1)}")
             table = text.split(title, 1)[1].split("\n\n", 2)[1]
             sections[heading.group(1)][use] = [
-                (int(n), tag, kind, float(score), "vendor" in rest, "⚠" in rest, speed.strip())
-                for n, tag, kind, score, rest, speed in ROW.findall(table)
+                (int(n), tag, kind, float(score), "vendor" in rest, "⚠" in rest, speed.strip(),
+                 arena.strip() if arena else None)
+                for n, tag, kind, score, rest, speed, arena in ROW.findall(table)
             ]
     return sections
 
@@ -101,10 +102,11 @@ def validate(source):
             if len(actual) != len(expected):
                 raise ValueError(f"{tier} {use}: expected {len(expected)} picks, found {len(actual)}")
             for i, (row, pick) in enumerate(zip(actual, expected), 1):
-                n, tag, kind, score, vendor, flag, display_speed = row
-                if (n, tag, kind, score, vendor, flag, display_speed) != (
+                n, tag, kind, score, vendor, flag, display_speed, arena = row
+                if (n, tag, kind, score, vendor, flag, display_speed, arena) != (
                     i, pick["tag"], "GS" if use == "general" else "TB", pick["score"],
-                    pick["vendor"], pick["flag"], ranking.formatted_speed(pick)
+                    pick["vendor"], pick["flag"], ranking.formatted_speed(pick),
+                    ranking.formatted_arena(pick) if use == "general" else None
                 ):
                     raise ValueError(f"{tier} {use} #{i}: table differs from ranking; got {row}, expected {pick}")
                 suffix = (" vendor" if vendor else "") + (" flag" if flag else "")

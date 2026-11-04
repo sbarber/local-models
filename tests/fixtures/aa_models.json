@@ -698,5 +698,19 @@
     "modelCreatorName": "Mistral",
     "isOpenWeights": true,
     "deprecated": false
+  },
+  {
+    "name": "MiniCPM-V 4.6 1.3B",
+    "hle": 0.0505097312326228,
+    "critpt": 0,
+    "omniscienceAccuracy": null,
+    "omniscience": null,
+    "lcr": 0.07,
+    "terminalBench21": 0,
+    "intelligenceIndex": null,
+    "intelligenceIndexIsEstimated": false,
+    "modelCreatorName": "OpenBMB",
+    "isOpenWeights": true,
+    "deprecated": false
   }
 ]

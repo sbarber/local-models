@@ -1,11 +1,11 @@
 {
-  "source_date": "2026-11-02",
+  "source_date": "2026-11-04",
   "models": [
     {
       "name": "qwen3.5:0.8b",
       "total": 0.8,
       "active": null,
-      "gs": 2.8,
+      "gs": 3.7,
       "tb": 0,
       "flag": true,
       "tags": {
@@ -28,7 +28,7 @@
       "name": "qwen3.5:2b",
       "total": 2,
       "active": null,
-      "gs": 6.5,
+      "gs": 8.7,
       "tb": 3.0,
       "flag": true,
       "tags": {
@@ -51,7 +51,7 @@
       "name": "qwen3.5:4b",
       "total": 4,
       "active": null,
-      "gs": 20.7,
+      "gs": 27.6,
       "tb": 25.8,
       "flag": true,
       "tags": {
@@ -74,7 +74,7 @@
       "name": "qwen3.5:9b",
       "total": 9,
       "active": null,
-      "gs": 25.0,
+      "gs": 33.3,
       "tb": 29.2,
       "flag": true,
       "tags": {
@@ -97,7 +97,7 @@
       "name": "qwen3.5:27b",
       "total": 27,
       "active": null,
-      "gs": 31.6,
+      "gs": 41.8,
       "tb": null,
       "flag": true,
       "tags": {
@@ -119,13 +119,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Qwen3.5 27B (Reasoning)"
+      "aa_name": "Qwen3.5 27B (Reasoning)",
+      "arena": {
+        "name": "Qwen3.5-27B",
+        "rating": 1409,
+        "ci": 4
+      }
     },
     {
       "name": "qwen3.5:35b-a3b",
       "total": 35,
       "active": 3,
-      "gs": 28.7,
+      "gs": 38.0,
       "tb": null,
       "flag": true,
       "tags": {
@@ -147,13 +152,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Qwen3.5 35B A3B (Reasoning)"
+      "aa_name": "Qwen3.5 35B A3B (Reasoning)",
+      "arena": {
+        "name": "Qwen3.5-35B-A3B",
+        "rating": 1394,
+        "ci": 4
+      }
     },
     {
       "name": "qwen3.5:122b-a10b",
       "total": 122,
       "active": 10,
-      "gs": 31.8,
+      "gs": 42.3,
       "tb": 47.6,
       "flag": true,
       "tags": {
@@ -165,13 +175,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Qwen3.5 122B A10B (Reasoning)"
+      "aa_name": "Qwen3.5 122B A10B (Reasoning)",
+      "arena": {
+        "name": "Qwen3.5-122B-A10B",
+        "rating": 1416,
+        "ci": 4
+      }
     },
     {
       "name": "qwen3.6:27b",
       "total": 27,
       "active": null,
-      "gs": 31.2,
+      "gs": 41.2,
       "tb": 60.7,
       "flag": true,
       "tags": {
@@ -194,7 +209,7 @@
       "name": "qwen3.6:35b-a3b",
       "total": 35,
       "active": 3,
-      "gs": 29.1,
+      "gs": 38.7,
       "tb": 44.9,
       "flag": true,
       "tags": {
@@ -217,7 +232,7 @@
       "name": "qwen3.8:27b",
       "total": 27,
       "active": null,
-      "gs": 27.0,
+      "gs": 35.9,
       "tb": 65.2,
       "flag": true,
       "tags": {
@@ -234,13 +249,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Qwen3.8 27B (Medium)"
+      "aa_name": "Qwen3.8 27B (Medium)",
+      "arena": {
+        "name": "Qwen3.8-27B",
+        "rating": 1436,
+        "ci": 5
+      }
     },
     {
       "name": "qwen3.8-flash-next",
       "total": 176,
       "active": 6,
-      "gs": 41.7,
+      "gs": 51.9,
       "tb": 86.1,
       "flag": true,
       "tags": {
@@ -263,7 +283,7 @@
       "name": "gemma4:e2b",
       "total": 5.1,
       "active": null,
-      "gs": 6.5,
+      "gs": 8.6,
       "tb": 0.4,
       "flag": true,
       "tags": {
@@ -286,7 +306,7 @@
       "name": "gemma4:e4b",
       "total": 8,
       "active": null,
-      "gs": 10.0,
+      "gs": 13.2,
       "tb": 1.9,
       "flag": true,
       "tags": {
@@ -309,7 +329,7 @@
       "name": "gemma4:12b",
       "total": 12,
       "active": null,
-      "gs": 23.7,
+      "gs": 31.7,
       "tb": 27.3,
       "flag": true,
       "tags": {
@@ -332,7 +352,7 @@
       "name": "gemma4:26b-a4b",
       "total": 26,
       "active": 4,
-      "gs": 26.1,
+      "gs": 34.8,
       "tb": 39.0,
       "flag": true,
       "tags": {
@@ -349,13 +369,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Gemma 4 26B A4B (Reasoning)"
+      "aa_name": "Gemma 4 26B A4B (Reasoning)",
+      "arena": {
+        "name": "Gemma 4 26B A4B",
+        "rating": 1438,
+        "ci": 7
+      }
     },
     {
       "name": "gemma4:31b",
       "total": 31,
       "active": null,
-      "gs": 29.6,
+      "gs": 39.0,
       "tb": 43.4,
       "flag": true,
       "tags": {
@@ -372,13 +397,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Gemma 4 31B (Reasoning)"
+      "aa_name": "Gemma 4 31B (Reasoning)",
+      "arena": {
+        "name": "Gemma 4 31B",
+        "rating": 1452,
+        "ci": 7
+      }
     },
     {
       "name": "muse-glimmer:30b",
       "total": 30,
       "active": null,
-      "gs": 32.5,
+      "gs": 42.4,
       "tb": 51.7,
       "flag": false,
       "tags": {
@@ -395,13 +425,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Muse Glimmer (High)"
+      "aa_name": "Muse Glimmer (High)",
+      "arena": {
+        "name": "Muse Glimmer",
+        "rating": 1425,
+        "ci": 10
+      }
     },
     {
       "name": "nemotron-3.5-super",
       "total": 120,
       "active": 12,
-      "gs": 35.3,
+      "gs": 43.5,
       "tb": 66.7,
       "flag": false,
       "tags": {
@@ -420,13 +455,19 @@
         "nemotron-3.5-super:120b-a12b-nvfp4": 60.8
       },
       "score_source": "vendor",
-      "aa_name": "Nemotron 3.5 Super VL"
+      "aa_name": "Nemotron 3.5 Super VL",
+      "tb_harness": "terminus-2",
+      "arena": {
+        "name": "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B (NVFP4)",
+        "rating": 1412,
+        "ci": 9
+      }
     },
     {
       "name": "nemotron-3.5-lightning",
       "total": 30,
       "active": 3,
-      "gs": 20.4,
+      "gs": 27.2,
       "tb": 24.3,
       "flag": false,
       "tags": {
@@ -443,13 +484,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Nemotron 3.5 Lightning"
+      "aa_name": "Nemotron 3.5 Lightning",
+      "arena": {
+        "name": "NVIDIA-Nemotron-3.5-Lightning-30B-A3B (NVFP4)",
+        "rating": 1353,
+        "ci": 5
+      }
     },
     {
       "name": "nemotron-3.5-bolt:74b",
       "total": 74,
       "active": 9,
-      "gs": 30.8,
+      "gs": 39.7,
       "tb": 51.0,
       "flag": false,
       "tags": {
@@ -464,13 +510,14 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": "Nemotron 3.5 Bolt 74B-A9B"
+      "aa_name": "Nemotron 3.5 Bolt 74B-A9B",
+      "tb_harness": "unstated"
     },
     {
       "name": "north-mini-code-1.0",
       "total": 30,
       "active": 3,
-      "gs": 14.9,
+      "gs": 19.8,
       "tb": 35.6,
       "flag": true,
       "tags": {
@@ -493,7 +540,7 @@
       "name": "granite4.2:3b",
       "total": 3,
       "active": null,
-      "gs": 9.4,
+      "gs": 12.5,
       "tb": 13.9,
       "flag": false,
       "tags": {
@@ -505,13 +552,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Granite 4.2 3B"
+      "aa_name": "Granite 4.2 3B",
+      "arena": {
+        "name": "Granite 4.2 3B",
+        "rating": 1290,
+        "ci": 12
+      }
     },
     {
       "name": "granite4.2:8b",
       "total": 8,
       "active": null,
-      "gs": 16.2,
+      "gs": 21.5,
       "tb": 18.4,
       "flag": false,
       "tags": {
@@ -523,13 +575,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Granite 4.2 8B"
+      "aa_name": "Granite 4.2 8B",
+      "arena": {
+        "name": "Granite 4.2 8B",
+        "rating": 1290,
+        "ci": 11
+      }
     },
     {
       "name": "granite4.2:30b",
       "total": 30,
       "active": null,
-      "gs": 17.9,
+      "gs": 23.8,
       "tb": 26.6,
       "flag": false,
       "tags": {
@@ -541,13 +598,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Granite 4.2 30B"
+      "aa_name": "Granite 4.2 30B",
+      "arena": {
+        "name": "Granite 4.2 30B",
+        "rating": 1340,
+        "ci": 10
+      }
     },
     {
       "name": "granite4:350m-h",
       "total": 0.35,
       "active": null,
-      "gs": 3.2,
+      "gs": 4.3,
       "tb": null,
       "flag": false,
       "tags": {
@@ -565,7 +627,7 @@
       "name": "granite4:1b-h",
       "total": 1.5,
       "active": null,
-      "gs": 4.3,
+      "gs": 5.7,
       "tb": null,
       "flag": false,
       "tags": {
@@ -583,7 +645,7 @@
       "name": "granite4:micro",
       "total": 3,
       "active": null,
-      "gs": 4.3,
+      "gs": 5.7,
       "tb": null,
       "flag": false,
       "tags": {
@@ -601,7 +663,7 @@
       "name": "qwen3:4b-instruct-2507",
       "total": 4,
       "active": null,
-      "gs": 5.1,
+      "gs": 6.8,
       "tb": null,
       "flag": false,
       "tags": {
@@ -619,7 +681,7 @@
       "name": "lfm2.5:8b",
       "total": 8.3,
       "active": 1.5,
-      "gs": 3.4,
+      "gs": 4.6,
       "tb": null,
       "flag": false,
       "tags": {
@@ -637,7 +699,7 @@
       "name": "qwen3:4b-thinking-2507",
       "total": 4,
       "active": null,
-      "gs": 12.4,
+      "gs": 16.6,
       "tb": null,
       "flag": false,
       "tags": {
@@ -655,7 +717,7 @@
       "name": "qwen3:30b-a3b-thinking-2507",
       "total": 30,
       "active": 3,
-      "gs": 20.5,
+      "gs": 27.3,
       "tb": 1.5,
       "flag": false,
       "tags": {
@@ -673,7 +735,7 @@
       "name": "qwen3-next:80b-a3b-thinking",
       "total": 80,
       "active": 3,
-      "gs": 22.2,
+      "gs": 29.6,
       "tb": 6.7,
       "flag": false,
       "tags": {
@@ -685,7 +747,12 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Qwen3 Next 80B A3B (Reasoning)"
+      "aa_name": "Qwen3 Next 80B A3B (Reasoning)",
+      "arena": {
+        "name": "Qwen3-Next-80B-A3B-Thinking",
+        "rating": 1369,
+        "ci": 6
+      }
     },
     {
       "name": "ornith:9b",
@@ -703,7 +770,8 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "ornith:35b",
@@ -721,7 +789,8 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "ornith-1.5:9b",
@@ -739,7 +808,8 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "ornith-1.5:35b",
@@ -757,13 +827,14 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "gpt-oss:120b",
       "total": 117,
       "active": 5.1,
-      "gs": 23.1,
+      "gs": 30.4,
       "tb": 26.2,
       "flag": true,
       "tags": {
@@ -775,13 +846,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "gpt-oss-120b (High)"
+      "aa_name": "gpt-oss-120b (High)",
+      "arena": {
+        "name": "gpt-oss-120b",
+        "rating": 1352,
+        "ci": 4
+      }
     },
     {
       "name": "gpt-oss:20b",
       "total": 21,
       "active": 3.6,
-      "gs": 14.5,
+      "gs": 18.9,
       "tb": 13.9,
       "flag": true,
       "tags": {
@@ -793,13 +869,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "gpt-oss-20b (High)"
+      "aa_name": "gpt-oss-20b (High)",
+      "arena": {
+        "name": "gpt-oss-20b",
+        "rating": 1317,
+        "ci": 6
+      }
     },
     {
       "name": "nemotron-3-super",
       "total": 120,
       "active": 12,
-      "gs": 27.6,
+      "gs": 35.7,
       "tb": 38.6,
       "flag": false,
       "tags": {
@@ -811,13 +892,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Nemotron 3 Super 120B A12B (Reasoning)"
+      "aa_name": "Nemotron 3 Super 120B A12B (Reasoning)",
+      "arena": {
+        "name": "NVIDIA-Nemotron-3-Super-120B-A12B",
+        "rating": 1360,
+        "ci": 7
+      }
     },
     {
       "name": "qwen3-coder-next",
       "total": 80,
       "active": 3,
-      "gs": 16.8,
+      "gs": 22.4,
       "tb": 38.2,
       "flag": true,
       "tags": {
@@ -835,7 +921,7 @@
       "name": "devstral-small-2",
       "total": 24,
       "active": null,
-      "gs": 8.7,
+      "gs": 11.7,
       "tb": 29.6,
       "flag": false,
       "tags": {
@@ -853,7 +939,7 @@
       "name": "nemotron-cascade-2",
       "total": 30,
       "active": 3,
-      "gs": 16.0,
+      "gs": 21.1,
       "tb": 20.6,
       "flag": false,
       "tags": {
@@ -876,7 +962,7 @@
       "name": "glm-4.7-flash",
       "total": 30,
       "active": 3,
-      "gs": 14.3,
+      "gs": 19.0,
       "tb": null,
       "flag": true,
       "tags": {
@@ -888,13 +974,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "GLM-4.7-Flash (Reasoning)"
+      "aa_name": "GLM-4.7-Flash (Reasoning)",
+      "arena": {
+        "name": "GLM-4.7-Flash",
+        "rating": 1365,
+        "ci": 6
+      }
     },
     {
       "name": "mistral-medium-3.5",
       "total": 128,
       "active": null,
-      "gs": 24.2,
+      "gs": 32.3,
       "tb": 50.6,
       "flag": false,
       "tags": {
@@ -906,13 +997,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "Mistral Medium 3.5"
+      "aa_name": "Mistral Medium 3.5",
+      "arena": {
+        "name": "Mistral Medium 3.5",
+        "rating": 1426,
+        "ci": 6
+      }
     },
     {
       "name": "devstral-2",
       "total": 123,
       "active": null,
-      "gs": 9.9,
+      "gs": 13.2,
       "tb": 30.3,
       "flag": false,
       "tags": {
@@ -955,7 +1051,8 @@
         "flint:40b-a2b-gguf-nvfp4": 53.7
       },
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "ornith-1.5:122b",
@@ -981,13 +1078,14 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "claude-code"
     },
     {
       "name": "nemotron-3-nano:4b",
       "total": 4,
       "active": null,
-      "gs": 7.8,
+      "gs": 10.5,
       "tb": 3.7,
       "flag": false,
       "tags": {
@@ -1010,7 +1108,7 @@
       "name": "nemotron-3-nano:30b",
       "total": 30,
       "active": 3,
-      "gs": 15.4,
+      "gs": 20.3,
       "tb": 6.7,
       "flag": false,
       "tags": {
@@ -1027,13 +1125,18 @@
       },
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
-      "aa_name": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)"
+      "aa_name": "NVIDIA Nemotron 3 Nano 30B A3B (Reasoning)",
+      "arena": {
+        "name": "NVIDIA-Nemotron-3-Nano-30B-A3B (BF16)",
+        "rating": 1314,
+        "ci": 5
+      }
     },
     {
       "name": "nemotron3:33b",
       "total": 33,
       "active": 3,
-      "gs": 12.3,
+      "gs": 16.4,
       "tb": 6.7,
       "flag": false,
       "tags": {
@@ -1073,13 +1176,14 @@
       },
       "tag_tb": {},
       "score_source": "vendor",
-      "aa_name": null
+      "aa_name": null,
+      "tb_harness": "opencode"
     },
     {
       "name": "qwen3-vl:4b-thinking",
       "total": 4,
       "active": null,
-      "gs": 7.6,
+      "gs": 10.2,
       "tb": null,
       "flag": false,
       "tags": {
@@ -1097,7 +1201,7 @@
       "name": "qwen3-vl:8b-thinking",
       "total": 8,
       "active": null,
-      "gs": 10.3,
+      "gs": 13.7,
       "tb": null,
       "flag": false,
       "tags": {
@@ -1115,7 +1219,7 @@
       "name": "qwen3-vl:32b-thinking",
       "total": 32,
       "active": null,
-      "gs": 18.9,
+      "gs": 25.2,
       "tb": null,
       "flag": false,
       "tags": {
@@ -1133,7 +1237,7 @@
       "name": "ministral-3:3b",
       "total": 3,
       "active": null,
-      "gs": 6.9,
+      "gs": 9.3,
       "tb": 0.0,
       "flag": false,
       "tags": {
@@ -1151,7 +1255,7 @@
       "name": "ministral-3:8b",
       "total": 8,
       "active": null,
-      "gs": 8.5,
+      "gs": 11.4,
       "tb": 4.1,
       "flag": false,
       "tags": {
@@ -1169,7 +1273,7 @@
       "name": "ministral-3:14b",
       "total": 14,
       "active": null,
-      "gs": 8.9,
+      "gs": 11.9,
       "tb": 9.7,
       "flag": false,
       "tags": {
@@ -1182,9 +1286,29 @@
       "tag_tb": {},
       "score_source": "AA (2026-11-02)",
       "aa_name": "Ministral 3 14B"
+    },
+    {
+      "name": "minicpm-v4.6",
+      "total": 1.2,
+      "active": null,
+      "gs": 5.7,
+      "tb": 0.0,
+      "flag": false,
+      "tags": {
+        "minicpm-v4.6:q4_K_M": {
+          "size_gb": 1.6,
+          "format": "gguf",
+          "kv64k_gb": 0.81
+        }
+      },
+      "tag_tb": {},
+      "score_source": "AA (2026-11-02)",
+      "aa_name": "MiniCPM-V 4.6 1.3B"
     }
   ],
   "kv_note": "kv64k_gb: f16 K+V at 65536 tokens from the GGUF header of the model's GGUF tag (attention layers only; sliding layers hold the window). MLX tags use the same value. glm-4.7-flash uses MLA, so its figure overstates. qwen3-next has no full_attention_interval key; llama.cpp defaults it to 4 (src/models/qwen3next.cpp), so 12 of 48 layers hold context.",
-  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names. nemotron-3.5-bolt:74b: 74B total, 9B active (NVIDIA card and Ollama page).",
-  "tag_flag_note": "tag_flag overrides flag for one tag: ornith-1.5:122b-nvfp4 (MLX) uses the ornith parser (open #16992); the 122b-q4_K_M GGUF tag has no parser. flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) require Ollama 0.40.9, stable since 2026-10-22; Recursive's NVFP4 score (TB 53.7) applies to 40b-a2b-gguf-nvfp4 only. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead. A tag with \"mac\": false is skipped on Mac tiers: flint:40b-a2b-gguf-nvfp4 is NVFP4 GGUF, which llama.cpp b11803 (Ollama 0.40.9) can't run on Metal, nor can b11845 (Ollama 0.40.11); Recursive points Apple silicon to the Q4_1 GGUF. nemotron-3.5-bolt:74b-a9b-iq2 is NVIDIA's quantization-aware IQ2_XXS release (the only local 74B build); Ollama's page says Apple Silicon/Metal isn't supported for 74B-A9B, so \"mac\": false. Its TB 51.0 is NVIDIA's score for this build (card); its GS 30.8 is AA's, whose model page links the BF16 weights."
+  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names. nemotron-3.5-bolt:74b: 74B total, 9B active (NVIDIA card and Ollama page). minicpm-v4.6: SigLIP2-400M vision encoder plus Qwen3.5-0.8B LLM (OpenBMB card); tool support from its GGUF chat template (no renderer or parser in the registry config).",
+  "tag_flag_note": "tag_flag overrides flag for one tag: ornith-1.5:122b-nvfp4 (MLX) uses the ornith parser (open #16992); the 122b-q4_K_M GGUF tag has no parser. flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) require Ollama 0.40.9, stable since 2026-10-22; Recursive's NVFP4 score (TB 53.7) applies to 40b-a2b-gguf-nvfp4 only. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead. A tag with \"mac\": false is skipped on Mac tiers: flint:40b-a2b-gguf-nvfp4 is NVFP4 GGUF, which llama.cpp b11803 (Ollama 0.40.9) can't run on Metal, nor can b11845 (Ollama 0.40.11); Recursive points Apple silicon to the Q4_1 GGUF. nemotron-3.5-bolt:74b-a9b-iq2 is NVIDIA's quantization-aware IQ2_XXS release (the only local 74B build); Ollama's page says Apple Silicon/Metal isn't supported for 74B-A9B, so \"mac\": false. Its TB 51.0 is NVIDIA's score for this build (card); its GS 39.7 is AA's, whose model page links the BF16 weights.",
+  "arena_note": "arena: LMArena text leaderboard with style control, category overall, published 2026-10-28 (huggingface.co/datasets/lmarena-ai/leaderboard-dataset, config text_style_control, split latest). Shown beside GS, not used in it (user decision 2026-11-04). Mapped by exact model; ci = half the 95% interval.",
+  "tb_harness_note": "tb_harness: harness behind a vendor Terminal-Bench 2.1 score. Only terminus-2 (AA's harness) counts (user decision 2026-11-04). Ornith 1.0/1.5 9B and 35B: Terminus-2 rows on ornith.ai/ornith_1_5.html. Flint: card says Terminal-Bench uses Terminus 2. nemotron-3.5-super: NeMo Gym recipe nemotron_recipes/super-3.5/terminal-bench-2.1.yaml uses the Terminus-2 agent. nemotron-3.5-bolt:74b: card names no harness and NeMo Gym has no Bolt recipe. ornith-1.5:122b: card footnote describes only the Claude Code setup. lfm3: Liquid ran it with OpenCode."
 }

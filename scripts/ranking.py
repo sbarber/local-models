@@ -132,12 +132,27 @@ def choose_tag(model, tier, machines, use):
     return chosen, min(fastest[3])
 
 
+# Vendor Terminal-Bench 2.1 scores count only when the vendor states AA's harness (Terminus 2);
+# scores from Claude Code, OpenCode or an unstated harness aren't comparable (2026-11-04).
+AA_HARNESS = "terminus-2"
+
+
+def coding_scores(model):
+    """(model score, per-tag scores) usable for coding; vendor scores need AA's harness."""
+    if model["score_source"] == "vendor" and model.get("tb_harness") != AA_HARNESS:
+        return None, {}
+    return model["tb"], model["tag_tb"]
+
+
 def rank(fleet, candidates, tier, use):
     machines = machines_for_tier(fleet, tier)
     if not machines:
         raise ValueError(f"No machines in {tier}")
     rows = []
     for model in candidates:
+        if use == "coding":
+            tb, tag_tb = coding_scores(model)
+            model = {**model, "tb": tb, "tag_tb": tag_tb}
         result = choose_tag(model, tier, machines, use)
         if result is None:
             continue
@@ -155,6 +170,7 @@ def rank(fleet, candidates, tier, use):
             # a GGUF tag with none), so a tag-level flag overrides the model's.
             "flag": use == "coding" and model.get("tag_flag", {}).get(tag, model["flag"]),
             "max_context": max_context(tier, machines, data, size),
+            "arena": model.get("arena") if use == "general" else None,
         })
     rows.sort(key=lambda row: -row["score"])
     changed = True
@@ -171,6 +187,12 @@ def rank(fleet, candidates, tier, use):
         if fallback:
             top[-1] = fallback
     return top
+
+
+def formatted_arena(row):
+    """LMArena text rating shown beside GS (not part of it); a dash where LMArena has none."""
+    arena = row.get("arena")
+    return f"{arena['rating']} ±{arena['ci']}" if arena else "—"
 
 
 def formatted_speed(row):
