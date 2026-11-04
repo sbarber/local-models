@@ -29,7 +29,7 @@ Chat-style work: Q&A, writing, summarising, reasoning, without autonomous tool u
 _Avoid_: Generic, chat
 
 **Agentic coding**:
-Multi-step coding where the model drives OpenCode's tools (read, edit, run) on its own.
+Software development with the model in OpenCode: given a task, the model reads, edits and runs code through OpenCode's tools (multi-step, tool-calling work).
 _Avoid_: Coding assistant, code completion
 
 ### Ranking

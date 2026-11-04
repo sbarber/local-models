@@ -56,7 +56,7 @@
 ## How to read this
 
 - **Hardware tier**: a group of machines that can run the same models. Each tier heading lists the machines in it.
-- **Use cases**: **General use** is chat, writing and reasoning. **Agentic coding** is OpenCode driving tools on its own.
+- **Use cases**: **General use** is chat, writing and reasoning. **Agentic coding** is software development with the model in OpenCode: you give it a task, and the model reads, edits and runs code through OpenCode's tools to carry it out.
 - **Scores** come from Artificial Analysis (AA) [\[4\]](#ref-4), which tests open and paid models with one harness:
   - General use: **General score (GS)**, built from AA's per-eval scores: the weighted mean of **HLE 10, CritPt 5 and AA-LCR 5**. They're three of the non-agentic, non-coding evals in AA's Intelligence Index up to v4.3.2; the others there were AA-Omniscience (next point) and GDP.pdf, which AA hasn't scored for many of the models here [\[4\]](#ref-4). Index v5.0 (October 2026) moved them to AA's legacy evaluations, but AA still publishes them for almost every model [\[3\]](#ref-3)[\[4\]](#ref-4). A model missing any input has no GS and isn't ranked for General. Paid equivalents use the same score.
   - **Why AA-Omniscience is left out for now:** v5.0 replaced AA-Omniscience v1 with v1.1, whose scores aren't comparable with v1, [\[3\]](#ref-3), and AA's data no longer holds v1 results [\[4\]](#ref-4). Only a few of the models here have a v1.1 score yet [\[4\]](#ref-4). Until more do, GS has no factual-recall or hallucination component, so it no longer favours models that decline to answer when unsure.
