@@ -82,19 +82,16 @@ class RankingTests(unittest.TestCase):
         chosen, _ = ranking.choose_tag(model, "Windows 32 GB", [({"bandwidth_gbs": 200}, 32)], "general")
         self.assertEqual(chosen[0], "sample:gguf-nvfp4")
 
-    def test_tool_call_flag_follows_chosen_tag(self):
+    def test_confirmed_tool_call_bug_excludes_from_coding(self):
         machines = [{"name": "mac", "memory_gb": [16], "bandwidth_gbs": 200, "tiers": {16: "Mac 16 GB"}}]
         fleet = {"tiers": {"Mac 16 GB": {}}, "machines": machines}
         model = {"name": "sample", "total": 4, "active": None, "gs": 25.0, "tb": 30.0,
                  "score_source": "AA", "tag_tb": {}, "flag": False,
-                 "tag_flag": {"sample:nvfp4": True},
-                 "tags": {"sample:gguf": {"format": "gguf", "size_gb": 4, "kv64k_gb": 0},
-                          "sample:nvfp4": {"format": "mlx", "size_gb": 4.3, "kv64k_gb": 0}}}
-        row = ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]
-        self.assertEqual((row["tag"], row["flag"]), ("sample:nvfp4", True))
-        model["tags"]["sample:nvfp4"]["size_gb"] = 6
-        row = ranking.rank(fleet, [model], "Mac 16 GB", "coding")[0]
-        self.assertEqual((row["tag"], row["flag"]), ("sample:gguf", False))
+                 "tags": {"sample:q4": {"format": "gguf", "size_gb": 4, "kv64k_gb": 0}}}
+        self.assertTrue(ranking.rank(fleet, [model], "Mac 16 GB", "coding"))
+        model["flag"] = True
+        self.assertEqual(ranking.rank(fleet, [model], "Mac 16 GB", "coding"), [])
+        self.assertTrue(ranking.rank(fleet, [model], "Mac 16 GB", "general"))
 
     def test_vendor_score_needs_aa_harness(self):
         machines = [{"name": "mac", "memory_gb": [16], "bandwidth_gbs": 200, "tiers": {16: "Mac 16 GB"}}]

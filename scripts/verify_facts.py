@@ -73,6 +73,13 @@ def issue_line_problems(source, states):
     return problems
 
 
+def issue_numbers(source):
+    """Issues linked in the report plus those tracked only in STATE (e.g. unverified tool-call reports)."""
+    watched = WATCHED.search(source)
+    tracked = {n.strip() for n in watched.group(1).split(",") if n.strip()} if watched else set()
+    return set(ISSUE.findall(source)) | tracked
+
+
 def github_token():
     try:
         return subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, check=True).stdout.strip()
@@ -187,7 +194,7 @@ def main():
             "Equivalent paid models": lambda: check_equivalents(rows, models),
             "LMArena ratings": lambda: check_arena(candidates),
             "Issue states": lambda: issue_line_problems(
-                source, dict(pool.map(lambda n: issue_state(n, token), sorted(set(ISSUE.findall(source)))))),
+                source, dict(pool.map(lambda n: issue_state(n, token), sorted(issue_numbers(source))))),
         }
         for name, check in checks.items():
             try:

@@ -159,6 +159,9 @@ def rank(fleet, candidates, tier, use):
         (tag, data, size, speeds, maximum), fastest_speed = result
         if use == "general" and max_context(tier, machines, data, size) < MIN_GENERAL_CONTEXT:
             continue
+        # A confirmed tool-call parser bug (flag) excludes the model from coding.
+        if use == "coding" and model.get("tag_flag", {}).get(tag, model["flag"]):
+            continue
         score = model["gs"] if use == "general" else model["tag_tb"].get(tag, model["tb"])
         if score is None or (use == "coding" and score < 20):
             continue

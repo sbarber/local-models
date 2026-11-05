@@ -7,7 +7,7 @@
       "active": null,
       "gs": 3.7,
       "tb": 0,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:0.8b-q8_0": {
           "size_gb": 1.0,
@@ -30,7 +30,7 @@
       "active": null,
       "gs": 8.7,
       "tb": 3.0,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:2b-q4_K_M": {
           "size_gb": 1.9,
@@ -53,7 +53,7 @@
       "active": null,
       "gs": 27.6,
       "tb": 25.8,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:4b-q4_K_M": {
           "size_gb": 3.3,
@@ -76,7 +76,7 @@
       "active": null,
       "gs": 33.3,
       "tb": 29.2,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:9b-q4_K_M": {
           "size_gb": 6.6,
@@ -99,7 +99,7 @@
       "active": null,
       "gs": 41.8,
       "tb": null,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:27b-q4_K_M": {
           "size_gb": 17.0,
@@ -132,7 +132,7 @@
       "active": 3,
       "gs": 38.0,
       "tb": null,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:35b-a3b-q4_K_M": {
           "size_gb": 22.0,
@@ -165,7 +165,7 @@
       "active": 10,
       "gs": 42.3,
       "tb": 47.6,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.5:122b-a10b-q4_K_M": {
           "size_gb": 81.0,
@@ -188,7 +188,7 @@
       "active": null,
       "gs": 41.2,
       "tb": 60.7,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.6:27b-q4_K_M": {
           "size_gb": 17.0,
@@ -211,7 +211,7 @@
       "active": 3,
       "gs": 38.7,
       "tb": 44.9,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.6:35b-a3b-q4_K_M": {
           "size_gb": 24.0,
@@ -234,7 +234,7 @@
       "active": null,
       "gs": 35.9,
       "tb": 65.2,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.8:27b-q4_K_M": {
           "size_gb": 18.0,
@@ -262,7 +262,7 @@
       "active": 6,
       "gs": 51.9,
       "tb": 86.1,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3.8-flash-next:125b-a6b-q4_K_M": {
           "size_gb": 120.0,
@@ -285,7 +285,7 @@
       "active": null,
       "gs": 8.6,
       "tb": 0.4,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gemma4:e2b-it-qat": {
           "size_gb": 4.3,
@@ -308,7 +308,7 @@
       "active": null,
       "gs": 13.2,
       "tb": 1.9,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gemma4:e4b-it-qat": {
           "size_gb": 6.1,
@@ -331,7 +331,7 @@
       "active": null,
       "gs": 31.7,
       "tb": 27.3,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gemma4:12b-it-qat": {
           "size_gb": 7.2,
@@ -354,7 +354,7 @@
       "active": 4,
       "gs": 34.8,
       "tb": 39.0,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gemma4:26b-a4b-it-qat": {
           "size_gb": 16.0,
@@ -382,7 +382,7 @@
       "active": null,
       "gs": 39.0,
       "tb": 43.4,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gemma4:31b-it-qat": {
           "size_gb": 19.0,
@@ -519,7 +519,7 @@
       "active": 3,
       "gs": 19.8,
       "tb": 35.6,
-      "flag": true,
+      "flag": false,
       "tags": {
         "north-mini-code-1.0:q4_K_M": {
           "size_gb": 19.0,
@@ -760,7 +760,7 @@
       "active": null,
       "gs": null,
       "tb": 43.1,
-      "flag": true,
+      "flag": false,
       "tags": {
         "ornith:9b-q4_K_M": {
           "size_gb": 5.6,
@@ -779,7 +779,7 @@
       "active": 3,
       "gs": null,
       "tb": 64.2,
-      "flag": true,
+      "flag": false,
       "tags": {
         "ornith:35b-q4_K_M": {
           "size_gb": 21.0,
@@ -836,7 +836,7 @@
       "active": 5.1,
       "gs": 30.4,
       "tb": 26.2,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gpt-oss:120b": {
           "size_gb": 65.0,
@@ -859,7 +859,7 @@
       "active": 3.6,
       "gs": 18.9,
       "tb": 13.9,
-      "flag": true,
+      "flag": false,
       "tags": {
         "gpt-oss:20b": {
           "size_gb": 14.0,
@@ -905,7 +905,7 @@
       "active": 3,
       "gs": 22.4,
       "tb": 38.2,
-      "flag": true,
+      "flag": false,
       "tags": {
         "qwen3-coder-next:q4_K_M": {
           "size_gb": 52.0,
@@ -964,7 +964,7 @@
       "active": 3,
       "gs": 19.0,
       "tb": null,
-      "flag": true,
+      "flag": false,
       "tags": {
         "glm-4.7-flash:q4_K_M": {
           "size_gb": 19.0,
@@ -1072,9 +1072,6 @@
           "format": "mlx",
           "kv64k_gb": 1.61
         }
-      },
-      "tag_flag": {
-        "ornith-1.5:122b-nvfp4": true
       },
       "tag_tb": {},
       "score_source": "vendor",
@@ -1308,7 +1305,8 @@
   ],
   "kv_note": "kv64k_gb: f16 K+V at 65536 tokens from the GGUF header of the model's GGUF tag (attention layers only; sliding layers hold the window). MLX tags use the same value. glm-4.7-flash uses MLA, so its figure overstates. qwen3-next has no full_attention_interval key; llama.cpp defaults it to 4 (src/models/qwen3next.cpp), so 12 of 48 layers hold context.",
   "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names. nemotron-3.5-bolt:74b: 74B total, 9B active (NVIDIA card and Ollama page). minicpm-v4.6: SigLIP2-400M vision encoder plus Qwen3.5-0.8B LLM (OpenBMB card); tool support from its GGUF chat template (no renderer or parser in the registry config).",
-  "tag_flag_note": "tag_flag overrides flag for one tag: ornith-1.5:122b-nvfp4 (MLX) uses the ornith parser (open #16992); the 122b-q4_K_M GGUF tag has no parser. flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) require Ollama 0.40.9, stable since 2026-10-22; Recursive's NVFP4 score (TB 53.7) applies to 40b-a2b-gguf-nvfp4 only. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead. A tag with \"mac\": false is skipped on Mac tiers: flint:40b-a2b-gguf-nvfp4 is NVFP4 GGUF, which llama.cpp b11803 (Ollama 0.40.9) can't run on Metal, nor can b11845 (Ollama 0.40.11); Recursive points Apple silicon to the Q4_1 GGUF. nemotron-3.5-bolt:74b-a9b-iq2 is NVIDIA's quantization-aware IQ2_XXS release (the only local 74B build); Ollama's page says Apple Silicon/Metal isn't supported for 74B-A9B, so \"mac\": false. Its TB 51.0 is NVIDIA's score for this build (card); its GS 39.7 is AA's, whose model page links the BF16 weights.",
+  "tag_flag_note": "flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) require Ollama 0.40.9, stable since 2026-10-22; Recursive's NVFP4 score (TB 53.7) applies to 40b-a2b-gguf-nvfp4 only. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead. A tag with \"mac\": false is skipped on Mac tiers: flint:40b-a2b-gguf-nvfp4 is NVFP4 GGUF, which llama.cpp b11803 (Ollama 0.40.9) can't run on Metal, nor can b11845 (Ollama 0.40.11); Recursive points Apple silicon to the Q4_1 GGUF. nemotron-3.5-bolt:74b-a9b-iq2 is NVIDIA's quantization-aware IQ2_XXS release (the only local 74B build); Ollama's page says Apple Silicon/Metal isn't supported for 74B-A9B, so \"mac\": false. Its TB 51.0 is NVIDIA's score for this build (card); its GS 39.7 is AA's, whose model page links the BF16 weights.",
   "arena_note": "arena: LMArena text leaderboard with style control, category overall, published 2026-10-28 (huggingface.co/datasets/lmarena-ai/leaderboard-dataset, config text_style_control, split latest). Shown beside GS, not used in it (user decision 2026-11-04). Mapped by exact model; ci = half the 95% interval.",
-  "tb_harness_note": "tb_harness: harness behind a vendor Terminal-Bench 2.1 score. Only terminus-2 (AA's harness) counts (user decision 2026-11-04). Ornith 1.0/1.5 9B and 35B: Terminus-2 rows on ornith.ai/ornith_1_5.html. Flint: card says Terminal-Bench uses Terminus 2. nemotron-3.5-super: NeMo Gym recipe nemotron_recipes/super-3.5/terminal-bench-2.1.yaml uses the Terminus-2 agent. nemotron-3.5-bolt:74b: card names no harness and NeMo Gym has no Bolt recipe. ornith-1.5:122b: card footnote describes only the Claude Code setup. lfm3: Liquid ran it with OpenCode."
+  "tb_harness_note": "tb_harness: harness behind a vendor Terminal-Bench 2.1 score. Only terminus-2 (AA's harness) counts (user decision 2026-11-04). Ornith 1.0/1.5 9B and 35B: Terminus-2 rows on ornith.ai/ornith_1_5.html. Flint: card says Terminal-Bench uses Terminus 2. nemotron-3.5-super: NeMo Gym recipe nemotron_recipes/super-3.5/terminal-bench-2.1.yaml uses the Terminus-2 agent. nemotron-3.5-bolt:74b: card names no harness and NeMo Gym has no Bolt recipe. ornith-1.5:122b: card footnote describes only the Claude Code setup. lfm3: Liquid ran it with OpenCode.",
+  "tool_call_note": "flag: true only for a tool-call bug an Ollama member/owner/collaborator has confirmed (reproduced, acknowledged, or own fix PR linked); such a model is excluded from coding. Unverified reports are not mentioned in the report (user decision 2026-11-04). As of 2026-11-04 none is confirmed. Unverified open tool-call reports tracked for confirmation: qwen3.5 parser #16383; gemma4 #18649 #18390 #18354 #17882 #19273 #18275 #15445 #15315 #18468 #15670 #17568 #18861 #15573 #15719 #17562; ornith #16992 #17957; cohere #18053; qwen3-coder #18530 #16686 #12751 #18421; glm-4.7 #13820 #18658 #18659; gpt-oss #11991 #12203 #17638; laguna #17602; MLX #16279; qwen3.8 #19353 #17765 #18840; Windows #19439; bolt Metal #19057; q8_0 KV ROCm #17347; qwen3.5 /api/generate #14986. Previously flagged: qwen3.5:0.8b, qwen3.5:2b, qwen3.5:4b, qwen3.5:9b, qwen3.5:27b, qwen3.5:35b-a3b, qwen3.5:122b-a10b, qwen3.6:27b, qwen3.6:35b-a3b, qwen3.8:27b, qwen3.8-flash-next, gemma4:e2b, gemma4:e4b, gemma4:12b, gemma4:26b-a4b, gemma4:31b, north-mini-code-1.0, ornith:9b, ornith:35b, gpt-oss:120b, gpt-oss:20b, qwen3-coder-next, glm-4.7-flash, ornith-1.5:122b. Flint #19191 is confirmed (collaborator dhiltgen's PR 19252) but is a renderer bug, so it's a caution, not an exclusion."
 }
