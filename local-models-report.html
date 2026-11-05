@@ -2376,9 +2376,11 @@ or lower anyway</td>
 <tr>
 <td style="text-align: left;"><code>lfm3</code> (1.7B)</td>
 <td style="text-align: left;">No AA score, so no General score. Liquid's
-Terminal-Bench 2.1 score is 12.9, below the TB 20 coding floor, and
-Liquid doesn't recommend it for agentic coding <a
-href="#ref-17">[17]</a><a href="#ref-46">[46]</a></td>
+Terminal-Bench 2.1 score is 12.9, run in OpenCode rather than Terminus 2
+and below the TB 20 coding floor, and Liquid doesn't recommend it for
+agentic coding <a href="#ref-17">[17]</a><a href="#ref-46">[46]</a>.
+With a 1.1 GB 4-bit build and a 256k context window it may still suit
+simple tool-calling agents on 8 GB machines (untested)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>lfm3-vl</code>,
@@ -2447,9 +2449,68 @@ estimate can't model their gain, so they're ranked as the plain tags <a
 href="#ref-30">[30]</a></td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>gemma4:31b-it-qat</code>,
-<code>gemma4:e2b-it-qat</code>, <code>gemma4:e4b-it-qat</code></td>
+<td style="text-align: left;"><code>gemma4:31b</code>
+(<code>31b-nvfp4</code>, <code>31b-it-qat</code>)</td>
+<td style="text-align: left;">General #6 on Mac 48-96 GB and the Pro Max
+16 Plus with a 24 GB GPU (GS 39.0): within 3 points of faster picks. It
+has the highest LMArena rating of any model here (1452 ±7) <a
+href="#ref-16">[16]</a>, so for writing and chat it's worth a try if
+8-28 tok/s is acceptable</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gemma4:e2b-it-qat</code>,
+<code>gemma4:e4b-it-qat</code></td>
 <td style="text-align: left;">Ranked lower once speed is applied</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>qwen3.8:27b-nvfp4</code> (General,
+Mac 32-36 GB)</td>
+<td style="text-align: left;">General #6 (GS 35.9, LMArena 1436 ±5):
+within 3 points of <code>gemma4:26b-nvfp4</code> but estimates only 4-15
+tok/s there. It's a coding pick in that tier</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>qwen3.5:4b-q4_K_M</code> on base M1
+Macs</td>
+<td style="text-align: left;">Estimates about 12 tok/s on the M1's ~67
+GB/s (unsourced bandwidth), under the 15 tok/s filter</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gemma4:26b-nvfp4</code> (coding, Mac
+16-24 GB)</td>
+<td style="text-align: left;">Fits 24 GB Macs for coding with the raised
+GPU limit, but not the 16 and 18 GB ones; a tier lists only models that
+fit every machine in it</td>
+</tr>
+<tr>
+<td style="text-align: left;">On Windows 32 GB:
+<code>qwen3.5:35b-a3b-q4_K_M</code> (22 GB),
+<code>ornith:35b-q4_K_M</code> (21 GB),
+<code>flint:40b-a2b-gguf-nvfp4</code> (23 GB), dense 27B models</td>
+<td style="text-align: left;">The two 35B MoE models fit by their
+weights only, with no room for Ollama's default 4k context (General) or
+OpenCode's 64k (coding) once 10 GB is kept for Windows and apps
+(estimate). Flint is over the 22 GB budget. Dense 27B models estimate
+only 3-5 tok/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">On Mac 128 GB:
+<code>muse-glimmer:30b-nvfp4</code>, <code>qwen3.5:35b-a3b-nvfp4</code>,
+<code>qwen3.6:35b-a3b-nvfp4</code> (General);
+<code>qwen3.6:27b-nvfp4</code>, <code>flint</code>,
+<code>gpt-oss:120b</code>, <code>qwen3.5:122b-a10b</code> (coding)</td>
+<td style="text-align: left;">Fit but rank #6 or lower: Muse (GS 42.4)
+is #6, and the Qwen 35B MoE models (GS 38.0 and 38.7) are more than 3
+points below it</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>nemotron-3.5-bolt:74b-a9b-iq2</code>
+(coding; all Macs)</td>
+<td style="text-align: left;">Coding: NVIDIA's Terminal-Bench 2.1 score
+(51.0) doesn't name the agent it was run with <a href="#ref-8">[8]</a>,
+and AA has no Terminal-Bench score for it. Macs: Ollama says the 74B
+doesn't run on Apple silicon <a href="#ref-9">[9]</a>. It's a General
+pick on the Pro Max 16 Plus</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>laguna-s-2.1</code>,
