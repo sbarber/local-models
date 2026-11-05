@@ -59,7 +59,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
     - Citations are numbered links, `[\[3\]](#ref-3)`, numbered by first appearance; the Sources section is an `<ol class="refs">` whose `<li id="ref-N">` items hold the linked URLs. Ollama issue numbers link to their GitHub issue.
     - Each tier has a General use table and an Agentic coding table. Table separator rows use explicit left alignment (`|:---|`).
     - Prose bullets state no number that isn't in a table or a cited source.
-    - Reader-facing content never mentions this project's files, scripts or process (no `machines.yaml`, `scripts/`, runbook, "Refresh", "update process"); cite public source URLs instead. No Diff in the file.
+    - Reader-facing content never mentions this project's files, scripts or process (no `machines.yaml`, `scripts/`, runbook, "Refresh", "update process"); cite public source URLs instead. No Diff in the file: the Report describes the current state only. Never say what's new or changed, what a model replaced, or where a pick moved from (no "New:", "now", "replacing", "drops out", "no longer", "previous version"); that belongs in the Diff told in chat (the user's call, 2026-11-04). Ranks beyond the top 5 ("\#6") are fine.
     - Plumbing goes only in the hidden STATE comment at the very end, in exactly this format (no `--` inside it):
       ```
       <!-- STATE (read by the update process; not shown on the page)

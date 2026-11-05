@@ -246,50 +246,37 @@ href="#ref-2">[2]</a></p>
 
 <h2 id="summary">Summary</h2>
 <ul>
-<li><strong>New this time: three changes to how models are
-scored.</strong>
+<li><strong>How models are scored.</strong> Most scores come from
+Artificial Analysis (AA), which tests open and paid models the same way
+(<a href="#how-to-read-this">how to read this</a>).
 <ul>
-<li><strong>General score (GS) = HLE 10 + AA-LCR 5.</strong> CritPt is
-gone: most local models score 0 on it, so it barely moved any score.
-AA-Omniscience has been out since 2026-11-02, after Artificial Analysis
-replaced it with a version few of the models here have scores on yet <a
-href="#ref-3">[3]</a><a href="#ref-4">[4]</a>. GS values are on a new
-scale, so don't compare them with earlier versions of this report (<a
-href="#how-to-read-this">how to read this</a>).</li>
-<li><strong>A vendor's Terminal-Bench score counts only if it was run
-the way AA runs it,</strong> with the Terminus 2 agent. Scores from
-Claude Code, OpenCode or an unnamed setup aren't comparable. Two coding
-picks drop out: <code>ornith-1.5:122b-nvfp4</code> (Mac 128 GB), whose
-card describes only a Claude Code run, and
-<code>nemotron-3.5-bolt:74b-a9b-iq2</code> (Pro Max 16 Plus), whose card
-doesn't name its setup <a href="#ref-5">[5]</a><a
+<li><strong>General use: General score (GS) = HLE 10 + AA-LCR
+5</strong>, expert-level questions plus reasoning over long documents <a
+href="#ref-3">[3]</a><a href="#ref-4">[4]</a>. It has no factual-recall
+component: AA's AA-Omniscience covers too few of the models here.</li>
+<li><strong>Agentic coding: AA's Terminal-Bench 2.1.</strong> Where AA
+has no score, a vendor's own score is used only if the vendor ran it
+with Terminus 2, the agent AA uses. So <code>ornith-1.5:122b</code>,
+whose card describes only a Claude Code run, and
+<code>nemotron-3.5-bolt:74b</code>, whose card doesn't name its agent,
+aren't ranked for coding <a href="#ref-5">[5]</a><a
 href="#ref-6">[6]</a>.</li>
-<li><strong>General tables now show each model's LMArena rating</strong>
-beside GS: people's votes on which of two answers they prefer, the main
-crowd-preference measure of writing and chat. It isn't part of GS, and
-many small models have no rating (<a href="#how-to-read-this">how to
-read this</a>) <a href="#ref-7">[7]</a>.</li>
+<li><strong>General tables also show each model's LMArena
+rating</strong>: people's votes on which of two answers they prefer, the
+main crowd-preference measure of writing and chat. It's for reference
+and isn't part of GS; many small models have no rating <a
+href="#ref-7">[7]</a>.</li>
 </ul></li>
-<li><strong>What moved in General:</strong>
-<code>qwen3:4b-thinking-2507-q4_K_M</code> now leads the base M1 Macs
-(GS 16.6), <code>gemma4:12b-nvfp4</code> rises to #2 on 16-24 GB Macs,
-and <code>qwen3.5:122b-a10b-q4_K_M</code> passes
-<code>nemotron-3.5-super</code> on Mac 128 GB.
-<code>nemotron-3-nano:4b</code> joins the 8 GB Mac and Latitude tables,
-<code>minicpm-v4.6:q4_K_M</code> (a small model that also reads images)
-the base M1 tables, and <code>qwen3.5:9b-q4_K_M</code> the Pro Max 16
-Plus 8-16 GB GPU table.</li>
-<li><strong>LFM3 from Liquid AI is new in Ollama, but it isn't
-ranked.</strong> Ollama 0.40.12 added <code>lfm3</code> (1.7B),
-<code>lfm3-vl</code>, <code>lfm3-audio</code> and
-<code>lfm3-omni</code>, and 0.40.13 runs them on Windows and Linux too
-<a href="#ref-2">[2]</a>. AA hasn't scored any of them, so they get no
-General score. Liquid's own Terminal-Bench 2.1 score for LFM3-1.7B is
-12.9, measured in OpenCode rather than AA's setup, and Liquid says it
-isn't recommended for agentic coding <a href="#ref-8">[8]</a><a
-href="#ref-9">[9]</a>. With a 1.1 GB 4-bit build and a 256k context
-window, it may still suit simple tool-calling agents on 8 GB machines;
-that's untested here.</li>
+<li><strong>LFM3 from Liquid AI isn't ranked.</strong> <code>lfm3</code>
+(1.7B), <code>lfm3-vl</code>, <code>lfm3-audio</code> and
+<code>lfm3-omni</code> need Ollama 0.40.12 on Macs and 0.40.13 on
+Windows and Linux <a href="#ref-2">[2]</a>. AA hasn't scored any of
+them, so they get no General score. Liquid's own Terminal-Bench 2.1
+score for LFM3-1.7B is 12.9, measured in OpenCode rather than AA's
+setup, and Liquid says it isn't recommended for agentic coding <a
+href="#ref-8">[8]</a><a href="#ref-9">[9]</a>. With a 1.1 GB 4-bit build
+and a 256k context window, it may still suit simple tool-calling agents
+on 8 GB machines; that's untested here.</li>
 <li><strong>Mac tables list the best build of each model, MLX or
 GGUF.</strong> On Apple silicon Ollama runs two kinds of build: GGUF
 (through llama.cpp, the same files as on Windows) and MLX (Apple's
@@ -307,13 +294,13 @@ numbers can differ from AA's, e.g. 52.5 for Qwen 3.6 35B-A3B against
 AA's 44.9 <a href="#ref-13">[13]</a><a href="#ref-4">[4]</a>. On Mac 128
 GB, <code>qwen3.8-flash-next:125b-a6b-nvfp4</code> leads both use cases
 (GS 51.9, TB 86.1).</li>
-<li><strong><code>nemotron-3.5-bolt:74b-a9b-iq2</code> is still ranked
-for General on the Pro Max 16 Plus</strong> (#3 on the 8-16 GB GPUs, GS
-39.7). It's NVIDIA's own 2-bit release, trained for that precision, and
-runs on Windows only <a href="#ref-6">[6]</a><a href="#ref-14">[14]</a>;
-AA's GS is for the full-precision weights <a href="#ref-15">[15]</a>.
-<code>flint:40b-a2b-gguf-nvfp4</code> carries Recursive's TB 53.7 for
-its NVFP4 build <a href="#ref-16">[16]</a>.</li>
+<li><strong><code>nemotron-3.5-bolt:74b-a9b-iq2</code> is ranked for
+General only, on the Pro Max 16 Plus</strong> (#3 on the 8-16 GB GPUs,
+GS 39.7). It's NVIDIA's own 2-bit release, trained for that precision,
+and runs on Windows only <a href="#ref-6">[6]</a><a
+href="#ref-14">[14]</a>; AA's GS is for the full-precision weights <a
+href="#ref-15">[15]</a>. <code>flint:40b-a2b-gguf-nvfp4</code> carries
+Recursive's TB 53.7 for its NVFP4 build <a href="#ref-16">[16]</a>.</li>
 <li><strong>Coding picks count the memory for 64k of context, OpenCode's
 minimum.</strong> On Macs up to 36 GB they assume you raise macOS's GPU
 memory limit to about 80% of RAM (<a href="#config-gpu-limit">section
@@ -612,12 +599,11 @@ Granite 4.2 3B, which is near the bottom of the models here (1290 ±12)
 badge in Ollama</strong> but carries a tool-calling chat template in its
 model file, so Ollama supports tools with it <a
 href="#ref-28">[28]</a><a href="#ref-23">[23]</a>.</li>
-<li><strong>New: <code>minicpm-v4.6:q4_K_M</code> is General #4</strong>
-(GS 5.7). It's a 1.6 GB model that also reads images, built on
-Qwen3.5-0.8B <a href="#ref-29">[29]</a>. It has no <code>tools</code>
-badge, but its model file's chat template handles tools, so Ollama
-supports tools with it <a href="#ref-23">[23]</a>. It replaces
-<code>granite4:350m-h-q8_0</code>.</li>
+<li><strong><code>minicpm-v4.6:q4_K_M</code> (General #4)</strong> (GS
+5.7). It's a 1.6 GB model that also reads images, built on Qwen3.5-0.8B
+<a href="#ref-29">[29]</a>. It has no <code>tools</code> badge, but its
+model file's chat template handles tools, so Ollama supports tools with
+it <a href="#ref-23">[23]</a>.</li>
 </ul>
 <hr />
 <h3 id="tier-mac-8">Mac 8 GB: M2 / M3</h3>
@@ -709,10 +695,9 @@ style="text-align: left;"><code>qwen3:4b-thinking-2507-q4_K_M</code></td>
 <li><strong><code>qwen3.5:4b-q4_K_M</code> is #1 for General</strong>
 (GS 27.6), more than 10 points ahead of every other pick. Picks 2-5
 score GS 8.7-16.6.</li>
-<li><strong>New: <code>nemotron-3-nano:4b-nvfp4</code> is General
-#5</strong> (GS 10.5), replacing
-<code>qwen3:4b-instruct-2507-q4_K_M</code>. It's NVIDIA's 4B hybrid
-Mamba-2 model; its MLX build (2.9 GB) is within 10% of the GGUF build
+<li><strong><code>nemotron-3-nano:4b-nvfp4</code> (General #5, GS
+10.5)</strong> It's NVIDIA's 4B hybrid Mamba-2 model; its MLX build (2.9
+GB) is within 10% of the GGUF build
 <code>nemotron-3-nano:4b-q4_K_M</code> (2.8 GB), so the MLX build is
 listed. <code>qwen3.5:2b-q4_K_M</code> ranks above it because they're
 within 3 points and the 2B is faster.</li>
@@ -922,13 +907,13 @@ href="https://github.com/ollama/ollama/issues/17362">#17362</a>,
 unconfirmed); if Gemma 12B is slow on your Mac, use
 <code>gemma4:12b-it-qat</code>.</li>
 <li><strong><code>qwen3.5:9b-nvfp4</code> is #1 for General</strong> (GS
-33.3), and <code>gemma4:12b-nvfp4</code> rises to #2 (GS 31.7), now more
-than 3 points ahead of the faster <code>qwen3.5:4b-q4_K_M</code> (GS
+33.3), and <code>gemma4:12b-nvfp4</code> is #2 (GS 31.7), more than 3
+points ahead of the faster <code>qwen3.5:4b-q4_K_M</code> (GS
 27.6).</li>
-<li><strong>New: <code>qwen3:4b-thinking-2507-q4_K_M</code> is General
-#5</strong> (GS 16.6), replacing <code>granite4.2:3b-q4_K_M</code> (GS
-12.5). <code>granite4.2:8b-q4_K_M</code> (#4) has a tool-calling chat
-template but no <code>tools</code> badge <a
+<li><strong><code>qwen3:4b-thinking-2507-q4_K_M</code> is General
+#5</strong> (GS 16.6), ahead of <code>granite4.2:3b-q4_K_M</code> (GS
+12.5, #6). <code>granite4.2:8b-q4_K_M</code> (#4) has a tool-calling
+chat template but no <code>tools</code> badge <a
 href="#ref-23">[23]</a>.</li>
 <li><strong>On base M2/M3/M4 chips, the 8B, 9B and 12B models estimate
 8-14 tok/s.</strong> <code>qwen3.5:4b-q4_K_M</code> and
@@ -1485,16 +1470,15 @@ coding lists <code>120b-a12b-q4_K_M</code> with NVIDIA's BF16 score. At
 href="#config-gpu-limit">section 3</a>), and it needs Ollama 0.40.5 or
 later <a href="#ref-2">[2]</a>.</li>
 </ul></li>
-<li><strong><code>ornith-1.5:122b-nvfp4</code> is no longer ranked for
+<li><strong><code>ornith-1.5:122b-nvfp4</code> isn't ranked for
 coding.</strong> Its card reports TB 81.2, but its footnote describes
 only a Claude Code run of Terminal-Bench 2.1, not Terminus 2, the agent
 AA uses <a href="#ref-5">[5]</a>. Ornith's own page shows the two agents
 giving different scores for the same model <a href="#ref-13">[13]</a>.
 It's a 122B MoE (73.4 GB as MLX), added to Ollama on 2026-10-20 <a
-href="#ref-36">[36]</a>, and it has no AA score.
-<code>qwen3.8:27b-nvfp4</code> (TB 65.2) takes coding #5.</li>
-<li><strong>The two Ornith 35B models still rank high in coding on
-vendor scores only</strong>; see the Mac 48-96 GB notes.</li>
+href="#ref-36">[36]</a>, and it has no AA score.</li>
+<li><strong>The two Ornith 35B models rank high in coding on vendor
+scores only</strong>; see the Mac 48-96 GB notes.</li>
 <li><strong>Other large models fit but don't make the top 5:</strong>
 <code>qwen3.6:27b-nvfp4</code>, <code>flint</code>,
 <code>nemotron-3-super</code>, <code>gpt-oss:120b</code> and
@@ -1597,9 +1581,8 @@ for serious coding work.</li>
 <li><strong><code>qwen3.5:4b-q4_K_M</code> is #1 for General</strong>
 (GS 27.6), more than 10 points ahead of the rest. Picks 2-5 score GS
 8.7-16.6.</li>
-<li><strong>New: <code>nemotron-3-nano:4b-q4_K_M</code> is General
-#5</strong> (GS 10.5), replacing
-<code>qwen3:4b-instruct-2507-q4_K_M</code>.</li>
+<li><strong><code>nemotron-3-nano:4b-q4_K_M</code> (General #5, GS
+10.5)</strong> is NVIDIA's 4B hybrid Mamba-2 model.</li>
 <li>Ollama runs the Intel iGPU through Vulkan, which is on by default
 when the backend is installed <a href="#ref-37">[37]</a>. Ollama's docs
 don't state Intel iGPU support on Windows (unverified).</li>
@@ -1862,33 +1845,33 @@ confidence</td>
 <li><strong>General: <code>qwen3.5:35b-a3b-q4_K_M</code> is #1</strong>
 (GS 38.0), ahead of <code>qwen3.6:35b-a3b-q4_K_M</code> (GS 38.7)
 because they're within 3 points and it's slightly faster.</li>
-<li><strong><code>nemotron-3.5-bolt:74b-a9b-iq2</code> is General #3,
-and no longer ranked for coding.</strong> It scores highest for General
-here (GS 39.7), but both Qwen 35B models are within 3 points and faster.
-Its GS is AA's score for the full-precision weights (<a
-href="#summary">summary</a>). NVIDIA's TB 51.0 for this 2-bit build no
-longer counts: the card doesn't say which agent ran it <a
+<li><strong><code>nemotron-3.5-bolt:74b-a9b-iq2</code> is General #3 and
+isn't ranked for coding.</strong> It scores highest for General here (GS
+39.7), but both Qwen 35B models are within 3 points and faster. Its GS
+is AA's score for the full-precision weights (<a
+href="#summary">summary</a>). NVIDIA's TB 51.0 for this 2-bit build
+isn't used: the card doesn't say which agent ran it <a
 href="#ref-6">[6]</a>, and AA hasn't scored Bolt's Terminal-Bench. At 25
 GB it runs split between the GPU and system RAM on every GPU here; with
 9B active it's the slowest General pick (estimate).</li>
 <li><strong>The 35B, 74B and 26B General picks run split between the GPU
 and system RAM</strong>, so RAM bandwidth sets their speeds.</li>
-<li><strong>New: <code>qwen3.5:9b-q4_K_M</code> is General #5</strong>
-(GS 33.3), replacing <code>qwen3-next:80b-a3b-thinking-q4_K_M</code>
-(now #6). It fits in VRAM on the 12 and 16 GB GPUs, where it's the
-fastest pick (up to 81 tok/s, estimate), but runs from RAM on the 8 GB
-GPUs (about 9 tok/s).</li>
+<li><strong><code>qwen3.5:9b-q4_K_M</code> is General #5</strong> (GS
+33.3), ahead of the slower
+<code>qwen3-next:80b-a3b-thinking-q4_K_M</code> (#6). It fits in VRAM on
+the 12 and 16 GB GPUs, where it's the fastest pick (up to 81 tok/s,
+estimate), but runs from RAM on the 8 GB GPUs (about 9 tok/s).</li>
 <li><strong><code>flint:40b-a2b-gguf-nvfp4</code> is coding #3</strong>
 (TB 53.7, vendor) and the fastest coding pick on the 8 GB GPUs. It runs
 split between the GPU and system RAM on every GPU in this tier; as a MoE
 with about 2.5B active it still estimates 42-48 tok/s. See the Mac 32-36
 GB notes for <a
 href="https://github.com/ollama/ollama/issues/19191">#19191</a>.</li>
-<li><strong><code>ornith-1.5:9b</code> returns as coding #5</strong>,
-replacing Bolt. It fits in VRAM on the 12 and 16 GB GPUs but runs from
-RAM on the 8 GB GPUs (about 9 tok/s, estimate). It ranks below
-<code>qwen3.6:35b-a3b-q4_K_M</code> (TB 44.9) because they're within 3
-points and the Qwen MoE is faster on the slowest machine.</li>
+<li><strong><code>ornith-1.5:9b</code> is coding #5.</strong> It fits in
+VRAM on the 12 and 16 GB GPUs but runs from RAM on the 8 GB GPUs (about
+9 tok/s, estimate). It ranks below <code>qwen3.6:35b-a3b-q4_K_M</code>
+(TB 44.9) because they're within 3 points and the Qwen MoE is faster on
+the slowest machine.</li>
 <li><strong>Four of the five coding picks are ranked on vendor
 scores</strong> (the three Ornith models and Flint), all run with
 Terminus 2, AA's agent <a href="#ref-13">[13]</a><a
@@ -2017,7 +2000,7 @@ VRAM-minus-3 GB limit, so they run split and are estimated from system
 RAM.</li>
 <li><strong><code>nemotron-3.5-bolt:74b-a9b-iq2</code> is General
 #7</strong> (GS 39.7): within 3 points of the picks above it, which are
-faster. It's no longer ranked for coding (see the 8-16 GB GPU notes).
+faster. It isn't ranked for coding (see the 8-16 GB GPU notes).
 <code>gemma4:31b-it-qat</code> (#6, GS 39.0) has the highest LMArena
 rating of any model here (1452 ±7) <a href="#ref-7">[7]</a>.</li>
 <li><strong><code>flint:40b-a2b-gguf-nvfp4</code> is coding #5</strong>,
@@ -2554,8 +2537,8 @@ the plain tags</td>
 <tr>
 <td style="text-align: left;"><code>-mtp-</code> tags (Qwen 3.5, 3.6,
 3.8, Gemma 4) and <code>-dflash</code> tags (Muse Glimmer;
-<code>qwen3.8:27b-dflash2-nvfp4</code>, new with Ollama 0.40.12's
-DFlash2 support <a href="#ref-2">[2]</a>)</td>
+<code>qwen3.8:27b-dflash2-nvfp4</code>, which uses Ollama's DFlash2
+support (0.40.12 and later) <a href="#ref-2">[2]</a>)</td>
 <td style="text-align: left;">Speculative-decoding builds. The speed
 estimate can't model their gain, so they're ranked as the plain tags <a
 href="#ref-33">[33]</a></td>
@@ -2600,8 +2583,7 @@ score</td>
 <tr>
 <td style="text-align: left;"><code>qwen3:4b-instruct-2507</code>,
 <code>qwen3-next:80b-a3b-thinking</code></td>
-<td style="text-align: left;">Evaluated; outranked in every tier
-(General picks in the previous version of this report)</td>
+<td style="text-align: left;">Evaluated; outranked in every tier</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>bonsai-2</code></td>
