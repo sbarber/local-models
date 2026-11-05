@@ -171,9 +171,10 @@ def nearest_paid(models, key, score):
     # Beyond 3 points: closest wins outright.
     def rank(p):
         d = abs(p[key] - score)
+        # Name breaks exact ties, so the choice doesn't depend on AA's list order.
         if d <= 3:
-            return (0, bool(p["deprecated"]), d)
-        return (1, False, d)
+            return (0, bool(p["deprecated"]), d, p["name"])
+        return (1, False, d, p["name"])
 
     return sorted(candidates, key=rank)
 

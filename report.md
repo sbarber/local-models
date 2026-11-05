@@ -106,9 +106,9 @@ Each tier has one table per use case; ranks run 1-5 within each. Windows tables 
 |:---|:---|:---|:---|:---|:---|
 | 1 | `qwen3:4b-thinking-2507-q4_K_M` | GS 16.6 | ~16 | GPT-6 Luna (Non-reasoning) | — |
 | 2 | `granite4.2:3b-q4_K_M` | GS 12.5 | ~18 | GPT-5.4 nano (Non-reasoning) | 1290 ±12 |
-| 3 | `granite4:1b-h-q8_0` | GS 5.7 | ~25 | GPT-5 nano (Minimal) | — |
-| 4 | `minicpm-v4.6:q4_K_M` | GS 5.7 | ~25 | GPT-5 nano (Minimal) | — |
-| 5 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~21 | GPT-5 nano (Minimal) | — |
+| 3 | `granite4:1b-h-q8_0` | GS 5.7 | ~25 | GPT-4.1 nano | — |
+| 4 | `minicpm-v4.6:q4_K_M` | GS 5.7 | ~25 | GPT-4.1 nano | — |
+| 5 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~21 | GPT-4.1 nano | — |
 
 **Agentic coding**
 
@@ -133,7 +133,7 @@ No pick.
 | 1 | `qwen3.5:4b-q4_K_M` | GS 27.6 | ~18 | GPT-5.6 Terra (Non-reasoning) | — |
 | 2 | `qwen3:4b-thinking-2507-q4_K_M` | GS 16.6 | ~24 | GPT-6 Luna (Non-reasoning) | — |
 | 3 | `granite4.2:3b-q4_K_M` | GS 12.5 | ~27 | GPT-5.4 nano (Non-reasoning) | 1290 ±12 |
-| 4 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~32 | GPT-5 nano (Minimal) | — |
+| 4 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~32 | GPT-4.1 nano | — |
 | 5 | `nemotron-3-nano:4b-nvfp4` | GS 10.5 | ~21 | Grok 4 Fast (Non-reasoning) | — |
 
 **Agentic coding**
@@ -159,9 +159,9 @@ No pick.
 |:---|:---|:---|:---|:---|:---|
 | 1 | `qwen3:4b-thinking-2507-q4_K_M` | GS 16.6 | ~16 | GPT-6 Luna (Non-reasoning) | — |
 | 2 | `granite4.2:3b-q4_K_M` | GS 12.5 | ~18 | GPT-5.4 nano (Non-reasoning) | 1290 ±12 |
-| 3 | `granite4:1b-h-q8_0` | GS 5.7 | ~25 | GPT-5 nano (Minimal) | — |
-| 4 | `minicpm-v4.6:q4_K_M` | GS 5.7 | ~25 | GPT-5 nano (Minimal) | — |
-| 5 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~21 | GPT-5 nano (Minimal) | — |
+| 3 | `granite4:1b-h-q8_0` | GS 5.7 | ~25 | GPT-4.1 nano | — |
+| 4 | `minicpm-v4.6:q4_K_M` | GS 5.7 | ~25 | GPT-4.1 nano | — |
+| 5 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~21 | GPT-4.1 nano | — |
 
 **Agentic coding**
 
@@ -182,7 +182,7 @@ No pick.
 | \# | Model | Score | Est. tok/s | Equivalent paid model | LMArena |
 |:---|:---|:---|:---|:---|:---|
 | 1 | `qwen3.5:9b-nvfp4` | GS 33.3 | 8-26 | GPT-5.4 nano (Medium) | — |
-| 2 | `gemma4:12b-nvfp4` | GS 31.7 | 8-24 | Claude Sonnet 4.6 (Non-reasoning, High) | — |
+| 2 | `gemma4:12b-nvfp4` | GS 31.7 | 8-24 | Claude 4.5 Haiku (Reasoning) | — |
 | 3 | `qwen3.5:4b-q4_K_M` | GS 27.6 | 18-56 | GPT-5.6 Terra (Non-reasoning) | — |
 | 4 | `granite4.2:8b-q4_K_M` | GS 21.5 | 11-35 | GPT-6 Luna (Non-reasoning) | 1290 ±11 |
 | 5 | `qwen3:4b-thinking-2507-q4_K_M` | GS 16.6 | 24-74 | GPT-6 Luna (Non-reasoning) | — |
@@ -218,7 +218,7 @@ No pick.
 | 1 | `qwen3.5:27b-int4` | GS 41.8 | 4-17 | Claude Haiku 5.5 (Low) | 1409 ±4 |
 | 2 | `qwen3.6:27b-q4_K_M` | GS 41.2 | 4-16 | Claude Haiku 5.5 (Low) | — |
 | 3 | `muse-glimmer:30b-nvfp4` | GS 42.4 | 4-16 | Claude Haiku 5.5 (Low) | 1425 ±10 |
-| 4 | `gemma4:26b-nvfp4` | GS 34.8 | 29-111 | GPT-6.1 Terra (Non-reasoning) | 1438 ±7 |
+| 4 | `gemma4:26b-nvfp4` | GS 34.8 | 29-111 | GPT-5.5 Instant (June 2026) | 1438 ±7 |
 | 5 | `qwen3.5:9b-nvfp4` | GS 33.3 | 10-38 | GPT-5.4 nano (Medium) | — |
 
 **Agentic coding**
@@ -293,7 +293,7 @@ No pick.
 |:---|:---|:---|:---|:---|:---|
 | 1 | `qwen3.8-flash-next:125b-a6b-nvfp4` | GS 51.9 | 67-103 | Claude Sonnet 5.5 (Medium, Default Fallback) | — |
 | 2 | `qwen3.5:122b-a10b-q4_K_M` | GS 42.3 | 36-55 | Claude Haiku 5.5 (Low) | 1416 ±4 |
-| 3 | `nemotron-3.5-super:120b-a12b-nvfp4` | GS 43.5 | 30-46 | GPT-6 Luna (Medium) | 1412 ±9 |
+| 3 | `nemotron-3.5-super:120b-a12b-nvfp4` | GS 43.5 | 30-46 | Claude Haiku 5.5 (Low) | 1412 ±9 |
 | 4 | `qwen3.5:27b-int4` | GS 41.8 | 15-23 | Claude Haiku 5.5 (Low) | 1409 ±4 |
 | 5 | `qwen3.6:27b-nvfp4` | GS 41.2 | 13-20 | Claude Haiku 5.5 (Low) | — |
 
@@ -329,7 +329,7 @@ No pick.
 | 1 | `qwen3.5:4b-q4_K_M` | GS 27.6 | ~19 | GPT-5.6 Terra (Non-reasoning) | — |
 | 2 | `qwen3:4b-thinking-2507-q4_K_M` | GS 16.6 | ~24 | GPT-6 Luna (Non-reasoning) | — |
 | 3 | `granite4.2:3b-q4_K_M` | GS 12.5 | ~28 | GPT-5.4 nano (Non-reasoning) | 1290 ±12 |
-| 4 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~32 | GPT-5 nano (Minimal) | — |
+| 4 | `qwen3.5:2b-q4_K_M` | GS 8.7 | ~32 | GPT-4.1 nano | — |
 | 5 | `nemotron-3-nano:4b-q4_K_M` | GS 10.5 | ~22 | Grok 4 Fast (Non-reasoning) | — |
 
 **Agentic coding**
@@ -353,7 +353,7 @@ No pick.
 
 | \# | Model | Score | Est. tok/s | Equivalent paid model | LMArena |
 |:---|:---|:---|:---|:---|:---|
-| 1 | `gemma4:26b-a4b-it-qat` | GS 34.8 | 22-33 | GPT-6.1 Terra (Non-reasoning) | 1438 ±7 |
+| 1 | `gemma4:26b-a4b-it-qat` | GS 34.8 | 22-33 | GPT-5.5 Instant (June 2026) | 1438 ±7 |
 | 2 | `qwen3:30b-a3b-thinking-2507-q4_K_M` | GS 27.3 | 28-43 | GPT-5.6 Terra (Non-reasoning) | — |
 | 3 | `qwen3.5:4b-q4_K_M` | GS 27.6 | 16-70 | GPT-5.6 Terra (Non-reasoning) | — |
 | 4 | `north-mini-code-1.0:q4_K_M` | GS 19.8 | 28-43 | GPT-6 Luna (Non-reasoning) | — |
@@ -387,7 +387,7 @@ No pick.
 | 1 | `qwen3.5:35b-a3b-q4_K_M` | GS 38.0 | 32-37 | Gemini 3.5 Flash-Lite | 1394 ±4 |
 | 2 | `qwen3.6:35b-a3b-q4_K_M` | GS 38.7 | 30-34 | o3 | — |
 | 3 | `nemotron-3.5-bolt:74b-a9b-iq2` | GS 39.7 | 20-23 | o3 | — |
-| 4 | `gemma4:26b-a4b-it-qat` | GS 34.8 | 25-28 | GPT-6.1 Terra (Non-reasoning) | 1438 ±7 |
+| 4 | `gemma4:26b-a4b-it-qat` | GS 34.8 | 25-28 | GPT-5.5 Instant (June 2026) | 1438 ±7 |
 | 5 | `qwen3.5:9b-q4_K_M` | GS 33.3 | 9-81 | GPT-5.4 nano (Medium) | — |
 
 **Agentic coding**
