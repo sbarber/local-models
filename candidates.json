@@ -1,5 +1,5 @@
 {
-  "source_date": "2026-11-04",
+  "source_date": "2026-11-10",
   "models": [
     {
       "name": "qwen3.5:0.8b",
@@ -252,7 +252,7 @@
       "aa_name": "Qwen3.8 27B (Medium)",
       "arena": {
         "name": "Qwen3.8-27B",
-        "rating": 1436,
+        "rating": 1433,
         "ci": 5
       }
     },
@@ -372,7 +372,7 @@
       "aa_name": "Gemma 4 26B A4B (Reasoning)",
       "arena": {
         "name": "Gemma 4 26B A4B",
-        "rating": 1438,
+        "rating": 1437,
         "ci": 7
       }
     },
@@ -459,8 +459,8 @@
       "tb_harness": "terminus-2",
       "arena": {
         "name": "NVIDIA-Nemotron-3.5-Super-VL-120B-A12B (NVFP4)",
-        "rating": 1412,
-        "ci": 9
+        "rating": 1415,
+        "ci": 10
       }
     },
     {
@@ -487,7 +487,7 @@
       "aa_name": "Nemotron 3.5 Lightning",
       "arena": {
         "name": "NVIDIA-Nemotron-3.5-Lightning-30B-A3B (NVFP4)",
-        "rating": 1353,
+        "rating": 1351,
         "ci": 5
       }
     },
@@ -555,7 +555,7 @@
       "aa_name": "Granite 4.2 3B",
       "arena": {
         "name": "Granite 4.2 3B",
-        "rating": 1290,
+        "rating": 1289,
         "ci": 12
       }
     },
@@ -602,7 +602,7 @@
       "arena": {
         "name": "Granite 4.2 30B",
         "rating": 1340,
-        "ci": 10
+        "ci": 11
       }
     },
     {
@@ -872,7 +872,7 @@
       "aa_name": "gpt-oss-20b (High)",
       "arena": {
         "name": "gpt-oss-20b",
-        "rating": 1317,
+        "rating": 1318,
         "ci": 6
       }
     },
@@ -977,7 +977,7 @@
       "aa_name": "GLM-4.7-Flash (Reasoning)",
       "arena": {
         "name": "GLM-4.7-Flash",
-        "rating": 1365,
+        "rating": 1364,
         "ci": 6
       }
     },
@@ -1000,7 +1000,7 @@
       "aa_name": "Mistral Medium 3.5",
       "arena": {
         "name": "Mistral Medium 3.5",
-        "rating": 1426,
+        "rating": 1427,
         "ci": 6
       }
     },
@@ -1077,6 +1077,54 @@
       "score_source": "vendor",
       "aa_name": null,
       "tb_harness": "claude-code"
+    },
+    {
+      "name": "mimo-v2.6:9b",
+      "total": 9,
+      "active": null,
+      "gs": null,
+      "tb": 37.1,
+      "flag": false,
+      "tags": {
+        "mimo-v2.6:9b-q4_K_M": {
+          "size_gb": 6.6,
+          "format": "gguf",
+          "kv64k_gb": 2.15
+        },
+        "mimo-v2.6:9b-nvfp4": {
+          "size_gb": 8.71,
+          "format": "mlx",
+          "kv64k_gb": 2.15
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null,
+      "tb_harness": "unstated"
+    },
+    {
+      "name": "ripple-preview:65b",
+      "total": 65,
+      "active": null,
+      "gs": null,
+      "tb": 80.5,
+      "flag": false,
+      "tags": {
+        "ripple-preview:65b-q4_K_M": {
+          "size_gb": 39.0,
+          "format": "gguf",
+          "kv64k_gb": 4.56
+        },
+        "ripple-preview:65b-nvfp4": {
+          "size_gb": 45.76,
+          "format": "mlx",
+          "kv64k_gb": 4.56
+        }
+      },
+      "tag_tb": {},
+      "score_source": "vendor",
+      "aa_name": null,
+      "tb_harness": "terminus-2"
     },
     {
       "name": "nemotron-3-nano:4b",
@@ -1304,9 +1352,9 @@
     }
   ],
   "kv_note": "kv64k_gb: f16 K+V at 65536 tokens from the GGUF header of the model's GGUF tag (attention layers only; sliding layers hold the window). MLX tags use the same value. glm-4.7-flash uses MLA, so its figure overstates. qwen3-next has no full_attention_interval key; llama.cpp defaults it to 4 (src/models/qwen3next.cpp), so 12 of 48 layers hold context.",
-  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names. nemotron-3.5-bolt:74b: 74B total, 9B active (NVIDIA card and Ollama page). minicpm-v4.6: SigLIP2-400M vision encoder plus Qwen3.5-0.8B LLM (OpenBMB card); tool support from its GGUF chat template (no renderer or parser in the registry config).",
+  "params_note": "qwen3.8-flash-next: 125B MoE parameters plus a 51B n-gram embedding table (Ollama library page); total counts all 176B in the file, 6B active. flint: 39.8B total, ~2.5B active incl. output head (Hugging Face card). ornith-1.5:122b: 10B active is inferred from its config (same layout as Qwen3.5-122B-A10B: 48 layers, 256 experts, 8 routed); the card gives no active count. nemotron-3-nano:30b and nemotron3:33b: from the tag/AA names. nemotron-3.5-bolt:74b: 74B total, 9B active (NVIDIA card and Ollama page). minicpm-v4.6: SigLIP2-400M vision encoder plus Qwen3.5-0.8B LLM (OpenBMB card); tool support from its GGUF chat template (no renderer or parser in the registry config). mimo-v2.6:9b: fine-tune of Qwen3.5-9B (Xiaomi card), MIT; parser qwen3.5, renderer mimo-v2.6. ripple-preview:65b: 65B dense (Ricursive card), Apache 2.0; parser and renderer ripple; MLX tag ships num_ctx 16384.",
   "tag_flag_note": "flint GGUF tags (40b-a2b-q4_1, 40b-a2b-gguf-nvfp4) require Ollama 0.40.9, stable since 2026-10-22; Recursive's NVFP4 score (TB 53.7) applies to 40b-a2b-gguf-nvfp4 only. flint is not flagged: open #19191 (integer tool arguments from history re-emitted as float strings) is in the flint renderer, not the parser, so Ranking rule 3 doesn't apply; the report cautions instead. A tag with \"mac\": false is skipped on Mac tiers: flint:40b-a2b-gguf-nvfp4 is NVFP4 GGUF, which llama.cpp b11803 (Ollama 0.40.9) can't run on Metal, nor can b11845 (Ollama 0.40.11); Recursive points Apple silicon to the Q4_1 GGUF. nemotron-3.5-bolt:74b-a9b-iq2 is NVIDIA's quantization-aware IQ2_XXS release (the only local 74B build); Ollama's page says Apple Silicon/Metal isn't supported for 74B-A9B, so \"mac\": false. Its TB 51.0 is NVIDIA's score for this build (card); its GS 39.7 is AA's, whose model page links the BF16 weights.",
-  "arena_note": "arena: LMArena text leaderboard with style control, category overall, published 2026-10-28 (huggingface.co/datasets/lmarena-ai/leaderboard-dataset, config text_style_control, split latest). Shown beside GS, not used in it (user decision 2026-11-04). Mapped by exact model; ci = half the 95% interval.",
-  "tb_harness_note": "tb_harness: harness behind a vendor Terminal-Bench 2.1 score. Only terminus-2 (AA's harness) counts (user decision 2026-11-04). Ornith 1.0/1.5 9B and 35B: Terminus-2 rows on ornith.ai/ornith_1_5.html. Flint: card says Terminal-Bench uses Terminus 2. nemotron-3.5-super: NeMo Gym recipe nemotron_recipes/super-3.5/terminal-bench-2.1.yaml uses the Terminus-2 agent. nemotron-3.5-bolt:74b: card names no harness and NeMo Gym has no Bolt recipe. ornith-1.5:122b: card footnote describes only the Claude Code setup. lfm3: Liquid ran it with OpenCode.",
-  "tool_call_note": "flag: true only for a tool-call bug an Ollama member/owner/collaborator has confirmed (reproduced, acknowledged, or own fix PR linked); such a model is excluded from coding. Unverified reports are not mentioned in the report (user decision 2026-11-04). As of 2026-11-04 none is confirmed. Unverified open tool-call reports tracked for confirmation: qwen3.5 parser #16383; gemma4 #18649 #18390 #18354 #17882 #19273 #18275 #15445 #15315 #18468 #15670 #17568 #18861 #15573 #15719 #17562; ornith #16992 #17957; cohere #18053; qwen3-coder #18530 #16686 #12751 #18421; glm-4.7 #13820 #18658 #18659; gpt-oss #11991 #12203 #17638; laguna #17602; MLX #16279; qwen3.8 #19353 #17765 #18840; Windows #19439; bolt Metal #19057; q8_0 KV ROCm #17347; qwen3.5 /api/generate #14986. Previously flagged: qwen3.5:0.8b, qwen3.5:2b, qwen3.5:4b, qwen3.5:9b, qwen3.5:27b, qwen3.5:35b-a3b, qwen3.5:122b-a10b, qwen3.6:27b, qwen3.6:35b-a3b, qwen3.8:27b, qwen3.8-flash-next, gemma4:e2b, gemma4:e4b, gemma4:12b, gemma4:26b-a4b, gemma4:31b, north-mini-code-1.0, ornith:9b, ornith:35b, gpt-oss:120b, gpt-oss:20b, qwen3-coder-next, glm-4.7-flash, ornith-1.5:122b. Flint #19191 is confirmed (collaborator dhiltgen's PR 19252) but is a renderer bug, so it's a caution, not an exclusion."
+  "arena_note": "arena: LMArena text leaderboard with style control, category overall, published 2026-11-09 (huggingface.co/datasets/lmarena-ai/leaderboard-dataset, config text_style_control, split latest). Shown beside GS, not used in it (user decision 2026-11-04). Mapped by exact model; ci = half the 95% interval.",
+  "tb_harness_note": "tb_harness: harness behind a vendor Terminal-Bench 2.1 score. Only terminus-2 (AA's harness) counts (user decision 2026-11-04). Ornith 1.0/1.5 9B and 35B: Terminus-2 rows on ornith.ai/ornith_1_5.html. Flint: card says Terminal-Bench uses Terminus 2. nemotron-3.5-super: NeMo Gym recipe nemotron_recipes/super-3.5/terminal-bench-2.1.yaml uses the Terminus-2 agent. nemotron-3.5-bolt:74b: card names no harness and NeMo Gym has no Bolt recipe. ornith-1.5:122b: card footnote describes only the Claude Code setup. lfm3: Liquid ran it with OpenCode. mimo-v2.6:9b: Xiaomi's card and MiMo-V2.6 technical report give TB 2.1 37.1 (avg@1) without naming the harness. ripple-preview:65b: Ricursive's card lists 80.5 in its 'Terminal-Bench 2.1 (Terminus 2)' row (BF16).",
+  "tool_call_note": "flag: true only for a tool-call bug an Ollama member/owner/collaborator has confirmed (reproduced, acknowledged, or own fix PR linked); such a model is excluded from coding. Unverified reports are not mentioned in the report (user decision 2026-11-04). As of 2026-11-10 none is confirmed. Unverified open tool-call reports tracked for confirmation: qwen3.5 parser #16383; gemma4 #19549 #18649 #18390 #18354 #17882 #19273 #18275 #15445 #15315 #18468 #15670 #17568 #18861 #15573 #15719 #17562; ornith #16992 #17957; cohere #18053; qwen3-coder #18530 #16686 #12751 #18421; glm-4.7 #13820 #18658 #18659; gpt-oss #11991 #12203 #17638; laguna #17602; MLX #16279; qwen3.8 #17765 #18840; qwen3 Go template tool rendering #19529 #19524 (collaborator suggests removing the Go template as a workaround; no bug acknowledged); GGUF chat-template models, tool call cut by num_predict returns 500 #19493; Windows #19439; bolt Metal #19057; q8_0 KV ROCm #17347; qwen3.5 /api/generate #14986. Previously flagged: qwen3.5:0.8b, qwen3.5:2b, qwen3.5:4b, qwen3.5:9b, qwen3.5:27b, qwen3.5:35b-a3b, qwen3.5:122b-a10b, qwen3.6:27b, qwen3.6:35b-a3b, qwen3.8:27b, qwen3.8-flash-next, gemma4:e2b, gemma4:e4b, gemma4:12b, gemma4:26b-a4b, gemma4:31b, north-mini-code-1.0, ornith:9b, ornith:35b, gpt-oss:120b, gpt-oss:20b, qwen3-coder-next, glm-4.7-flash, ornith-1.5:122b. Flint #19191 is confirmed (collaborator dhiltgen's PR 19252) but is a renderer bug, so it's a caution, not an exclusion. #19353 (qwen3.8:27b-mlx no tool call after preamble) closed 2026-11-05: collaborator attributed it to the prompt."
 }

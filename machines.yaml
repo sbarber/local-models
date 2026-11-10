@@ -11,6 +11,8 @@ rules:
     description: Every MacBook Pro with an Apple M-series chip (M1 onward, all Pro/Max variants), every memory option Apple sold.
     source: https://support.apple.com/en-us/docs/mac
     auto_add_new: true          # new MacBook Pro chips/memory options join the fleet automatically
+  # Dell rules below: the user's call (2026-11-10): Dell specs don't change, so a Refresh doesn't
+  # re-check Dell product pages or probe for new generations.
   - id: dell-latitude-7350
     description: Dell Latitude 7350 (2024, Core Ultra), 16 GB RAM.
     product_codes: [latitude-13-7350-2-in-1-laptop]
@@ -74,9 +76,11 @@ machines:
   - {name: "MacBook Pro M4 Max (32-core GPU)", memory_gb: [36],          bandwidth_gbs: 410, tiers: {36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/121553 https://support.apple.com/en-us/121554"}
   - {name: "MacBook Pro M4 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 546, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/121553 https://support.apple.com/en-us/121554"}
   - {name: "MacBook Pro M5",      memory_gb: [16, 24, 32],   bandwidth_gbs: 153, tiers: {16: "Mac 16-24 GB", 24: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/125405"}
-  - {name: "MacBook Pro M5 Pro",  memory_gb: [24, 48, 64],   bandwidth_gbs: 307, tiers: {24: "Mac 16-24 GB", 48: "Mac 48-96 GB", 64: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
-  - {name: "MacBook Pro M5 Max (32-core GPU)", memory_gb: [36],          bandwidth_gbs: 460, tiers: {36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
-  - {name: "MacBook Pro M5 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 614, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319"}
+  - {name: "MacBook Pro M6",      memory_gb: [16],           bandwidth_gbs: 153, tiers: {16: "Mac 16-24 GB"}, source: "https://support.apple.com/en-us/148300"}
+  - {name: "MacBook Pro M6",      memory_gb: [24, 32],       bandwidth_gbs: 170, tiers: {24: "Mac 16-24 GB", 32: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/148300"}
+  - {name: "MacBook Pro M5 Pro",  memory_gb: [24, 48, 64],   bandwidth_gbs: 307, tiers: {24: "Mac 16-24 GB", 48: "Mac 48-96 GB", 64: "Mac 48-96 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319 https://support.apple.com/en-us/148301 https://support.apple.com/en-us/148302"}
+  - {name: "MacBook Pro M5 Max (32-core GPU)", memory_gb: [36],          bandwidth_gbs: 460, tiers: {36: "Mac 32-36 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319 https://support.apple.com/en-us/148301 https://support.apple.com/en-us/148302"}
+  - {name: "MacBook Pro M5 Max (40-core GPU)", memory_gb: [48, 64, 128], bandwidth_gbs: 614, tiers: {48: "Mac 48-96 GB", 64: "Mac 48-96 GB", 128: "Mac 128 GB"}, source: "https://support.apple.com/en-us/126318 https://support.apple.com/en-us/126319 https://support.apple.com/en-us/148301 https://support.apple.com/en-us/148302"}
 
   # --- Dell -------------------------------------------------------------------
   - {name: "Dell Latitude 7350 (Core Ultra 5/7 U, Intel Graphics)", memory_gb: [16], bandwidth_gbs: 102, gpu: none, tiers: {16: "Latitude 7350"}, source: "https://dl.dell.com/content/manual34075453-latitude-7350-owner-s-manual.pdf?language=en-us"}

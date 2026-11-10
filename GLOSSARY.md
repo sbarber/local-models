@@ -43,7 +43,7 @@ The score that ranks General use: a weighted mean of HLE 10 and AA-LCR 5, two no
 _Avoid_: Intelligence Index (it is about half agentic and coding work), II
 
 **Equivalent paid model**:
-The paid, hosted model whose scores on the best public benchmarks for that Use case are closest to the local model's.
+The paid, hosted model whose scores on the best public benchmarks for that Use case are closest to the local model's. Marked "low confidence" when the local model's score is vendor-reported rather than measured by AA.
 _Avoid_: Comparable model, cloud equivalent
 
 ### Process

@@ -106,12 +106,16 @@ def apple():
     names = re.findall(r">\s*(MacBook Pro \([^<]{3,60}\))\s*<", page)
     if not names:
         raise RuntimeError("no MacBook Pro entries parsed")
-    if names[0] != state.get("macbook_pro_newest"):
-        reasons.append(f"Apple: newest MacBook Pro is now '{names[0]}' (was '{state.get('macbook_pro_newest')}')")
+    # Apple doesn't list models strictly by date, so compare the whole list, not just the first entry.
+    known = {n.strip() for n in state.get("macbook_pro_list", "").split(";") if n.strip()}
+    new = [n for n in dict.fromkeys(names) if n not in known]
+    if not known and names[0] != state.get("macbook_pro_newest"):
+        new = [names[0]]
+    if new:
+        reasons.append(f"Apple: new MacBook Pro entries: {', '.join(new)}")
 check("Apple", apple)
 
-# Dell blocks scripted requests (HTTP 403); the Refresh checks Dell via webfetch (Runbook step 4).
-skipped.append("Dell: blocked for scripts (HTTP 403); checked by the agent during a Refresh")
+# Dell isn't checked: its tiers' specs don't change (the user's call, 2026-11-10; Runbook step 4).
 
 # 7. Snapshot inputs: content hashes survive clones, touch and same-day edits.
 for label, filename in (("fleet_sha256", "machines.yaml"), ("candidates_sha256", "candidates.json")):
@@ -124,6 +128,6 @@ for s in skipped:
     print("SKIPPED:", s)
 if reasons:
     print("REFRESH RECOMMENDED"); sys.exit(10)
-if len(skipped) > 1:
+if skipped:
     print("CHECK INCOMPLETE"); sys.exit(1)
 print("NO CHANGES"); sys.exit(0)

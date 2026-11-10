@@ -25,7 +25,7 @@ Facts come from primary sources with a URL; anything else is marked "unsourced" 
 
 4. **Fleet.** Apply each rule in `machines.yaml`:
    - Apple: open `https://support.apple.com/en-us/docs/mac`; for every MacBook Pro entry newer than those in `machines`, open its Tech Specs page and read Chip (GPU cores, memory bandwidth) and Memory (options). Add rows (`auto_add_new: true`).
-   - Dell: for each `product_codes` and `next_generation_probe`, fetch `https://www.dell.com/support/product-details/en-us/product/<code>/overview` (an invalid code redirects to `IsInvalidSelection=True`). A new generation gets a row flagged `new: confirm in fleet`. Specs: owner's manual / setup-and-specifications PDF (dl.dell.com) or spec sheet PDF (delltechnologies.com); read Processor, Memory, GPU/Video Card.
+   - Dell: skip. The Dell tiers' specs don't change, so a Refresh doesn't re-check Dell product pages or probe for new generations (the user's call, 2026-11-10). Only update tiers for new Mac models. Touch Dell rows only when the user asks.
    - NVIDIA laptop GPU bandwidth: `https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/`.
    - Place every new row in a tier per `tier_rules` in `machines.yaml`: Macs by memory, Windows by GPU/RAM class. A Machine whose bandwidth is far below the rest of its tier (like the base M1, ~67 GB/s vs 100+) gets its own tier, so it doesn't drag the tier's "one fast pick" down.
    Done when: every rule checked and every row in `machines` has a tier and a `source` URL.
@@ -144,7 +144,7 @@ Est. tok/s = 0.6 × bandwidth (GB/s) ÷ GB read per token. GB read per token = t
 
 Sampling: check each pick's Ollama default params (`ollama show <tag> --modelfile` or the registry) against its vendor card; list any mismatch as a Modelfile override in the config section.
 
-Equivalent paid model: `scripts/aa.py nearest` (OpenAI, Anthropic, Google, xAI) on the score. Within 3 points it prefers current over deprecated, then closest.
+Equivalent paid model: `scripts/aa.py nearest` (OpenAI, Anthropic, Google, xAI) on the score. Within 3 points it prefers current over deprecated, then closest. When the local model's score is vendor-reported (`(vendor)` in the table), append ", low confidence" to the Equivalent paid model cell.
 
 ## Config sources
 
